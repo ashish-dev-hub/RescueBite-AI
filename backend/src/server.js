@@ -20,28 +20,37 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
+
+// Support CORS_ORIGIN env variable (single or comma-separated list), localhost, and Vercel domains
+const configuredOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)
+  : [];
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      // Allow requests with no origin (like mobile apps, curl, server-to-server, Render health checks)
       if (!origin) return callback(null, true);
-      
+
       const allowedOrigins = [
         'http://localhost:5173',
         'http://127.0.0.1:5173',
         'http://localhost:3000',
         'http://127.0.0.1:3000',
+        ...configuredOrigins,
       ];
-      
-      if (
+
+      const isAllowed =
         allowedOrigins.includes(origin) ||
         origin.startsWith('http://localhost:') ||
         origin.startsWith('http://127.0.0.1:') ||
-        process.env.NODE_ENV !== 'production'
-      ) {
+        origin.endsWith('.vercel.app') ||
+        process.env.NODE_ENV !== 'production';
+
+      if (isAllowed) {
         return callback(null, true);
       }
-      return callback(new Error('Blocked by CORS'));
+      return callback(new Error(`Blocked by CORS: origin ${origin} is not allowed`));
     },
     credentials: true,
   })

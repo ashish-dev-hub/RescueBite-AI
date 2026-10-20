@@ -1,4 +1,6 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+// Normalize API base URL: handles '/api', 'https://backend.onrender.com', or 'https://backend.onrender.com/api/'
+const rawBaseUrl = (import.meta.env.VITE_API_BASE_URL || '/api').trim().replace(/\/+$/, '');
+const BASE_URL = rawBaseUrl.endsWith('/api') ? rawBaseUrl : `${rawBaseUrl}/api`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('rescuebite_token');
