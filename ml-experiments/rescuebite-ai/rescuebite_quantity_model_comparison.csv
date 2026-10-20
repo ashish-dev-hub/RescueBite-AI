@@ -1,0 +1,4 @@
+Model,AccuracyPct,MAE
+Baseline,39.0,0.93
+With Cluster,36.0,0.9
+Without Cluster,36.0,0.91
