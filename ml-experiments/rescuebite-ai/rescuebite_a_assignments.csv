@@ -1,0 +1,501 @@
+Strategy,RequestID,Cluster,Perishable,VolunteerID,RouteDistanceKM,PickupTime,DeliveryTime,FailureReason,CapacityCandidates,PickupCandidates,DeliveryCandidates,AvailabilityCandidates
+A - Deadline first,1,7,False,44,12.11,540.0,569.64,Assigned,50,50,50,50
+A - Deadline first,2,4,False,17,18.38,540.0,584.97,Assigned,50,50,50,50
+A - Deadline first,3,3,False,17,21.11,594.83,637.19,Assigned,50,50,50,50
+A - Deadline first,4,3,False,15,20.21,540.0,583.61,Assigned,50,50,50,50
+A - Deadline first,5,4,False,33,3.3,842.8,856.59,Assigned,50,50,50,50
+A - Deadline first,6,7,False,23,16.92,840.0,883.83,Assigned,50,50,50,50
+A - Deadline first,7,6,False,45,22.29,666.21,714.59,Assigned,50,50,50,49
+A - Deadline first,8,0,False,18,13.62,661.45,697.23,Assigned,50,50,50,50
+A - Deadline first,9,4,False,15,5.53,586.86,604.66,Assigned,50,50,50,50
+A - Deadline first,10,0,False,16,4.82,660.0,679.65,Assigned,50,50,50,50
+A - Deadline first,11,0,False,20,1.61,840.0,853.22,Assigned,50,50,50,50
+A - Deadline first,12,4,False,28,23.11,848.47,896.23,Assigned,50,50,50,49
+A - Deadline first,13,6,False,38,17.83,540.0,570.06,Assigned,50,50,50,50
+A - Deadline first,14,0,False,24,4.54,662.62,679.07,Assigned,50,50,50,50
+A - Deadline first,15,1,False,42,14.51,540.0,572.5,Assigned,50,50,50,50
+A - Deadline first,16,1,False,23,16.51,891.32,926.86,Assigned,50,50,50,50
+A - Deadline first,17,0,False,35,3.22,540.0,553.22,Assigned,50,50,50,50
+A - Deadline first,18,4,False,15,30.51,617.46,675.69,Assigned,50,50,49,48
+A - Deadline first,19,3,False,32,32.05,852.92,914.11,Assigned,50,50,49,47
+A - Deadline first,20,0,False,14,2.92,540.0,555.62,Assigned,50,50,50,50
+A - Deadline first,21,4,False,30,18.74,843.93,887.48,Assigned,50,50,50,49
+A - Deadline first,22,0,False,35,14.47,553.22,592.15,Assigned,50,50,50,49
+A - Deadline first,23,0,False,46,11.16,540.0,569.11,Assigned,50,50,50,49
+A - Deadline first,24,2,True,10,17.04,540.0,575.13,Assigned,50,50,50,49
+A - Deadline first,25,4,True,18,11.9,700.48,731.04,Assigned,50,50,50,49
+A - Deadline first,26,5,False,22,7.62,844.65,865.25,Assigned,50,50,50,50
+A - Deadline first,27,4,True,33,11.02,862.32,888.63,Assigned,50,50,50,49
+A - Deadline first,28,3,False,31,30.75,676.74,731.51,Assigned,50,50,48,46
+A - Deadline first,29,0,True,50,6.46,540.0,559.71,Assigned,50,50,50,50
+A - Deadline first,30,4,False,18,23.93,740.95,788.91,Assigned,50,50,50,49
+A - Deadline first,31,5,False,35,13.3,602.6,628.76,Assigned,50,50,50,49
+A - Deadline first,32,5,False,6,18.77,669.65,707.54,Assigned,50,50,50,49
+A - Deadline first,33,5,False,44,18.55,580.09,616.73,Assigned,50,50,50,49
+A - Deadline first,34,5,False,46,13.81,580.86,606.73,Assigned,50,50,50,49
+A - Deadline first,35,0,False,41,8.04,663.21,686.07,Assigned,50,50,50,50
+A - Deadline first,36,1,False,26,15.0,663.22,700.0,Assigned,50,50,50,49
+A - Deadline first,37,5,True,48,26.26,540.0,595.88,Assigned,50,50,50,49
+A - Deadline first,38,6,False,48,25.1,604.35,656.07,Assigned,50,50,49,46
+A - Deadline first,39,3,False,41,25.42,701.66,746.92,Assigned,50,50,50,48
+A - Deadline first,40,5,False,35,8.09,634.56,654.94,Assigned,50,50,50,50
+A - Deadline first,41,1,False,24,10.34,682.43,709.75,Assigned,50,50,50,49
+A - Deadline first,42,4,False,24,13.28,717.01,746.31,Assigned,50,50,50,48
+A - Deadline first,43,5,False,35,17.13,660.55,699.2,Assigned,50,50,50,48
+A - Deadline first,44,0,False,24,14.31,749.52,784.93,Assigned,50,50,50,47
+A - Deadline first,45,3,False,29,35.6,862.66,921.19,Assigned,50,49,47,43
+A - Deadline first,46,1,False,36,13.47,540.0,572.02,Assigned,50,50,50,48
+A - Deadline first,47,0,False,2,13.0,540.0,575.72,Assigned,50,50,50,47
+A - Deadline first,48,2,False,48,10.83,659.46,687.73,Assigned,50,50,50,48
+A - Deadline first,49,0,False,1,16.91,540.0,580.85,Assigned,50,50,50,47
+A - Deadline first,50,2,False,27,11.38,844.49,872.75,Assigned,50,50,50,47
+A - Deadline first,51,4,False,43,13.44,540.0,569.29,Assigned,50,48,48,47
+A - Deadline first,52,0,False,43,3.21,572.51,585.72,Assigned,50,50,50,49
+A - Deadline first,53,5,False,49,23.36,852.24,896.71,Assigned,50,49,49,47
+A - Deadline first,54,2,False,31,16.52,738.82,774.55,Assigned,50,50,50,47
+A - Deadline first,55,0,False,31,6.11,777.76,796.77,Assigned,50,50,50,48
+A - Deadline first,56,4,True,34,12.79,672.01,695.59,Assigned,50,48,48,47
+A - Deadline first,57,0,False,43,6.22,588.94,608.17,Assigned,50,50,50,48
+A - Deadline first,58,5,False,9,12.01,540.0,564.35,Assigned,50,49,49,47
+A - Deadline first,59,3,False,39,14.5,672.92,698.99,Assigned,50,49,49,47
+A - Deadline first,60,6,False,33,20.76,903.67,940.15,Assigned,50,48,48,47
+A - Deadline first,61,1,False,37,18.5,540.0,582.78,Assigned,50,50,50,47
+A - Deadline first,62,5,False,45,21.71,724.43,768.01,Assigned,50,49,49,47
+A - Deadline first,63,4,False,45,19.94,768.52,817.9,Assigned,50,47,44,42
+A - Deadline first,64,7,False,23,19.62,930.79,976.11,Assigned,50,50,50,47
+A - Deadline first,65,4,False,23,10.66,982.78,1007.43,Assigned,50,47,47,47
+A - Deadline first,66,2,True,7,14.29,540.0,567.93,Assigned,50,49,49,47
+A - Deadline first,67,4,False,38,5.46,576.67,590.97,Assigned,50,48,47,46
+A - Deadline first,68,7,False,15,3.66,679.13,693.01,Assigned,50,49,49,48
+A - Deadline first,69,2,False,44,16.96,631.84,660.65,Assigned,50,49,49,46
+A - Deadline first,70,5,False,36,17.19,582.7,616.41,Assigned,50,47,47,45
+A - Deadline first,71,6,False,45,23.96,833.67,875.82,Assigned,50,46,46,44
+A - Deadline first,72,0,False,39,16.08,698.99,741.14,Assigned,50,49,49,44
+A - Deadline first,73,1,False,21,22.6,540.0,590.74,Assigned,50,49,48,44
+A - Deadline first,74,7,False,27,6.13,876.68,895.01,Assigned,50,49,49,46
+A - Deadline first,75,3,False,1,11.8,581.86,614.45,Assigned,50,45,45,44
+A - Deadline first,76,0,False,45,6.43,875.82,898.68,Assigned,50,49,49,46
+A - Deadline first,77,1,False,44,17.0,662.67,704.65,Assigned,50,48,48,45
+A - Deadline first,78,0,False,8,12.34,665.33,694.67,Assigned,50,47,47,44
+A - Deadline first,79,5,False,10,25.88,590.24,636.89,Assigned,50,45,45,44
+A - Deadline first,80,0,False,20,9.48,856.9,882.18,Assigned,50,47,47,44
+A - Deadline first,81,0,False,47,15.8,663.6,701.59,Assigned,50,47,47,44
+A - Deadline first,82,2,False,47,9.1,704.98,729.8,Assigned,50,47,47,44
+A - Deadline first,83,4,False,10,20.7,642.9,688.28,Assigned,50,46,45,44
+A - Deadline first,84,1,True,8,18.83,701.21,742.32,Assigned,50,45,45,43
+A - Deadline first,85,0,False,42,5.22,574.28,592.95,Assigned,50,47,47,43
+A - Deadline first,86,5,False,42,22.7,607.9,648.35,Assigned,50,45,45,43
+A - Deadline first,87,5,False,9,18.93,579.7,612.2,Assigned,50,45,45,43
+A - Deadline first,88,3,False,37,15.1,587.27,622.99,Assigned,50,43,43,43
+A - Deadline first,89,7,False,47,11.16,732.83,762.12,Assigned,50,47,47,43
+A - Deadline first,90,0,False,9,12.86,612.2,647.93,Assigned,50,47,47,43
+A - Deadline first,91,7,False,24,15.4,788.46,825.74,Assigned,50,47,47,43
+A - Deadline first,92,3,False,1,14.73,624.72,653.9,Assigned,50,46,46,43
+A - Deadline first,93,4,True,33,9.93,943.94,970.02,Assigned,50,46,45,43
+A - Deadline first,94,0,False,33,16.6,973.23,1013.22,Assigned,50,47,47,43
+A - Deadline first,95,0,False,40,8.01,665.96,686.03,Assigned,50,45,45,42
+A - Deadline first,96,0,False,37,1.61,622.99,636.2,Assigned,50,46,46,43
+A - Deadline first,97,0,False,47,7.09,765.33,786.3,Assigned,50,46,46,42
+A - Deadline first,98,4,False,47,19.2,794.19,834.71,Assigned,50,45,45,41
+A - Deadline first,99,1,False,7,14.29,571.14,606.51,Assigned,50,44,44,41
+A - Deadline first,100,0,False,42,14.93,654.4,688.21,Assigned,50,46,46,42
+A - Deadline first,101,4,False,38,19.64,595.27,640.24,Assigned,50,44,42,36
+A - Deadline first,102,0,False,37,3.24,639.47,652.68,Assigned,50,46,46,42
+A - Deadline first,103,2,False,20,21.03,889.42,934.23,Assigned,50,45,45,38
+A - Deadline first,104,2,False,6,30.45,717.93,778.44,Assigned,50,45,44,33
+A - Deadline first,105,1,False,50,13.17,568.51,596.06,Assigned,50,44,43,40
+A - Deadline first,106,5,False,16,22.51,686.08,734.66,Assigned,50,44,44,39
+A - Deadline first,107,7,False,11,20.48,668.68,710.96,Assigned,50,45,45,35
+A - Deadline first,108,4,False,49,9.53,903.44,925.77,Assigned,50,45,44,41
+A - Deadline first,109,4,False,49,9.49,938.1,954.74,Assigned,50,45,44,41
+A - Deadline first,110,4,False,20,16.82,946.36,977.87,Assigned,50,45,45,41
+A - Deadline first,111,0,False,37,11.52,655.9,685.73,Assigned,50,46,46,41
+A - Deadline first,112,1,True,24,7.62,827.76,850.98,Assigned,50,44,43,39
+A - Deadline first,113,0,False,50,14.47,599.27,634.99,Assigned,50,46,45,39
+A - Deadline first,114,1,False,16,14.88,741.19,774.42,Assigned,50,44,43,38
+A - Deadline first,115,0,True,14,8.04,558.84,581.7,Assigned,50,46,46,40
+A - Deadline first,116,4,False,24,14.11,856.71,889.2,Assigned,50,44,42,38
+A - Deadline first,117,0,False,1,12.86,657.12,689.62,Assigned,50,46,45,38
+A - Deadline first,118,4,False,50,21.17,645.53,687.33,Assigned,50,44,43,35
+A - Deadline first,119,4,True,16,14.75,780.74,813.93,Assigned,50,41,39,35
+A - Deadline first,120,0,False,25,5.8,540.0,553.21,Assigned,50,46,46,39
+A - Deadline first,121,7,False,48,9.59,691.17,716.9,Assigned,50,43,42,38
+A - Deadline first,122,0,False,7,16.57,612.94,649.65,Assigned,50,43,42,36
+A - Deadline first,123,0,False,25,9.65,553.21,582.51,Assigned,50,45,45,37
+A - Deadline first,124,1,False,16,15.87,818.96,855.66,Assigned,50,41,39,33
+A - Deadline first,125,4,False,7,21.13,656.1,701.91,Assigned,50,39,38,32
+A - Deadline first,126,0,False,4,9.58,540.0,560.92,Assigned,50,44,44,35
+A - Deadline first,127,4,False,49,16.02,961.07,996.79,Assigned,50,39,37,33
+A - Deadline first,128,7,False,16,11.96,863.01,889.57,Assigned,50,40,39,34
+A - Deadline first,129,2,False,18,29.62,806.59,858.15,Assigned,50,38,37,30
+A - Deadline first,130,1,False,18,10.49,859.83,889.12,Assigned,50,39,36,32
+A - Deadline first,131,1,False,14,8.29,589.48,608.28,Assigned,50,38,35,33
+A - Deadline first,132,4,False,14,21.66,617.96,661.61,Assigned,50,39,36,30
+A - Deadline first,133,7,True,3,15.12,664.6,700.25,Assigned,50,42,40,32
+A - Deadline first,134,7,False,13,7.74,846.0,865.48,Assigned,50,42,41,35
+A - Deadline first,135,4,False,39,22.97,754.36,797.08,Assigned,50,38,35,29
+A - Deadline first,136,4,False,34,25.37,714.64,756.32,Assigned,50,39,36,29
+A - Deadline first,137,2,False,34,29.64,775.13,825.6,Assigned,50,37,36,28
+A - Deadline first,138,3,False,2,20.04,589.76,625.8,Assigned,50,34,33,29
+A - Deadline first,139,4,False,2,31.96,646.82,699.72,Assigned,50,36,33,23
+A - Deadline first,140,5,False,3,11.76,709.82,733.76,Assigned,50,36,35,31
+A - Deadline first,141,0,False,13,13.77,873.55,903.02,Assigned,50,42,40,31
+A - Deadline first,142,2,False,14,8.45,665.49,688.52,Assigned,50,40,38,32
+A - Deadline first,143,4,True,13,23.39,915.83,959.79,Assigned,50,34,31,25
+A - Deadline first,144,1,False,34,12.44,834.4,860.47,Assigned,50,38,35,30
+A - Deadline first,145,1,False,39,7.89,803.2,822.85,Assigned,50,39,37,31
+A - Deadline first,146,0,False,34,10.54,862.19,891.55,Assigned,50,43,42,31
+A - Deadline first,147,4,True,6,37.52,808.65,863.49,Assigned,50,33,29,20
+A - Deadline first,148,2,False,5,25.75,540.0,582.15,Assigned,50,35,33,25
+A - Deadline first,149,4,False,1,9.33,698.61,718.28,Assigned,50,38,37,30
+A - Deadline first,150,1,False,13,15.64,966.83,1001.07,Assigned,50,38,36,28
+A - Deadline first,151,5,False,3,9.0,737.0,761.77,Assigned,50,36,35,31
+A - Deadline first,152,3,False,38,23.98,650.11,698.2,Assigned,50,32,29,24
+A - Deadline first,153,0,False,5,7.8,585.37,607.76,Assigned,50,41,39,28
+A - Deadline first,154,0,False,28,17.68,902.66,941.59,Assigned,50,41,38,26
+A - Deadline first,155,2,False,28,17.94,953.17,987.47,Assigned,50,34,33,25
+A - Deadline first,156,5,True,11,12.56,720.6,746.08,Assigned,50,34,31,25
+A - Deadline first,157,3,True,40,30.77,714.11,757.57,Assigned,50,28,26,22
+A - Deadline first,158,4,False,5,20.71,630.76,659.18,Assigned,50,34,30,25
+A - Deadline first,159,7,True,26,24.58,705.37,759.16,Assigned,50,38,35,21
+A - Deadline first,160,0,False,20,15.3,988.29,1018.48,Assigned,50,40,37,26
+A - Deadline first,161,2,False,50,9.65,696.98,716.62,Assigned,50,35,34,26
+A - Deadline first,162,1,False,39,14.34,829.69,861.53,Assigned,50,35,33,24
+A - Deadline first,163,6,False,9,30.49,663.25,718.9,Assigned,50,27,25,18
+A - Deadline first,164,7,True,25,13.52,589.87,619.55,Assigned,50,35,33,23
+A - Deadline first,165,2,False,4,16.45,571.31,603.81,Assigned,50,35,33,23
+A - Deadline first,166,0,False,4,12.84,610.24,639.5,Assigned,50,37,34,23
+A - Deadline first,167,4,False,26,21.5,771.88,812.16,Assigned,50,25,24,18
+A - Deadline first,168,1,False,4,15.98,646.39,681.46,Assigned,50,37,35,22
+A - Deadline first,169,0,False,26,6.82,813.0,835.81,Assigned,50,38,35,24
+A - Deadline first,170,0,False,5,12.63,665.03,694.43,Assigned,50,37,34,23
+A - Deadline first,171,2,False,12,27.05,682.1,724.1,Assigned,50,29,28,19
+A - Deadline first,172,4,True,12,22.57,743.53,779.25,Assigned,50,27,26,19
+A - Deadline first,173,0,False,12,8.72,782.47,806.69,Assigned,50,38,35,22
+A - Deadline first,174,0,False,25,14.06,622.86,657.67,Assigned,50,38,35,21
+A - Deadline first,175,2,False,31,36.97,819.28,880.71,Assigned,50,29,28,16
+A - Deadline first,176,0,False,49,6.43,1000.0,1019.65,Assigned,50,37,35,23
+A - Deadline first,177,5,False,11,17.67,752.52,791.42,Assigned,50,32,30,19
+A - Deadline first,178,4,False,12,9.65,807.25,836.0,Assigned,50,30,29,19
+A - Deadline first,179,7,False,11,10.31,796.96,822.04,Assigned,50,29,28,21
+A - Deadline first,180,2,False,25,25.67,664.18,719.01,Assigned,50,28,27,17
+A - Deadline first,181,2,False,43,29.41,630.67,676.99,Assigned,50,28,27,16
+A - Deadline first,182,4,False,41,33.2,784.38,823.32,Assigned,50,24,24,13
+A - Deadline first,183,1,False,43,13.34,687.17,713.67,Assigned,50,31,30,19
+A - Deadline first,184,4,False,40,50.14,800.78,867.86,Assigned,50,23,21,8
+A - Deadline first,185,1,False,41,15.84,836.18,865.0,Assigned,50,30,28,17
+A - Deadline first,186,7,False,3,23.11,775.36,818.0,Assigned,50,27,26,14
+A - Deadline first,187,1,False,3,23.27,828.05,874.53,Assigned,50,29,28,13
+A - Deadline first,188,0,False,4,9.97,685.4,711.4,Assigned,50,35,33,17
+A - Deadline first,189,2,False,39,12.82,865.83,897.16,Assigned,50,27,26,16
+A - Deadline first,190,2,False,11,21.8,841.84,875.64,Assigned,50,27,26,15
+A - Deadline first,191,1,False,26,20.64,859.45,887.09,Assigned,50,26,25,14
+A - Deadline first,192,5,False,47,17.07,843.12,878.84,Assigned,50,24,23,13
+A - Deadline first,193,1,True,8,34.15,776.72,820.63,Assigned,50,22,21,11
+A - Deadline first,194,5,True,12,16.79,839.31,879.58,Assigned,50,27,25,12
+A - Deadline first,195,0,True,14,7.97,695.94,714.45,Assigned,50,30,28,13
+A - Deadline first,196,1,False,17,20.04,664.4,687.27,Assigned,50,24,22,11
+A - Deadline first,197,2,True,30,27.85,908.7,953.19,Assigned,50,22,21,9
+A - Deadline first,198,2,False,46,22.32,629.04,661.36,Assigned,50,24,23,10
+A - Deadline first,199,4,True,30,27.54,979.2,1018.26,Assigned,50,16,16,9
+A - Deadline first,200,4,True,8,20.7,845.95,872.03,Assigned,50,23,22,8
+A - Deadline first,201,1,True,27,30.45,929.94,965.9,Assigned,50,19,18,7
+A - Deadline first,202,0,True,8,1.8,875.24,885.63,Assigned,50,28,26,16
+A - Deadline first,203,0,False,22,30.54,894.18,936.33,Assigned,50,28,25,6
+A - Deadline first,204,2,True,27,16.45,974.03,1008.8,Assigned,50,22,20,7
+A - Deadline first,205,1,False,17,10.48,700.13,718.23,Assigned,50,22,20,8
+A - Deadline first,206,0,False,41,9.52,871.51,894.04,Assigned,50,29,26,8
+A - Deadline first,207,4,False,22,18.76,944.92,983.85,Assigned,50,12,12,6
+A - Deadline first,208,4,True,21,37.04,631.27,674.82,Assigned,50,18,16,5
+A - Deadline first,209,0,False,46,22.89,684.62,717.13,Assigned,50,25,21,5
+A - Deadline first,210,5,False,3,5.16,877.77,894.86,Assigned,50,15,13,10
+A - Deadline first,211,1,False,29,33.69,959.41,998.58,Assigned,50,18,16,4
+A - Deadline first,212,0,False,36,30.54,645.34,687.49,Assigned,50,23,19,3
+A - Deadline first,213,7,True,32,32.4,927.7,988.91,Assigned,50,13,10,2
+A - Deadline first,214,0,False,22,10.75,987.07,1015.35,Assigned,50,25,21,2
+A - Deadline first,215,0,False,19,24.04,871.69,898.09,Assigned,50,24,20,1
+A - Deadline first,216,4,False,19,35.25,942.47,978.58,Assigned,50,7,6,1
+A - Deadline first,217,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,17,14,0
+A - Deadline first,218,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,14,12,0
+A - Deadline first,219,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,15,12,0
+A - Deadline first,220,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,4,3,0
+A - Deadline first,221,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,17,14,0
+A - Deadline first,222,0,False,19,13.26,982.48,1015.11,Assigned,50,23,19,1
+A - Deadline first,223,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,14,12,0
+A - Deadline first,224,0,False,18,0.0,889.12,899.12,Assigned,50,21,18,10
+A - Deadline first,225,0,False,11,3.07,878.56,891.77,Assigned,50,22,18,6
+A - Deadline first,226,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,8,0
+A - Deadline first,227,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,19,15,0
+A - Deadline first,228,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,6,0
+A - Deadline first,229,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,10,0
+A - Deadline first,230,0,False,8,1.97,886.36,899.58,Assigned,50,19,15,4
+A - Deadline first,231,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,6,0
+A - Deadline first,232,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,12,10,0
+A - Deadline first,233,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,234,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,17,13,0
+A - Deadline first,235,0,False,6,12.14,879.1,897.77,Assigned,50,21,17,2
+A - Deadline first,236,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,10,9,0
+A - Deadline first,237,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,238,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,239,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,9,0
+A - Deadline first,240,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,17,13,0
+A - Deadline first,241,2,True,Unassigned,0.0,,,Volunteer availability constraint,50,12,10,0
+A - Deadline first,242,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,20,16,0
+A - Deadline first,243,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,20,16,0
+A - Deadline first,244,0,False,21,17.28,697.15,719.38,Assigned,50,19,15,1
+A - Deadline first,245,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,12,8,0
+A - Deadline first,246,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,19,15,0
+A - Deadline first,247,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,8,0
+A - Deadline first,248,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,16,12,0
+A - Deadline first,249,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,250,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,251,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,15,11,0
+A - Deadline first,252,5,True,Unassigned,0.0,,,Volunteer availability constraint,50,8,5,0
+A - Deadline first,253,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,16,12,0
+A - Deadline first,254,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,5,0
+A - Deadline first,255,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,256,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,4,0
+A - Deadline first,257,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,258,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,19,15,0
+A - Deadline first,259,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,260,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,261,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,262,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,18,14,0
+A - Deadline first,263,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,264,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,4,0
+A - Deadline first,265,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,19,15,0
+A - Deadline first,266,5,True,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,267,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,18,14,0
+A - Deadline first,268,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,269,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,10,0
+A - Deadline first,270,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,8,0
+A - Deadline first,271,0,False,47,4.82,878.84,898.49,Assigned,50,19,15,1
+A - Deadline first,272,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,5,0
+A - Deadline first,273,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,9,0
+A - Deadline first,274,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,18,14,0
+A - Deadline first,275,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,6,0
+A - Deadline first,276,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,277,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,14,10,0
+A - Deadline first,278,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,18,14,0
+A - Deadline first,279,4,True,5,6.64,701.07,717.71,Assigned,50,11,9,1
+A - Deadline first,280,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,14,10,0
+A - Deadline first,281,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,11,7,0
+A - Deadline first,282,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,17,13,0
+A - Deadline first,283,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,17,13,0
+A - Deadline first,284,1,False,42,10.12,697.85,718.44,Assigned,50,5,4,1
+A - Deadline first,285,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,16,12,0
+A - Deadline first,286,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,287,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,288,0,False,38,5.14,699.89,718.49,Assigned,50,11,9,1
+A - Deadline first,289,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,2,0
+A - Deadline first,290,3,False,32,10.06,992.91,1019.02,Assigned,50,7,5,1
+A - Deadline first,291,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,292,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,293,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,14,11,0
+A - Deadline first,294,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,295,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,10,0
+A - Deadline first,296,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,14,11,0
+A - Deadline first,297,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,298,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,299,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,4,4,0
+A - Deadline first,300,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,301,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,6,0
+A - Deadline first,302,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,9,0
+A - Deadline first,303,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,304,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,305,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,306,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,307,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,308,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,309,2,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,310,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,311,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,2,0
+A - Deadline first,312,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,10,0
+A - Deadline first,313,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,14,11,0
+A - Deadline first,314,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,4,4,0
+A - Deadline first,315,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,9,0
+A - Deadline first,316,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,317,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,318,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,319,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,320,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,321,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,322,7,True,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,323,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,324,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,325,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,326,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,327,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,2,1,0
+A - Deadline first,328,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,6,0
+A - Deadline first,329,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,330,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,331,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,332,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,1,1,0
+A - Deadline first,333,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,334,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,9,0
+A - Deadline first,335,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,336,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,337,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,338,7,True,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,339,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,340,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,341,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,342,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,343,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,6,0
+A - Deadline first,344,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,11,8,0
+A - Deadline first,345,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,346,7,False,28,9.28,991.0,1016.03,Assigned,50,10,9,2
+A - Deadline first,347,7,False,37,10.4,693.67,716.53,Assigned,50,10,9,1
+A - Deadline first,348,2,True,Unassigned,0.0,,,Volunteer availability constraint,50,4,3,0
+A - Deadline first,349,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,350,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,351,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,352,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,353,4,False,31,4.12,885.16,898.95,Assigned,50,6,5,1
+A - Deadline first,354,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,355,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,356,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,357,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,358,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,359,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,360,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,361,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,362,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,12,10,0
+A - Deadline first,363,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,364,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,365,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,1,1,0
+A - Deadline first,366,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,367,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,368,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,369,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,370,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,371,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,5,0
+A - Deadline first,372,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,5,0
+A - Deadline first,373,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,374,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,375,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,376,2,True,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,377,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,378,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,379,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,6,0
+A - Deadline first,380,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,381,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,2,1,0
+A - Deadline first,382,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,383,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,1,0
+A - Deadline first,384,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,385,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,386,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,5,0
+A - Deadline first,387,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,7,4,0
+A - Deadline first,388,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,389,6,False,Unassigned,0.0,,,Volunteer availability constraint,50,1,1,0
+A - Deadline first,390,7,True,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,391,1,False,2,5.02,704.06,719.76,Assigned,50,3,3,1
+A - Deadline first,392,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,393,6,True,Unassigned,0.0,,,Pickup timing constraint,50,0,0,0
+A - Deadline first,394,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,8,0
+A - Deadline first,395,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,396,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,397,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,398,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,399,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,400,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,1,0
+A - Deadline first,401,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,5,0
+A - Deadline first,402,2,True,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,403,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,404,6,True,Unassigned,0.0,,,Pickup timing constraint,50,0,0,0
+A - Deadline first,405,6,False,Unassigned,0.0,,,Pickup timing constraint,50,0,0,0
+A - Deadline first,406,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,407,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,408,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,409,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,12,10,0
+A - Deadline first,410,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,411,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,412,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,413,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,2,0
+A - Deadline first,414,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,415,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,416,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,417,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,418,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,419,5,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,420,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,421,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,7,0
+A - Deadline first,422,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,423,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,424,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,425,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,426,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,427,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,428,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,429,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,430,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,431,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,432,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,433,6,False,Unassigned,0.0,,,Pickup timing constraint,50,0,0,0
+A - Deadline first,434,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,435,4,True,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,436,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,437,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,438,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,439,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,440,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,441,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,442,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,443,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,444,1,True,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,445,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,1,0
+A - Deadline first,446,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,447,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,448,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,449,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,5,0
+A - Deadline first,450,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,451,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,4,0
+A - Deadline first,452,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,453,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,454,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,455,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,456,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,457,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,2,0
+A - Deadline first,458,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,459,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,460,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,461,6,False,Unassigned,0.0,,,Pickup timing constraint,50,0,0,0
+A - Deadline first,462,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,12,10,0
+A - Deadline first,463,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,3,3,0
+A - Deadline first,464,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,465,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,466,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,5,0
+A - Deadline first,467,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,12,10,0
+A - Deadline first,468,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,469,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,470,7,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,8,0
+A - Deadline first,471,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,472,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,13,11,0
+A - Deadline first,473,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,474,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,475,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,476,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,1,0
+A - Deadline first,477,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,478,1,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,479,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,480,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,2,2,0
+A - Deadline first,481,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,10,8,0
+A - Deadline first,482,2,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,483,4,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,5,0
+A - Deadline first,484,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,485,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,486,5,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,487,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,488,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,5,0
+A - Deadline first,489,3,True,Unassigned,0.0,,,Volunteer availability constraint,50,5,4,0
+A - Deadline first,490,3,False,Unassigned,0.0,,,Volunteer availability constraint,50,5,3,0
+A - Deadline first,491,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,492,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,493,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,494,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,495,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,496,7,False,Unassigned,0.0,,,Volunteer availability constraint,50,6,5,0
+A - Deadline first,497,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,9,7,0
+A - Deadline first,498,0,False,Unassigned,0.0,,,Volunteer availability constraint,50,7,6,0
+A - Deadline first,499,0,True,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
+A - Deadline first,500,5,False,Unassigned,0.0,,,Volunteer availability constraint,50,8,6,0
