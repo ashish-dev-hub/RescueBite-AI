@@ -60,8 +60,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Health check endpoints (supports root, /health, and /api/health)
+app.get(['/', '/health', '/api/health'], (req, res) => {
   res.json({
     status: 'ok',
     service: 'RescueBite AI Backend API',
