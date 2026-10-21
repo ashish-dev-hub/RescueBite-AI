@@ -203,12 +203,7 @@ export default function DonorDashboard() {
       )}
 
       {/* Operational Highlights Banner */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '1rem',
-        marginBottom: '1.5rem',
-      }}>
+      <div className="dashboard-stats-grid">
         <div className="fresh-card" style={{ padding: '1.15rem' }}>
           <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
             Active Surplus Listings

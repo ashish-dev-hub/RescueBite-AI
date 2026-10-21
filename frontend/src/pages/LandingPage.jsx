@@ -43,14 +43,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', paddingBottom: '3rem' }}>
       {/* Hero Section */}
-      <section style={{
-        padding: '3.5rem 1.5rem',
-        textAlign: 'center',
-        position: 'relative',
-        borderRadius: 'var(--radius-xl)',
-        background: 'linear-gradient(180deg, rgba(234, 244, 236, 0.4) 0%, rgba(250, 248, 241, 0) 100%)',
-        marginBottom: '2.5rem',
-      }}>
+      <section className="hero-section">
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -69,7 +62,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         </div>
 
         <h1 style={{
-          fontSize: 'clamp(2rem, 4.5vw, 3.4rem)',
+          fontSize: 'clamp(1.75rem, 4.5vw, 3.4rem)',
           fontWeight: 800,
           color: 'var(--color-deep-forest)',
           letterSpacing: '-0.03em',
@@ -81,7 +74,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         </h1>
 
         <p style={{
-          fontSize: 'clamp(0.95rem, 1.8vw, 1.15rem)',
+          fontSize: 'clamp(0.9rem, 1.8vw, 1.15rem)',
           color: 'var(--color-muted-slate)',
           maxWidth: '680px',
           margin: '0 auto 2rem auto',
@@ -91,13 +84,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
           Predict demand, match safe surplus within transit windows, and coordinate human-approved allocations.
         </p>
 
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap',
-        }}>
+        <div className="hero-cta-buttons">
           {isAuthenticated ? (
             <>
               <button
@@ -146,50 +133,40 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         </div>
 
         {/* Live Confirmed Impact Bar */}
-        <div style={{
-          marginTop: '3rem',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-          gap: '1rem',
-          backgroundColor: '#FFFFFF',
-          padding: '1.25rem 1.5rem',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-soft-border)',
-          boxShadow: 'var(--shadow-subtle)',
-        }}>
+        <div className="hero-stats-grid">
           <div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
               Delivered Meals
             </p>
-            <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.15rem' }}>
-              {metrics.totalDeliveredMeals} <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>meals</span>
+            <p className="hero-stats-value" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.15rem' }}>
+              {metrics.totalDeliveredMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals</span>
             </p>
           </div>
 
           <div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
               Active Surplus Offers
             </p>
-            <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.15rem' }}>
-              {metrics.activeDonationsCount} <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>listings</span>
+            <p className="hero-stats-value" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.15rem' }}>
+              {metrics.activeDonationsCount} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>listings</span>
             </p>
           </div>
 
           <div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
               Open NGO Demands
             </p>
-            <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.15rem' }}>
-              {metrics.openDemandsCount} <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>shelters</span>
+            <p className="hero-stats-value" style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.15rem' }}>
+              {metrics.openDemandsCount} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>shelters</span>
             </p>
           </div>
 
           <div>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', fontWeight: 600, textTransform: 'uppercase' }}>
               Waste Avoided (Est.)
             </p>
-            <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F766E', marginTop: '0.15rem' }}>
-              {metrics.environmentalEstimates?.kgFoodSaved ?? 0} <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>kg saved</span>
+            <p className="hero-stats-value" style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F766E', marginTop: '0.15rem' }}>
+              {metrics.environmentalEstimates?.kgFoodSaved ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>kg saved</span>
             </p>
           </div>
         </div>
@@ -198,15 +175,15 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
       {/* The 3-Step Operations Flow */}
       <section style={{ marginBottom: '3.5rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-deep-forest)' }}>
+          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.75rem)', color: 'var(--color-deep-forest)' }}>
             How RescueBite Works
           </h2>
-          <p style={{ fontSize: '0.95rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
             A dependable, rule-constrained pipeline replacing ad-hoc phone calls and food spoilage.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+        <div className="operations-steps-grid">
           {/* Step 1 */}
           <div className="fresh-card" style={{ position: 'relative', overflow: 'hidden' }}>
             <div style={{
@@ -303,23 +280,17 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
       </section>
 
       {/* Role Portals Showcase */}
-      <section style={{
-        backgroundColor: '#FFFFFF',
-        borderRadius: 'var(--radius-xl)',
-        border: '1px solid var(--color-soft-border)',
-        padding: '2.5rem 2rem',
-        boxShadow: 'var(--shadow-subtle)',
-      }}>
+      <section className="portals-showcase-section">
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.75rem', color: 'var(--color-deep-forest)' }}>
+          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.75rem)', color: 'var(--color-deep-forest)' }}>
             Dedicated Workspaces for Every Partner
           </h2>
-          <p style={{ fontSize: '0.95rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
+          <p style={{ fontSize: '0.9rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
             Explore how each role interacts with RescueBite AI:
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+        <div className="portals-cards-grid">
           {/* Coordinator Card */}
           <div style={{
             padding: '1.5rem',

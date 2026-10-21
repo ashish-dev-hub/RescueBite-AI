@@ -99,12 +99,7 @@ export default function ImpactPage() {
       </div>
 
       {/* Primary 4 Metric Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: '1.25rem',
-        marginBottom: '2rem',
-      }}>
+      <div className="impact-metrics-grid">
         {/* Metric 1 */}
         <div className="fresh-card" style={{ borderLeft: '4px solid var(--color-network-green)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>

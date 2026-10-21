@@ -25,14 +25,7 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, maxW
         style={{ maxWidth }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          padding: '1.25rem 1.5rem',
-          borderBottom: '1px solid var(--color-soft-border)',
-          backgroundColor: 'var(--color-pale-neutral)',
-        }}>
+        <div className="modal-header">
           <div>
             <h3 style={{ fontSize: '1.15rem', color: 'var(--color-deep-forest)' }}>{title}</h3>
             {subtitle && (
@@ -50,7 +43,7 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, maxW
             <X size={16} />
           </button>
         </div>
-        <div style={{ padding: '1.5rem' }}>
+        <div className="modal-body">
           {children}
         </div>
       </div>

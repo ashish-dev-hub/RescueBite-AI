@@ -423,11 +423,11 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
           ) : (
             <button
               onClick={onOpenAuth}
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm navbar-auth-btn"
               style={{ backgroundColor: 'var(--color-network-green)', whiteSpace: 'nowrap' }}
             >
               <LogIn size={14} />
-              <span>Sign In / Register</span>
+              <span className="navbar-auth-text">Sign In / Register</span>
             </button>
           )}
 
@@ -461,6 +461,24 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
             gap: '0.5rem',
           }}
         >
+          {/* If not authenticated, provide full-width sign-in button in mobile menu */}
+          {!isAuthenticated && (
+            <button
+              onClick={() => { setMobileMenuOpen(false); onOpenAuth(); }}
+              className="btn btn-primary"
+              style={{
+                width: '100%',
+                justifyContent: 'center',
+                padding: '0.7rem 1rem',
+                marginBottom: '0.4rem',
+                backgroundColor: 'var(--color-network-green)',
+                fontSize: '0.9rem',
+              }}
+            >
+              <LogIn size={16} />
+              <span>Sign In / Register</span>
+            </button>
+          )}
           {/* If authenticated on mobile drawer, show a clean user profile banner */}
           {isAuthenticated && (
             <div style={{
