@@ -121,7 +121,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
           <div style={{
             width: '36px',
             height: '36px',
-            borderRadius: '10px',
+            borderRadius: '8px',
             backgroundColor: 'var(--color-network-green)',
             display: 'flex',
             alignItems: 'center',
@@ -167,7 +167,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   alignItems: 'center',
                   gap: '0.4rem',
                   padding: '0.45rem 0.75rem',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-btn)',
                   fontSize: '0.84rem',
                   fontWeight: isActive ? 600 : 500,
                   color: isActive ? '#FFFFFF' : '#B8C9C1',
@@ -198,7 +198,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                     alignItems: 'center',
                     gap: '0.45rem',
                     padding: '0.35rem 0.65rem',
-                    borderRadius: 'var(--radius-pill)',
+                    borderRadius: 'var(--radius-btn)',
                     backgroundColor: profileDropdownOpen ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
                     color: '#FFFFFF',
                     border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -249,7 +249,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   style={{
                     color: '#CBD8D2',
                     padding: '0.4rem',
-                    borderRadius: 'var(--radius-sm)',
+                    borderRadius: 'var(--radius-btn-sm)',
                     display: 'flex',
                     alignItems: 'center',
                     flexShrink: 0,
@@ -439,7 +439,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
               padding: '0.45rem',
               color: '#FFFFFF',
               borderColor: 'rgba(255, 255, 255, 0.25)',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: 'var(--radius-btn)',
             }}
             aria-label="Toggle Navigation Menu"
           >
@@ -539,7 +539,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   alignItems: 'center',
                   gap: '0.75rem',
                   padding: '0.65rem 0.85rem',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-btn)',
                   fontSize: '0.9rem',
                   fontWeight: isActive ? 600 : 500,
                   color: isActive ? '#FFFFFF' : '#CBD8D2',

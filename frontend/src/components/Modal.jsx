@@ -37,7 +37,7 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, maxW
           <button
             onClick={onClose}
             className="btn-outline btn-sm"
-            style={{ borderRadius: '50%', width: '32px', height: '32px', padding: 0 }}
+            style={{ borderRadius: 'var(--radius-btn-sm)', width: '32px', height: '32px', padding: 0 }}
             aria-label="Close dialog"
           >
             <X size={16} />

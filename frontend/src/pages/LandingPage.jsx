@@ -49,7 +49,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
           alignItems: 'center',
           gap: '0.45rem',
           padding: '0.35rem 0.85rem',
-          borderRadius: 'var(--radius-pill)',
+          borderRadius: 'var(--radius-xs)',
           backgroundColor: 'var(--color-soft-mint)',
           border: '1px solid var(--color-soft-mint-border)',
           color: 'var(--color-network-green)',

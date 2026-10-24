@@ -206,7 +206,7 @@ export default function CoordinatorDesk() {
                 color: 'var(--color-network-green)',
                 backgroundColor: 'var(--color-soft-mint)',
                 padding: '0.15rem 0.55rem',
-                borderRadius: 'var(--radius-pill)',
+                borderRadius: 'var(--radius-xs)',
                 whiteSpace: 'nowrap',
               }}>
                 {recommendations.length} Pending

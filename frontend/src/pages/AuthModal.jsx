@@ -82,7 +82,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       <div style={{
         display: 'flex',
         backgroundColor: 'var(--color-pale-neutral)',
-        borderRadius: 'var(--radius-md)',
+        borderRadius: 'var(--radius-btn)',
         padding: '0.25rem',
         marginBottom: '1.25rem',
       }}>
@@ -91,7 +91,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           style={{
             flex: 1,
             padding: '0.5rem',
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: 'var(--radius-btn-sm)',
             fontSize: '0.85rem',
             fontWeight: 600,
             backgroundColor: mode === 'login' ? '#FFFFFF' : 'transparent',
@@ -106,7 +106,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           style={{
             flex: 1,
             padding: '0.5rem',
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: 'var(--radius-btn-sm)',
             fontSize: '0.85rem',
             fontWeight: 600,
             backgroundColor: mode === 'register' ? '#FFFFFF' : 'transparent',
@@ -178,7 +178,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 onClick={() => setRegisterRole('donor')}
                 style={{
                   padding: '0.75rem',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-btn)',
                   border: `2px solid ${registerRole === 'donor' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
                   backgroundColor: registerRole === 'donor' ? 'var(--color-soft-mint)' : '#FFFFFF',
                   display: 'flex',
@@ -198,7 +198,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 onClick={() => setRegisterRole('ngo')}
                 style={{
                   padding: '0.75rem',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-btn)',
                   border: `2px solid ${registerRole === 'ngo' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
                   backgroundColor: registerRole === 'ngo' ? 'var(--color-soft-mint)' : '#FFFFFF',
                   display: 'flex',

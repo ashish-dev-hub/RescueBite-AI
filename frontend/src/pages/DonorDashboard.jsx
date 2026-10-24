@@ -151,7 +151,7 @@ export default function DonorDashboard() {
               fontSize: '0.78rem',
               fontWeight: 700,
               padding: '0.2rem 0.6rem',
-              borderRadius: 'var(--radius-pill)',
+              borderRadius: 'var(--radius-xs)',
               border: '1px solid var(--color-soft-mint-border)',
             }}>
               {user?.organization || user?.name}
@@ -445,7 +445,7 @@ export default function DonorDashboard() {
                     onClick={() => toggleDietaryTag(tag)}
                     style={{
                       padding: '0.3rem 0.65rem',
-                      borderRadius: 'var(--radius-pill)',
+                      borderRadius: 'var(--radius-btn-sm)',
                       fontSize: '0.78rem',
                       fontWeight: 600,
                       backgroundColor: isSelected ? 'var(--color-network-green)' : 'var(--color-pale-neutral)',
