@@ -1,0 +1,23 @@
+{
+  "name": "rescuebite-ai",
+  "version": "1.0.0",
+  "description": "RescueBite AI — Intelligent surplus food redistribution platform powered by Machine Learning",
+  "scripts": {
+    "dev:ml": "py -m uvicorn rescuebite_ml.api:app --app-dir ml/src --host 0.0.0.0 --port 8000 --reload",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test:ml": "py -m pytest ml/tests",
+    "check:ml": "pyrefly check ml/src/rescuebite_ml ml/tests"
+  },
+  "keywords": [
+    "food-rescue",
+    "machine-learning",
+    "redistribution",
+    "demand-forecasting",
+    "fastapi",
+    "express",
+    "react"
+  ],
+  "author": "RescueBite AI Team",
+  "license": "ISC"
+}

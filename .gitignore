@@ -1,14 +1,29 @@
+# Node dependencies and build
 node_modules/
-.env
-.DS_Store
 dist/
 build/
-*.log
+.npm/
+
+# Environment configurations
+.env
+.env.*
+!.env.example
+
+# Python cache & artifacts
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
 .venv/
 env/
 venv/
+*.joblib
+ml/models/*.joblib
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Workspace agent configs
 .agents/
-README.md
