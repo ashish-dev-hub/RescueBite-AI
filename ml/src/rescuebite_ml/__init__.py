@@ -1,5 +1,6 @@
 """RescueBite AI — Machine Learning Package for Food Redistribution & Demand Forecasting."""
 
+from .api import app
 from .baseline import SameWeekdayBaseline
 from .evaluate import compute_per_ngo_metrics, evaluate_predictions
 from .features import FeatureEngineer, chronological_split
@@ -35,4 +36,6 @@ __all__ = [
     "evaluate_classifier_predictions",
     "train_matching_model",
     "MatchingEngine",
+    # Serving Layer
+    "app",
 ]
