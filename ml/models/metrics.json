@@ -1,0 +1,266 @@
+{
+  "model_type": "RandomForestRegressor",
+  "hyperparameters": {
+    "n_estimators": 150,
+    "max_depth": 12,
+    "min_samples_split": 6,
+    "min_samples_leaf": 3,
+    "max_features": "sqrt",
+    "random_state": 42
+  },
+  "train_window": {
+    "start_date": "2025-05-03",
+    "end_date": "2026-08-25",
+    "rows": 14027
+  },
+  "test_window": {
+    "start_date": "2026-08-26",
+    "end_date": "2026-10-24",
+    "rows": 1769
+  },
+  "metrics": {
+    "train": {
+      "mae": 49.46,
+      "rmse": 113.95,
+      "r2": 0.777
+    },
+    "test": {
+      "mae": 61.57,
+      "rmse": 126.39,
+      "r2": 0.7
+    },
+    "baseline": {
+      "mae": 71.14,
+      "rmse": 141.19
+    },
+    "improvement_pct": {
+      "mae": 13.45,
+      "rmse": 10.48
+    }
+  },
+  "feature_importances": [
+    {
+      "feature": "rolling_mean_28",
+      "importance": 0.1682
+    },
+    {
+      "feature": "base_daily_meals",
+      "importance": 0.1599
+    },
+    {
+      "feature": "rolling_mean_14",
+      "importance": 0.153
+    },
+    {
+      "feature": "rolling_mean_7",
+      "importance": 0.1004
+    },
+    {
+      "feature": "demand_lag_7",
+      "importance": 0.0825
+    },
+    {
+      "feature": "demand_lag_14",
+      "importance": 0.0763
+    },
+    {
+      "feature": "demand_lag_28",
+      "importance": 0.0674
+    },
+    {
+      "feature": "demand_lag_21",
+      "importance": 0.0468
+    },
+    {
+      "feature": "rolling_std_7",
+      "importance": 0.0465
+    },
+    {
+      "feature": "receiving_capacity_meals",
+      "importance": 0.0192
+    }
+  ],
+  "per_ngo_metrics": [
+    {
+      "ngo_id": "N022",
+      "mae": 14.12,
+      "rmse": 17.24,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N007",
+      "mae": 14.69,
+      "rmse": 20.19,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N006",
+      "mae": 16.42,
+      "rmse": 20.01,
+      "evaluated_rows": 58
+    },
+    {
+      "ngo_id": "N027",
+      "mae": 16.54,
+      "rmse": 20.91,
+      "evaluated_rows": 58
+    },
+    {
+      "ngo_id": "N012",
+      "mae": 16.87,
+      "rmse": 21.92,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N023",
+      "mae": 20.14,
+      "rmse": 25.84,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N004",
+      "mae": 20.44,
+      "rmse": 24.19,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N019",
+      "mae": 23.24,
+      "rmse": 30.07,
+      "evaluated_rows": 58
+    },
+    {
+      "ngo_id": "N030",
+      "mae": 23.52,
+      "rmse": 31.08,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N017",
+      "mae": 30.47,
+      "rmse": 39.6,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N018",
+      "mae": 31.48,
+      "rmse": 43.08,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N024",
+      "mae": 36.22,
+      "rmse": 47.9,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N001",
+      "mae": 36.56,
+      "rmse": 109.71,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N010",
+      "mae": 36.79,
+      "rmse": 46.91,
+      "evaluated_rows": 58
+    },
+    {
+      "ngo_id": "N011",
+      "mae": 38.52,
+      "rmse": 57.19,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N029",
+      "mae": 41.53,
+      "rmse": 56.46,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N020",
+      "mae": 66.36,
+      "rmse": 84.19,
+      "evaluated_rows": 58
+    },
+    {
+      "ngo_id": "N005",
+      "mae": 66.44,
+      "rmse": 93.08,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N003",
+      "mae": 69.94,
+      "rmse": 95.13,
+      "evaluated_rows": 57
+    },
+    {
+      "ngo_id": "N016",
+      "mae": 71.56,
+      "rmse": 90.74,
+      "evaluated_rows": 58
+    },
+    {
+      "ngo_id": "N013",
+      "mae": 81.28,
+      "rmse": 105.65,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N015",
+      "mae": 84.67,
+      "rmse": 220.07,
+      "evaluated_rows": 56
+    },
+    {
+      "ngo_id": "N021",
+      "mae": 85.74,
+      "rmse": 106.1,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N009",
+      "mae": 90.62,
+      "rmse": 110.65,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N026",
+      "mae": 95.85,
+      "rmse": 224.64,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N008",
+      "mae": 103.75,
+      "rmse": 135.72,
+      "evaluated_rows": 60
+    },
+    {
+      "ngo_id": "N014",
+      "mae": 120.05,
+      "rmse": 158.7,
+      "evaluated_rows": 57
+    },
+    {
+      "ngo_id": "N002",
+      "mae": 157.57,
+      "rmse": 189.76,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N025",
+      "mae": 160.35,
+      "rmse": 389.96,
+      "evaluated_rows": 59
+    },
+    {
+      "ngo_id": "N028",
+      "mae": 176.98,
+      "rmse": 225.86,
+      "evaluated_rows": 59
+    }
+  ],
+  "model_artifact": "C:\\Users\\ashis\\OneDrive\\Desktop\\RescueBite AI\\ml\\models\\model_a.joblib"
+}

@@ -1,0 +1,23 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Generated model artifacts & temporary runs
+models/*.joblib
+models/*.pkl
+*.log
+
+# Local environment & secrets
+.env
+.env.local
+.DS_Store
+README.md

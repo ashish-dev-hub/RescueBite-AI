@@ -1,34 +1,29 @@
-# Dependencies
+# Node dependencies and build
 node_modules/
-.pnp
-.pnp.js
+dist/
+build/
+.npm/
 
-# Environment variables
+# Environment configurations
 .env
 .env.*
-*.env
-**/.env
-**/.env.*
 !.env.example
-!**/.env.example
 
-# Build outputs
-dist/
-dist-ssr/
-build/
-*.tsbuildinfo
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+env/
+venv/
+*.joblib
+ml/models/*.joblib
 
-# Logs & cache
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Logs and OS files
 *.log
-.oxlint-cache
-
-# OS Files
 .DS_Store
 Thumbs.db
 
-# Agent configurations & local rules
+# Workspace agent configs
 .agents/
-

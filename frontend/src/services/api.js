@@ -117,6 +117,17 @@ export const api = {
     return handleResponse(res);
   },
 
+  async getDemandForecast(targetDate, ngoId = '') {
+    const params = new URLSearchParams();
+    if (targetDate) params.append('targetDate', targetDate);
+    if (ngoId) params.append('ngoId', ngoId);
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+    const res = await fetch(`${BASE_URL}/demands/forecast${queryString}`, {
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res);
+  },
+
   // Matching
   async getRecommendations() {
     const res = await fetch(`${BASE_URL}/matching/recommendations`, {
@@ -129,6 +140,13 @@ export const api = {
   async getEligibleForNgo(ngoId) {
     const queryString = ngoId ? `?ngoId=${ngoId}` : '';
     const res = await fetch(`${BASE_URL}/matching/eligible-for-ngo${queryString}`, {
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res);
+  },
+
+  async getMlModelStatus() {
+    const res = await fetch(`${BASE_URL}/matching/model-status`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);

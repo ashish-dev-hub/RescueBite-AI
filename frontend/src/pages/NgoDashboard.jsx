@@ -18,12 +18,14 @@ import {
   Users,
   ShieldCheck,
   Calendar,
+  Sparkles,
 } from 'lucide-react';
 
 export default function NgoDashboard() {
   const { user } = useAuth();
   const [demands, setDemands] = useState([]);
   const [allocations, setAllocations] = useState([]);
+  const [aiForecast, setAiForecast] = useState(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,6 +52,17 @@ export default function NgoDashboard() {
       ]);
       setDemands(demandData.demands || []);
       setAllocations(allocData.allocations || []);
+
+      // Fetch AI Demand Forecast for tomorrow
+      try {
+        const tomorrowStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+        const forecast = await api.getDemandForecast(tomorrowStr);
+        if (forecast && forecast.success) {
+          setAiForecast(forecast);
+        }
+      } catch (forecastErr) {
+        console.warn('AI Forecast unavailable:', forecastErr);
+      }
     } catch (err) {
       console.error('Failed to load NGO portal data:', err);
     } finally {
@@ -215,6 +228,68 @@ export default function NgoDashboard() {
         }}>
           {notification.type === 'success' ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
           <span>{notification.message}</span>
+        </div>
+      )}
+
+      {/* Model A AI Demand Forecast Banner */}
+      {aiForecast && (
+        <div className="fresh-card" style={{
+          padding: '1.15rem 1.35rem',
+          background: 'linear-gradient(135deg, #F0FDF4 0%, #EFF6FF 100%)',
+          border: '1px solid #BBF7D0',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              backgroundColor: '#DCFCE7',
+              color: '#15803D',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
+                  RescueBite Model A — Tomorrow's Demand Forecast
+                </strong>
+                <span style={{
+                  fontSize: '0.7rem',
+                  backgroundColor: '#DCFCE7',
+                  color: '#15803D',
+                  padding: '0.1rem 0.45rem',
+                  borderRadius: '4px',
+                  fontWeight: 700,
+                }}>
+                  AI PREDICTION
+                </span>
+              </div>
+              <p style={{ fontSize: '0.82rem', color: '#374151', marginTop: '0.2rem' }}>
+                Forecast Date: <strong>{aiForecast.forecast_date}</strong> • Predicted Demand: <strong style={{ color: '#15803D', fontSize: '0.95rem' }}>{Math.round(aiForecast.predicted_meals)} meals</strong> (80% Confidence Range: {Math.round(aiForecast.confidence_lower)} – {Math.round(aiForecast.confidence_upper)} meals)
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setRequestedMeals(String(Math.round(aiForecast.predicted_meals)));
+              setIsModalOpen(true);
+            }}
+            className="btn btn-primary btn-sm"
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            <Plus size={14} />
+            <span>Prefill Meal Request</span>
+          </button>
         </div>
       )}
 

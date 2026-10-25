@@ -1,0 +1,76 @@
+{
+  "model_name": "RescueBite_Model_B_Matching_Classifier",
+  "algorithm": "RandomForestClassifier",
+  "leakage_guardrail": "Strict exclusion of remaining_quantity, approved_quantity, failure_reason",
+  "sample_counts": {
+    "total_records": 28396,
+    "train_records": 25195,
+    "test_records": 3201,
+    "train_positive_rate": 0.7678,
+    "test_positive_rate": 0.7576,
+    "train_start_date": "2025-05-03 13:20:33+05:30",
+    "train_end_date": "2026-08-25 22:16:05+05:30",
+    "test_start_date": "2026-08-26 10:03:54+05:30",
+    "test_end_date": "2026-10-24 22:18:00+05:30"
+  },
+  "evaluation": {
+    "model_b_test": {
+      "accuracy": 0.5861,
+      "balanced_accuracy": 0.5182,
+      "precision": 0.768,
+      "recall": 0.6499,
+      "f1_score": 0.704,
+      "roc_auc": 0.5363,
+      "brier_score": 0.2417
+    },
+    "model_b_train": {
+      "accuracy": 0.7572,
+      "balanced_accuracy": 0.7563,
+      "precision": 0.9108,
+      "recall": 0.7579,
+      "f1_score": 0.8274,
+      "roc_auc": 0.8406,
+      "brier_score": 0.2195
+    },
+    "baseline_majority_prior": {
+      "accuracy": 0.7576,
+      "balanced_accuracy": 0.5,
+      "precision": 0.7576,
+      "recall": 1.0,
+      "f1_score": 0.8621,
+      "roc_auc": 0.5,
+      "brier_score": 0.1838
+    },
+    "baseline_distance_heuristic": {
+      "accuracy": 0.7576,
+      "balanced_accuracy": 0.5,
+      "precision": 0.7576,
+      "recall": 1.0,
+      "f1_score": 0.8621,
+      "roc_auc": 0.5216,
+      "brier_score": 0.2085
+    }
+  },
+  "top_feature_importances": {
+    "urgency_ratio": 0.09513,
+    "capacity_utilization": 0.08565,
+    "hours_since_prepared": 0.08495,
+    "hours_until_deadline": 0.08356,
+    "demand_coverage_ratio": 0.08011,
+    "travel_minutes": 0.07337,
+    "quantity_meals": 0.06726,
+    "recommended_quantity": 0.06529,
+    "distance_km": 0.06322,
+    "donor_reliability": 0.0511,
+    "donor_avg_surplus": 0.05064,
+    "created_weekday": 0.03157,
+    "receiving_capacity_meals": 0.03095,
+    "base_daily_meals": 0.02886,
+    "created_hour": 0.02723,
+    "open_hours_span": 0.01511,
+    "safe_hours": 0.00838,
+    "is_weekend": 0.00687,
+    "ngo_type_community_kitchen": 0.00503,
+    "accepts_nonveg": 0.005
+  }
+}

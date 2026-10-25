@@ -396,6 +396,24 @@ export default function CoordinatorDesk() {
                       ))}
                     </div>
 
+                    {selectedMatch.successProbability !== undefined && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        backgroundColor: '#EFF6FF',
+                        border: '1px solid #BFDBFE',
+                        borderRadius: 'var(--radius-sm)',
+                        padding: '0.4rem 0.75rem',
+                        marginBottom: '0.85rem',
+                        fontSize: '0.8rem',
+                        color: '#1E40AF',
+                      }}>
+                        <Sparkles size={14} color="#2563EB" />
+                        <span><strong>RescueBite Model B ML:</strong> {Math.round(selectedMatch.successProbability * 100)}% predicted delivery success</span>
+                      </div>
+                    )}
+
                     {/* Transparent Score Breakdown */}
                     <div className="desk-score-breakdown" style={{
                       textAlign: 'center',

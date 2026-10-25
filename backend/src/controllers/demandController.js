@@ -1,4 +1,5 @@
 const Demand = require('../models/Demand');
+const mlClient = require('../services/mlClient');
 
 // @desc    Create a new NGO demand entry
 // @route   POST /api/demands
@@ -225,10 +226,49 @@ const cancelDemand = async (req, res, next) => {
   }
 };
 
+// @desc    Get Model A AI meal demand forecast for an NGO
+// @route   GET /api/demands/forecast
+// @access  Private (ngo or coordinator)
+const getDemandForecast = async (req, res, next) => {
+  try {
+    const ngoId =
+      req.query.ngoId || (req.user.role === 'ngo' ? req.user.ngoId || req.user._id : 'N001');
+    const targetDate =
+      req.query.targetDate || new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+    const forecast = await mlClient.getDemandForecast(String(ngoId), String(targetDate));
+
+    if (!forecast) {
+      return res.json({
+        success: true,
+        isFallback: true,
+        ngo_id: ngoId,
+        forecast_date: targetDate,
+        predicted_meals: req.user.receivingCapacity
+          ? Math.round(req.user.receivingCapacity * 0.75)
+          : 80,
+        confidence_lower: req.user.receivingCapacity
+          ? Math.round(req.user.receivingCapacity * 0.5)
+          : 50,
+        confidence_upper: req.user.receivingCapacity ? req.user.receivingCapacity : 120,
+        disclaimer: 'Fallback estimate: ML serving service offline.',
+      });
+    }
+
+    res.json({
+      success: true,
+      ...forecast,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createDemand,
   getDemands,
   getMyDemands,
   updateDemand,
   cancelDemand,
+  getDemandForecast,
 };
