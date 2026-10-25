@@ -105,3 +105,40 @@ npm install
 npm run dev
 ```
 Runs on `http://127.0.0.1:5173` (proxies `/api` requests to port 5000 automatically).
+
+---
+
+## Google Authentication Setup
+
+RescueBite AI supports both real Google OAuth 2.0 (via Google Identity Services) and instant testing/demo fallback for development.
+
+### 1. Create Google OAuth Credentials
+1. Visit the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create or select a project.
+3. Navigate to **APIs & Services** > **OAuth consent screen**:
+   - Select **External** and fill in your app name (`RescueBite AI`) and support email.
+   - Save and proceed.
+4. Navigate to **APIs & Services** > **Credentials**:
+   - Click **+ Create Credentials** > **OAuth client ID**.
+   - Application type: **Web application**.
+   - Name: `RescueBite Web Client`.
+   - **Authorized JavaScript origins**:
+     - `http://localhost:5173`
+     - `http://127.0.0.1:5173`
+     - `https://<your-app>.vercel.app` (for production)
+5. Copy your **Client ID** (ends with `.apps.googleusercontent.com`).
+
+### 2. Configure Environment Variables
+
+**Frontend (`frontend/.env` and Vercel dashboard):**
+```env
+VITE_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+```
+
+**Backend (`backend/.env` and Render dashboard):**
+```env
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+```
+
+> **Note**: In local development, if you haven't configured a Google Client ID yet, you can click **"Test Google Auth instantly"** inside the Sign In modal to test the full Google authentication lifecycle, profile pictures, and JWT session handling immediately.
+

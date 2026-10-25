@@ -57,6 +57,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async (credential, extraData = {}) => {
+    setError(null);
+    try {
+      const res = await api.googleAuth(credential, extraData);
+      localStorage.setItem('rescuebite_token', res.token);
+      setToken(res.token);
+      setUser(res.user);
+      return res.user;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('rescuebite_token');
     setToken(null);
@@ -74,6 +88,7 @@ export const AuthProvider = ({ children }) => {
         error,
         login,
         register,
+        loginWithGoogle,
         logout,
       }}
     >

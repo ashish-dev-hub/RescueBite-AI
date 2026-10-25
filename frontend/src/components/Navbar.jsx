@@ -209,7 +209,16 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   title="View Account Details"
                   aria-expanded={profileDropdownOpen}
                 >
-                  <User size={14} style={{ flexShrink: 0 }} />
+                  {user?.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt={user?.name || 'User'}
+                      referrerPolicy="no-referrer"
+                      style={{ width: '18px', height: '18px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                    />
+                  ) : (
+                    <User size={14} style={{ flexShrink: 0 }} />
+                  )}
                   <span className="user-profile-name" style={{
                     fontWeight: 600,
                     maxWidth: '100px',
@@ -283,22 +292,38 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                 >
                   {/* Profile Header */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      backgroundColor: 'var(--color-soft-mint)',
-                      color: 'var(--color-network-green)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: 800,
-                      fontSize: '1.1rem',
-                      flexShrink: 0,
-                      border: '1px solid var(--color-soft-mint-border)',
-                    }}>
-                      {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                    </div>
+                    {user?.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt={user?.name || 'User'}
+                        referrerPolicy="no-referrer"
+                        style={{
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          flexShrink: 0,
+                          border: '1px solid var(--color-soft-mint-border)',
+                        }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        backgroundColor: 'var(--color-soft-mint)',
+                        color: 'var(--color-network-green)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 800,
+                        fontSize: '1.1rem',
+                        flexShrink: 0,
+                        border: '1px solid var(--color-soft-mint-border)',
+                      }}>
+                        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                    )}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', justifyContent: 'space-between' }}>
                         <h4 style={{
@@ -491,20 +516,35 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
               marginBottom: '0.35rem',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <div style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--color-network-green)',
-                  color: '#FFFFFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontWeight: 700,
-                  fontSize: '0.85rem',
-                }}>
-                  {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                </div>
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user?.name || 'User'}
+                    referrerPolicy="no-referrer"
+                    style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      flexShrink: 0,
+                    }}
+                  />
+                ) : (
+                  <div style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--color-network-green)',
+                    color: '#FFFFFF',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 700,
+                    fontSize: '0.85rem',
+                  }}>
+                    {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                )}
                 <div>
                   <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 600, color: '#FFFFFF' }}>{user?.name}</p>
                   <p style={{ margin: 0, fontSize: '0.7rem', color: '#A5B5AE' }}>{user?.role?.toUpperCase()}</p>

@@ -1,13 +1,44 @@
 import React, { useState } from 'react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
-import { Building, Soup, AlertCircle } from 'lucide-react';
+import { Building, Soup, AlertCircle, Info } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
+
+function GoogleIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+      <path
+        fill="#4285F4"
+        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+      />
+    </svg>
+  );
+}
 
 export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login' }) {
-  const { login, register } = useAuth();
+  const { login, register, loginWithGoogle } = useAuth();
   const [mode, setMode] = useState(initialMode); // 'login' | 'register'
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showConfigHelp, setShowConfigHelp] = useState(false);
+
+  const rawGoogleId = (import.meta.env.VITE_GOOGLE_CLIENT_ID || '').trim();
+  const hasConfiguredGoogleClient =
+    rawGoogleId &&
+    !rawGoogleId.includes('your-google-client-id') &&
+    rawGoogleId.includes('.apps.googleusercontent.com');
 
   // Form states
   const [loginEmail, setLoginEmail] = useState('');
@@ -20,6 +51,56 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [receivingCapacity, setReceivingCapacity] = useState('');
+
+  const handleGoogleSuccess = async (credential) => {
+    setError('');
+    setLoading(true);
+    try {
+      const extraData = mode === 'register' ? {
+        role: registerRole,
+        organization,
+        location: { address },
+        receivingCapacity: registerRole === 'ngo' ? (parseInt(receivingCapacity, 10) || 0) : 0,
+      } : {};
+
+      const loggedUser = await loginWithGoogle(credential, extraData);
+      if (onSuccess) onSuccess(loggedUser);
+      onClose();
+    } catch (err) {
+      setError(err.message || 'Google sign-in failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDemoGoogleLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      const demoEmail = registerRole === 'donor' || mode === 'login'
+        ? 'donor.google@rescuebite.org'
+        : 'shelter.google@rescuebite.org';
+      const demoName = registerRole === 'donor' || mode === 'login'
+        ? 'Metro Food Partner'
+        : 'Hope Community Shelter';
+      const demoCredential = `demo-google:demo-user-123:${demoEmail}:${demoName}`;
+
+      const extraData = mode === 'register' ? {
+        role: registerRole,
+        organization: organization || (registerRole === 'donor' ? 'Metro Kitchens' : 'Hope Shelter NGO'),
+        location: { address: address || '123 Market Street' },
+        receivingCapacity: registerRole === 'ngo' ? (parseInt(receivingCapacity, 10) || 50) : 0,
+      } : {};
+
+      const loggedUser = await loginWithGoogle(demoCredential, extraData);
+      if (onSuccess) onSuccess(loggedUser);
+      onClose();
+    } catch (err) {
+      setError(err.message || 'Google sign-in failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -136,38 +217,128 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       )}
 
       {mode === 'login' ? (
-        <form onSubmit={handleLoginSubmit}>
-          <div className="form-group">
-            <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              required
-              className="form-input"
-              placeholder="name@organization.com"
-              value={loginEmail}
-              onChange={(e) => setLoginEmail(e.target.value)}
-            />
+        <div>
+          {/* Google Auth Block for Login */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            {hasConfiguredGoogleClient ? (
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <GoogleLogin
+                  onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
+                  onError={() => setError('Google sign-in was cancelled or failed.')}
+                  theme="outline"
+                  size="large"
+                  shape="rectangular"
+                  text="continue_with"
+                  width="100%"
+                />
+              </div>
+            ) : (
+              <div>
+                <button
+                  type="button"
+                  onClick={handleDemoGoogleLogin}
+                  className="btn btn-outline"
+                  style={{
+                    width: '100%',
+                    padding: '0.65rem 1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.65rem',
+                    backgroundColor: '#FFFFFF',
+                    borderColor: 'var(--color-soft-border)',
+                    color: 'var(--color-deep-forest)',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  <GoogleIcon size={18} />
+                  <span>Continue with Google</span>
+                </button>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.35rem', padding: '0 0.15rem' }}>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
+                    Test Google Auth instantly
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowConfigHelp(!showConfigHelp)}
+                    style={{ fontSize: '0.72rem', color: 'var(--color-network-green)', fontWeight: 600, textDecoration: 'underline' }}
+                  >
+                    {showConfigHelp ? 'Hide Setup' : 'Connect Real Google ID?'}
+                  </button>
+                </div>
+
+                {showConfigHelp && (
+                  <div style={{
+                    marginTop: '0.5rem',
+                    padding: '0.65rem 0.85rem',
+                    backgroundColor: 'var(--color-pale-neutral)',
+                    borderRadius: 'var(--radius-btn)',
+                    border: '1px solid var(--color-soft-border)',
+                    fontSize: '0.75rem',
+                    color: 'var(--color-dark-slate)',
+                    lineHeight: 1.45,
+                  }}>
+                    <strong>Google OAuth 2.0 Setup:</strong>
+                    <ol style={{ paddingLeft: '1.1rem', marginTop: '0.35rem' }}>
+                      <li>Open <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer" style={{ textDecoration: 'underline' }}>Google Cloud Console</a>.</li>
+                      <li>Create OAuth 2.0 Web Client ID.</li>
+                      <li>Add Authorized JavaScript origin: <code>http://localhost:5173</code> & your production domain.</li>
+                      <li>Paste Client ID into <code>frontend/.env</code> as <code>VITE_GOOGLE_CLIENT_ID</code> and <code>backend/.env</code> as <code>GOOGLE_CLIENT_ID</code>.</li>
+                    </ol>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              margin: '1.15rem 0 0.5rem 0',
+              gap: '0.65rem',
+            }}>
+              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-soft-border)' }} />
+              <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                or sign in with email
+              </span>
+              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-soft-border)' }} />
+            </div>
           </div>
-          <div className="form-group">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              required
-              className="form-input"
-              placeholder="••••••••"
-              value={loginPassword}
-              onChange={(e) => setLoginPassword(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn btn-primary"
-            style={{ width: '100%', marginTop: '0.5rem' }}
-          >
-            {loading ? 'Authenticating...' : 'Sign In'}
-          </button>
-        </form>
+
+          <form onSubmit={handleLoginSubmit}>
+            <div className="form-group">
+              <label className="form-label">Email Address</label>
+              <input
+                type="email"
+                required
+                className="form-input"
+                placeholder="name@organization.com"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                required
+                className="form-input"
+                placeholder="••••••••"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary"
+              style={{ width: '100%', marginTop: '0.5rem' }}
+            >
+              {loading ? 'Authenticating...' : 'Sign In'}
+            </button>
+          </form>
+        </div>
       ) : (
         <form onSubmit={handleRegisterSubmit}>
           <div className="form-group">
@@ -216,6 +387,60 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             <p style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem' }}>
               * Coordinator roles are privileged operational accounts provisioned via secure administration.
             </p>
+          </div>
+
+          {/* Google Register Option */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            {hasConfiguredGoogleClient ? (
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <GoogleLogin
+                  onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
+                  onError={() => setError('Google registration was cancelled or failed.')}
+                  theme="outline"
+                  size="large"
+                  shape="rectangular"
+                  text="signup_with"
+                  width="100%"
+                />
+              </div>
+            ) : (
+              <div>
+                <button
+                  type="button"
+                  onClick={handleDemoGoogleLogin}
+                  className="btn btn-outline"
+                  style={{
+                    width: '100%',
+                    padding: '0.65rem 1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.65rem',
+                    backgroundColor: '#FFFFFF',
+                    borderColor: 'var(--color-soft-border)',
+                    color: 'var(--color-deep-forest)',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  <GoogleIcon size={18} />
+                  <span>Register with Google as {registerRole === 'donor' ? 'Food Donor' : 'Recipient NGO'}</span>
+                </button>
+              </div>
+            )}
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              margin: '1.15rem 0 0.5rem 0',
+              gap: '0.65rem',
+            }}>
+              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-soft-border)' }} />
+              <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                or register with email below
+              </span>
+              <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-soft-border)' }} />
+            </div>
           </div>
 
           <div className="form-group">
