@@ -231,8 +231,20 @@ const cancelDemand = async (req, res, next) => {
 // @access  Private (ngo or coordinator)
 const getDemandForecast = async (req, res, next) => {
   try {
-    const ngoId =
-      req.query.ngoId || (req.user.role === 'ngo' ? req.user.ngoId || req.user._id : 'N001');
+    let ngoId = req.query.ngoId;
+    if (!ngoId) {
+      if (req.user && req.user.ngoCode) {
+        ngoId = req.user.ngoCode;
+      } else if (req.user && req.user._id) {
+        // Map Mongo ObjectId deterministically to one of the 30 dataset NGOs (N001-N030)
+        const hash = String(req.user._id).split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+        const num = (hash % 30) + 1;
+        ngoId = `N${String(num).padStart(3, '0')}`;
+      } else {
+        ngoId = 'N001';
+      }
+    }
+
     const targetDate =
       req.query.targetDate || new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
