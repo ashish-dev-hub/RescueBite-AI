@@ -1,0 +1,7 @@
+food_category,is_perishable,safe_hours,is_nonveg
+cooked_veg,True,4,False
+cooked_nonveg,True,3,True
+bakery,False,24,False
+packaged,False,720,False
+fruit_veg_raw,True,48,False
+dairy,True,6,False

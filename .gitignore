@@ -4,3 +4,10 @@ node_modules/
 dist/
 build/
 *.log
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.agents/
