@@ -1,8 +1,15 @@
 {
+  "python.defaultInterpreterPath": "C:\\Users\\ashis\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+  "python.pyrefly.configPath": "${workspaceFolder}/pyrefly.toml",
   "python.analysis.extraPaths": [
     "${workspaceFolder}/ml/src"
   ],
   "python.autoComplete.extraPaths": [
     "${workspaceFolder}/ml/src"
-  ]
+  ],
+  "python.testing.pytestArgs": [
+    "ml/tests"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

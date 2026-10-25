@@ -17,7 +17,7 @@ class SameWeekdayBaseline:
         self,
         lag_weeks: Tuple[int, ...] = (1, 2, 3, 4),
         fallback_map: Optional[Dict[str, float]] = None,
-    ):
+    ) -> None:
         """Initialize the baseline forecaster.
 
         Args:
@@ -43,7 +43,7 @@ class SameWeekdayBaseline:
             raise ValueError(f"Missing required columns in history DataFrame: {missing}")
 
         df_copy = df.copy()
-        df_copy["date"] = pd.to_datetime(df_copy["date"]).dt.normalize()
+        df_copy["date"] = pd.DatetimeIndex(df_copy["date"]).normalize()
 
         self.history_ = {}
         for _, row in df_copy.iterrows():
@@ -70,15 +70,15 @@ class SameWeekdayBaseline:
 
         for days in self.lag_days:
             lag_date = target_ts - pd.Timedelta(days=days)
-            key = (str(ngo_id), lag_date)
+            key = (ngo_id, lag_date)
             if key in self.history_:
                 observed_lags.append(self.history_[key])
 
         if len(observed_lags) > 0:
             return float(np.mean(observed_lags)), len(observed_lags), False
 
-        fallback = self.fallback_map.get(str(ngo_id), np.nan)
-        return float(fallback), 0, True
+        fallback = self.fallback_map.get(ngo_id, np.nan)
+        return fallback, 0, True
 
     def predict(self, df: pd.DataFrame) -> pd.DataFrame:
         """Generate baseline predictions for all rows in df.
@@ -115,7 +115,7 @@ class SameWeekdayBaseline:
             Dictionary with MAE, RMSE, evaluated rows, coverage, and date ranges.
         """
         pred_df = self.predict(df_test)
-        pred_df["date"] = pd.to_datetime(pred_df["date"])
+        pred_df["date"] = pd.DatetimeIndex(pred_df["date"])
 
         valid_mask = ~pred_df["predicted_meals"].isna()
         valid_df = pred_df[valid_mask].copy()
@@ -123,12 +123,12 @@ class SameWeekdayBaseline:
         if len(valid_df) == 0:
             raise ValueError("No valid predictions generated to evaluate.")
 
-        actual = valid_df["meals_requested"].values
-        predicted = valid_df["predicted_meals"].values
+        actual = np.asarray(valid_df["meals_requested"].to_numpy(), dtype=float)
+        predicted = np.asarray(valid_df["predicted_meals"].to_numpy(), dtype=float)
 
         mae = float(np.mean(np.abs(actual - predicted)))
         rmse = float(np.sqrt(np.mean((actual - predicted) ** 2)))
-        coverage = float(len(valid_df) / len(df_test) * 100.0)
+        coverage = (len(valid_df) / len(df_test)) * 100.0
 
         min_d = str(pred_df["date"].min().date())
         max_d = str(pred_df["date"].max().date())
@@ -136,8 +136,8 @@ class SameWeekdayBaseline:
         return {
             "mae": round(mae, 2),
             "rmse": round(rmse, 2),
-            "evaluated_rows": int(len(valid_df)),
-            "total_test_rows": int(len(df_test)),
+            "evaluated_rows": len(valid_df),
+            "total_test_rows": len(df_test),
             "coverage_pct": round(coverage, 2),
             "test_start_date": min_d,
             "test_end_date": max_d,
