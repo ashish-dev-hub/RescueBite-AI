@@ -1,4 +1,0 @@
-Strategy,Assigned,Unassigned,AssignmentRatePct,PerishableRatePct,NonPerishableRatePct,TotalRouteKM
-A - Deadline first,231,269,46.2,35.96,48.42,3693.61
-B - Perishable first,227,273,45.4,100.0,33.58,3708.44
-C - Narrowest window first,227,273,45.4,100.0,33.58,3708.44
