@@ -1,14 +1,20 @@
 import sys
 from pathlib import Path
+
+# Add ml/src to sys.path so rescuebite_ml is resolved directly
+_test_dir = Path(__file__).resolve().parent
+_src_dir = _test_dir.parent / "src"
+if str(_src_dir) not in sys.path:
+    sys.path.insert(0, str(_src_dir))
+
 import numpy as np
 import pandas as pd
 import pytest
 
-src_path = str(Path(__file__).resolve().parent.parent / "src")
-if src_path not in sys.path:
-    sys.path.insert(0, src_path)
-
-from rescuebite_ml.baseline import SameWeekdayBaseline
+try:
+    from rescuebite_ml.baseline import SameWeekdayBaseline
+except ImportError:
+    from ml.src.rescuebite_ml.baseline import SameWeekdayBaseline
 
 
 def test_exact_lag_lookup():
