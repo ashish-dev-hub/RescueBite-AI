@@ -237,10 +237,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           {/* Google Auth Block for Login */}
           <div style={{ marginBottom: '1.25rem' }}>
             {hasConfiguredGoogleClient ? (
-              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                 <GoogleLogin
                   onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
                   onError={() => setError('Google sign-in was cancelled or failed.')}
+                  type="standard"
                   theme="outline"
                   size="large"
                   shape="rectangular"
@@ -408,10 +409,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           {/* Google Register Option */}
           <div style={{ marginBottom: '1.25rem' }}>
             {hasConfiguredGoogleClient ? (
-              <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                 <GoogleLogin
                   onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
                   onError={() => setError('Google registration was cancelled or failed.')}
+                  type="standard"
                   theme="outline"
                   size="large"
                   shape="rectangular"
