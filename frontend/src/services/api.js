@@ -13,7 +13,16 @@ const getAuthHeaders = () => {
 async function handleResponse(response) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const errorMsg = data.message || `Request failed with status ${response.status}`;
+    let errorMsg = data.message;
+    if (!errorMsg) {
+      if (response.status === 405) {
+        errorMsg = 'Backend API is not connected. Please set VITE_API_BASE_URL in your Vercel project settings.';
+      } else if (response.status === 404) {
+        errorMsg = 'API endpoint not found. Please verify your backend URL.';
+      } else {
+        errorMsg = `Request failed with status ${response.status}`;
+      }
+    }
     const error = new Error(errorMsg);
     error.status = response.status;
     error.data = data;

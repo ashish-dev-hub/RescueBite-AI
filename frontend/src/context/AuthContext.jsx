@@ -33,6 +33,9 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const res = await api.login(email, password);
+      if (!res?.token || !res?.user) {
+        throw new Error(res?.message || 'Login failed: Invalid server response.');
+      }
       localStorage.setItem('rescuebite_token', res.token);
       setToken(res.token);
       setUser(res.user);
@@ -47,6 +50,9 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const res = await api.register(userData);
+      if (!res?.token || !res?.user) {
+        throw new Error(res?.message || 'Registration failed: Invalid server response.');
+      }
       localStorage.setItem('rescuebite_token', res.token);
       setToken(res.token);
       setUser(res.user);
@@ -61,6 +67,9 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const res = await api.googleAuth(credential, extraData);
+      if (!res?.token || !res?.user) {
+        throw new Error(res?.message || 'Google authentication failed: Invalid server response.');
+      }
       localStorage.setItem('rescuebite_token', res.token);
       setToken(res.token);
       setUser(res.user);
