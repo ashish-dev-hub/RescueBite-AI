@@ -93,6 +93,7 @@ async function getDemandForecast(ngoId, forecastDate) {
  */
 async function getRecommendedAllocations(donation, donor, topK = 5) {
   try {
+    const safeDonor = typeof donor === 'object' && donor !== null ? donor : {};
     const payload = {
       donation: {
         donation_id: String(donation._id || donation.donationId || 'DON_GENERIC'),
@@ -105,12 +106,12 @@ async function getRecommendedAllocations(donation, donor, topK = 5) {
           : undefined,
       },
       donor: {
-        donor_id: String(donor._id || donor.donorId || 'DONOR_GENERIC'),
-        donor_type: donor.donorType || 'restaurant',
-        lat: Number(donor.location?.coordinates?.lat || donor.lat || 28.6139),
-        lon: Number(donor.location?.coordinates?.lng || donor.lon || 77.2090),
-        avg_surplus_meals: Number(donor.avgSurplusMeals || 50),
-        reliability: Number(donor.reliability || 0.92),
+        donor_id: String(safeDonor._id || safeDonor.donorId || donor || 'DONOR_GENERIC'),
+        donor_type: safeDonor.donorType || 'restaurant',
+        lat: Number(safeDonor.location?.coordinates?.lat || safeDonor.lat || 28.6139),
+        lon: Number(safeDonor.location?.coordinates?.lng || safeDonor.lon || 77.2090),
+        avg_surplus_meals: Number(safeDonor.avgSurplusMeals || 50),
+        reliability: Number(safeDonor.reliability || 0.92),
       },
       top_k: topK,
       min_score: 0.0,
