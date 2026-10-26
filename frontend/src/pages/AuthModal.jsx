@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
-import { Building, Soup, Compass, AlertCircle, Info } from 'lucide-react';
+import { Building, Soup, Compass, AlertCircle, Info, Eye, EyeOff } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 
 function GoogleIcon({ size = 18 }) {
@@ -43,6 +43,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   // Form states
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
   const [registerRole, setRegisterRole] = useState('donor'); // 'donor' | 'ngo' | 'coordinator'
   const [name, setName] = useState('');
@@ -342,14 +344,37 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             </div>
             <div className="form-group">
               <label className="form-label">Password</label>
-              <input
-                type="password"
-                required
-                className="form-input"
-                placeholder="••••••••"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-              />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <input
+                  type={showLoginPassword ? 'text' : 'password'}
+                  required
+                  className="form-input"
+                  placeholder="••••••••"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  style={{ paddingRight: '2.5rem' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '0.65rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0.25rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--color-muted-slate)',
+                  }}
+                  aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
+                  title={showLoginPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showLoginPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
             <button
               type="submit"
@@ -538,14 +563,37 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
 
           <div className="form-group">
             <label className="form-label">Password</label>
-            <input
-              type="password"
-              required
-              className="form-input"
-              placeholder="At least 6 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <input
+                type={showRegisterPassword ? 'text' : 'password'}
+                required
+                className="form-input"
+                placeholder="At least 6 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ paddingRight: '2.5rem' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '0.65rem',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-muted-slate)',
+                }}
+                aria-label={showRegisterPassword ? 'Hide password' : 'Show password'}
+                title={showRegisterPassword ? 'Hide password' : 'Show password'}
+              >
+                {showRegisterPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
