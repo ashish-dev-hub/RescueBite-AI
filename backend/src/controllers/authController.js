@@ -31,11 +31,12 @@ const register = async (req, res, next) => {
       });
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    const cleanEmail = String(email || '').toLowerCase().trim();
+    const existingUser = await User.findOne({ email: cleanEmail });
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'An account with this email address already exists',
+        message: 'An account with this email address already exists. Please sign in or use Google.',
       });
     }
 
@@ -79,11 +80,20 @@ const login = async (req, res, next) => {
       });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const cleanEmail = String(email || '').toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail });
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password credentials',
+        message: 'No account found with this email. Please register first, or click "Continue with Google" above.',
+      });
+    }
+
+    // Check if account was created via Google OAuth and has no password set
+    if (!user.passwordHash && user.googleId) {
+      return res.status(400).json({
+        success: false,
+        message: 'This account was registered using Google Sign-In. Please click the "Continue with Google" button above to log in.',
       });
     }
 
@@ -91,7 +101,7 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password credentials',
+        message: 'Incorrect password for this account. Please try again or use Google Sign-In above.',
       });
     }
 

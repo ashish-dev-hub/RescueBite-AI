@@ -136,7 +136,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     setError('');
     setLoading(true);
     try {
-      const loggedUser = await login(loginEmail, loginPassword);
+      const loggedUser = await login(loginEmail.trim(), loginPassword);
       if (onSuccess) onSuccess(loggedUser);
       onClose();
     } catch (err) {
@@ -153,12 +153,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     setLoading(true);
     try {
       const registeredUser = await register({
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim(),
         password,
         role: registerRole,
-        organization,
-        location: { address },
+        organization: organization.trim(),
+        location: { address: address.trim() },
         receivingCapacity: registerRole === 'ngo' ? parseInt(receivingCapacity, 10) : 0,
       });
       if (onSuccess) onSuccess(registeredUser);
