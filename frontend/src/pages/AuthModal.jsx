@@ -67,27 +67,36 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       if (onSuccess) onSuccess(loggedUser);
       onClose();
     } catch (err) {
-      setError(err.message || 'Google sign-in failed.');
+      const msg = err.message || '';
+      if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
+        setError('Cannot connect to the server. Please check your internet connection and try again.');
+      } else {
+        setError(msg || 'Google sign-in failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
+
   const handleDemoGoogleLogin = async () => {
     setError('');
     setLoading(true);
     try {
-      const demoEmail = registerRole === 'donor' || mode === 'login'
+      // Use unique sub IDs per role so donor and NGO accounts don't collide in MongoDB
+      const isDonorMode = registerRole === 'donor' || mode === 'login';
+      const demoSub = isDonorMode ? 'demo-donor-sub-001' : 'demo-ngo-sub-002';
+      const demoEmail = isDonorMode
         ? 'donor.google@rescuebite.org'
         : 'shelter.google@rescuebite.org';
-      const demoName = registerRole === 'donor' || mode === 'login'
-        ? 'Metro Food Partner'
-        : 'Hope Community Shelter';
-      const demoCredential = `demo-google:demo-user-123:${demoEmail}:${demoName}`;
+      const demoName = isDonorMode ? 'Metro Food Partner' : 'Hope Community Shelter';
+
+      // Format: demo-google:<sub>:<email>:<name>
+      const demoCredential = `demo-google:${demoSub}:${demoEmail}:${demoName}`;
 
       const extraData = mode === 'register' ? {
         role: registerRole,
-        organization: organization || (registerRole === 'donor' ? 'Metro Kitchens' : 'Hope Shelter NGO'),
+        organization: organization || (isDonorMode ? 'Metro Kitchens' : 'Hope Shelter NGO'),
         location: { address: address || '123 Market Street' },
         receivingCapacity: registerRole === 'ngo' ? (parseInt(receivingCapacity, 10) || 50) : 0,
       } : {};
@@ -96,11 +105,18 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       if (onSuccess) onSuccess(loggedUser);
       onClose();
     } catch (err) {
-      setError(err.message || 'Google sign-in failed.');
+      // Show clear error with helpful context for connection issues
+      const msg = err.message || '';
+      if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
+        setError('Cannot reach the backend server. If running locally, start the backend with: npm run dev:backend');
+      } else {
+        setError(msg || 'Google sign-in failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();

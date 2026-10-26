@@ -170,11 +170,18 @@ const googleLogin = async (req, res, next) => {
     let payload;
 
     if (typeof credential === 'string' && credential.startsWith('demo-google:')) {
-      const parts = credential.split(':');
+      // Format: demo-google:<sub>:<email>:<name>
+      // Split only on first 3 colons so email (which contains @) is preserved
+      const withoutPrefix = credential.slice('demo-google:'.length);
+      const firstColon = withoutPrefix.indexOf(':');
+      const secondColon = withoutPrefix.indexOf(':', firstColon + 1);
+      const sub = withoutPrefix.slice(0, firstColon) || 'demo-user';
+      const email = withoutPrefix.slice(firstColon + 1, secondColon) || 'donor.google@rescuebite.org';
+      const name = withoutPrefix.slice(secondColon + 1) || 'Google Rescue Partner';
       payload = {
-        sub: parts[1] || 'demo-google-user-id',
-        email: parts[2] || 'donor.google@rescuebite.org',
-        name: parts[3] || 'Google Rescue Partner',
+        sub,
+        email,
+        name,
         picture: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop',
       };
     } else if (clientId) {
