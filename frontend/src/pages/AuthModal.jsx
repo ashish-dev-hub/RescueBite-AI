@@ -344,7 +344,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             </div>
             <div className="form-group">
               <label className="form-label">Password</label>
-              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <div style={{ position: 'relative', width: '100%' }}>
                 <input
                   type={showLoginPassword ? 'text' : 'password'}
                   required
@@ -352,22 +352,25 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  style={{ paddingRight: '2.5rem' }}
+                  style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowLoginPassword(!showLoginPassword)}
+                  onClick={() => setShowLoginPassword((prev) => !prev)}
                   style={{
                     position: 'absolute',
-                    right: '0.65rem',
+                    right: '0.75rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    padding: '0.25rem',
+                    padding: '0.35rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'var(--color-muted-slate)',
+                    color: 'var(--color-muted-slate, #687872)',
+                    zIndex: 20,
                   }}
                   aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
                   title={showLoginPassword ? 'Hide password' : 'Show password'}
@@ -563,7 +566,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
 
           <div className="form-group">
             <label className="form-label">Password</label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div style={{ position: 'relative', width: '100%' }}>
               <input
                 type={showRegisterPassword ? 'text' : 'password'}
                 required
@@ -571,22 +574,25 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ paddingRight: '2.5rem' }}
+                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
-                onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                onClick={() => setShowRegisterPassword((prev) => !prev)}
                 style={{
                   position: 'absolute',
-                  right: '0.65rem',
+                  right: '0.75rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  padding: '0.25rem',
+                  padding: '0.35rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--color-muted-slate)',
+                  color: 'var(--color-muted-slate, #687872)',
+                  zIndex: 20,
                 }}
                 aria-label={showRegisterPassword ? 'Hide password' : 'Show password'}
                 title={showRegisterPassword ? 'Hide password' : 'Show password'}

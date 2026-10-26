@@ -358,6 +358,12 @@ input, select, textarea {
   box-shadow: 0 0 0 3px rgba(47, 125, 103, 0.15);
 }
 
+/* Remove default browser reveal button so custom eye icon works seamlessly */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 /* Data Tables */
 .data-table-wrapper {
   overflow-x: auto;
