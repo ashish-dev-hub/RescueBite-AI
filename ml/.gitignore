@@ -11,8 +11,7 @@ __pycache__/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Generated model artifacts & temporary runs
-models/*.joblib
+# Generated temporary model runs & pickle caches
 models/*.pkl
 *.log
 

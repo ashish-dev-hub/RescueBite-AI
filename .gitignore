@@ -17,9 +17,6 @@ __pycache__/
 .venv/
 env/
 venv/
-*.joblib
-ml/models/*.joblib
-
 # Logs and OS files
 *.log
 .DS_Store
