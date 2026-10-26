@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
-import { Building, Soup, AlertCircle, Info } from 'lucide-react';
+import { Building, Soup, Compass, AlertCircle, Info } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 
 function GoogleIcon({ size = 18 }) {
@@ -44,7 +44,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
-  const [registerRole, setRegisterRole] = useState('donor'); // strictly 'donor' or 'ngo'
+  const [registerRole, setRegisterRole] = useState('donor'); // 'donor' | 'ngo' | 'coordinator'
   const [name, setName] = useState('');
   const [organization, setOrganization] = useState('');
   const [email, setEmail] = useState('');
@@ -83,20 +83,31 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     setError('');
     setLoading(true);
     try {
-      // Use unique sub IDs per role so donor and NGO accounts don't collide in MongoDB
-      const isDonorMode = registerRole === 'donor' || mode === 'login';
-      const demoSub = isDonorMode ? 'demo-donor-sub-001' : 'demo-ngo-sub-002';
-      const demoEmail = isDonorMode
-        ? 'donor.google@rescuebite.org'
-        : 'shelter.google@rescuebite.org';
-      const demoName = isDonorMode ? 'Metro Food Partner' : 'Hope Community Shelter';
+      // Use unique sub IDs per role so accounts don't collide in MongoDB
+      let demoSub, demoEmail, demoName, demoOrg;
+      if (mode === 'register' && registerRole === 'coordinator') {
+        demoSub = 'demo-coord-sub-003';
+        demoEmail = 'coordinator.google@rescuebite.org';
+        demoName = 'Operations Coordinator';
+        demoOrg = 'RescueBite Operations Hub';
+      } else if (mode === 'register' && registerRole === 'ngo') {
+        demoSub = 'demo-ngo-sub-002';
+        demoEmail = 'shelter.google@rescuebite.org';
+        demoName = 'Hope Community Shelter';
+        demoOrg = 'Hope Shelter NGO';
+      } else {
+        demoSub = 'demo-donor-sub-001';
+        demoEmail = 'donor.google@rescuebite.org';
+        demoName = 'Metro Food Partner';
+        demoOrg = 'Metro Kitchens';
+      }
 
       // Format: demo-google:<sub>:<email>:<name>
       const demoCredential = `demo-google:${demoSub}:${demoEmail}:${demoName}`;
 
       const extraData = mode === 'register' ? {
         role: registerRole,
-        organization: organization || (isDonorMode ? 'Metro Kitchens' : 'Hope Shelter NGO'),
+        organization: organization || demoOrg,
         location: { address: address || '123 Market Street' },
         receivingCapacity: registerRole === 'ngo' ? (parseInt(receivingCapacity, 10) || 50) : 0,
       } : {};
@@ -137,12 +148,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
 
-    // Extra client-side guardrail: Never permit coordinator signup
-    if (registerRole === 'coordinator') {
-      setError('Coordinator accounts cannot be created publicly.');
-      return;
-    }
-
     setLoading(true);
     try {
       const registeredUser = await register({
@@ -171,7 +176,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       subtitle={
         mode === 'login'
           ? 'Enter your registered email and password to access your portal'
-          : 'Register as a surplus food donor or recipient NGO'
+          : 'Register as a surplus food donor, recipient NGO, or operations coordinator'
       }
       maxWidth="500px"
     >
@@ -211,7 +216,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             boxShadow: mode === 'register' ? 'var(--shadow-subtle)' : 'none',
           }}
         >
-          Register (Donor / NGO)
+          Register (All Roles)
         </button>
       </div>
 
@@ -360,24 +365,26 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
         <form onSubmit={handleRegisterSubmit}>
           <div className="form-group">
             <label className="form-label">I am registering as:</label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.45rem' }}>
               <button
                 type="button"
                 onClick={() => setRegisterRole('donor')}
                 style={{
-                  padding: '0.75rem',
+                  padding: '0.75rem 0.35rem',
                   borderRadius: 'var(--radius-btn)',
                   border: `2px solid ${registerRole === 'donor' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
                   backgroundColor: registerRole === 'donor' ? 'var(--color-soft-mint)' : '#FFFFFF',
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  fontSize: '0.85rem',
+                  justifyContent: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.82rem',
                   fontWeight: 600,
                   color: 'var(--color-deep-forest)',
                 }}
               >
-                <Building size={16} color={registerRole === 'donor' ? '#2F7D67' : '#687872'} />
+                <Building size={18} color={registerRole === 'donor' ? '#2F7D67' : '#687872'} />
                 <span>Food Donor</span>
               </button>
 
@@ -385,24 +392,50 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 type="button"
                 onClick={() => setRegisterRole('ngo')}
                 style={{
-                  padding: '0.75rem',
+                  padding: '0.75rem 0.35rem',
                   borderRadius: 'var(--radius-btn)',
                   border: `2px solid ${registerRole === 'ngo' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
                   backgroundColor: registerRole === 'ngo' ? 'var(--color-soft-mint)' : '#FFFFFF',
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  fontSize: '0.85rem',
+                  justifyContent: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.82rem',
                   fontWeight: 600,
                   color: 'var(--color-deep-forest)',
                 }}
               >
-                <Soup size={16} color={registerRole === 'ngo' ? '#2F7D67' : '#687872'} />
+                <Soup size={18} color={registerRole === 'ngo' ? '#2F7D67' : '#687872'} />
                 <span>Recipient NGO</span>
               </button>
+
+              <button
+                type="button"
+                onClick={() => setRegisterRole('coordinator')}
+                style={{
+                  padding: '0.75rem 0.35rem',
+                  borderRadius: 'var(--radius-btn)',
+                  border: `2px solid ${registerRole === 'coordinator' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
+                  backgroundColor: registerRole === 'coordinator' ? 'var(--color-soft-mint)' : '#FFFFFF',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  color: 'var(--color-deep-forest)',
+                }}
+              >
+                <Compass size={18} color={registerRole === 'coordinator' ? '#2F7D67' : '#687872'} />
+                <span>Coordinator</span>
+              </button>
             </div>
-            <p style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem' }}>
-              * Coordinator roles are privileged operational accounts provisioned via secure administration.
+            <p style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.4rem' }}>
+              {registerRole === 'donor' && '• List fresh surplus food batches and connect with nearby shelters.'}
+              {registerRole === 'ngo' && '• Request meal deliveries and view AI-predicted shelter demand.'}
+              {registerRole === 'coordinator' && '• Manage citywide logistics, approve AI matches, and assign drivers.'}
             </p>
           </div>
 
@@ -442,7 +475,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   }}
                 >
                   <GoogleIcon size={18} />
-                  <span>Register with Google as {registerRole === 'donor' ? 'Food Donor' : 'Recipient NGO'}</span>
+                  <span>Register with Google as {registerRole === 'donor' ? 'Food Donor' : registerRole === 'ngo' ? 'Recipient NGO' : 'Coordinator'}</span>
                 </button>
               </div>
             )}
@@ -479,7 +512,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               type="text"
               required
               className="form-input"
-              placeholder={registerRole === 'donor' ? 'e.g. Metro Bistro & Bakery' : 'e.g. Sunrise Community Kitchen'}
+              placeholder={
+                registerRole === 'donor'
+                  ? 'e.g. Metro Bistro & Bakery'
+                  : registerRole === 'ngo'
+                  ? 'e.g. Sunrise Community Kitchen'
+                  : 'e.g. RescueBite Central Operations'
+              }
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
             />

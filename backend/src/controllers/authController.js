@@ -16,18 +16,11 @@ const register = async (req, res, next) => {
   try {
     const { name, email, password, role, organization, phone, location, receivingCapacity } = req.body;
 
-    // Strict validation: Reject coordinator creation via public signup
-    if (role === 'coordinator') {
+    // Validate role: support donor, ngo, and coordinator
+    if (!['donor', 'ngo', 'coordinator'].includes(role)) {
       return res.status(400).json({
         success: false,
-        message: 'Coordinator accounts cannot be created via public registration. Contact system administration.',
-      });
-    }
-
-    if (!['donor', 'ngo'].includes(role)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid role specified. Role must be 'donor' or 'ngo'.",
+        message: "Invalid role specified. Role must be 'donor', 'ngo', or 'coordinator'.",
       });
     }
 
@@ -230,7 +223,7 @@ const googleLogin = async (req, res, next) => {
       }
     } else {
       // Register new user via Google
-      const assignedRole = ['donor', 'ngo'].includes(role) ? role : 'donor';
+      const assignedRole = ['donor', 'ngo', 'coordinator'].includes(role) ? role : 'donor';
 
       user = await User.create({
         name: name || email.split('@')[0],
