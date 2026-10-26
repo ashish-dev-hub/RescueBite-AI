@@ -1,0 +1,71 @@
+{
+  "model_name": "RescueBite AI Model C (Donor Surplus Forecaster)",
+  "version": "random_forest_v1",
+  "trained_at_utc": "2026-10-26T04:57:07.760585+00:00",
+  "train_samples": 57600,
+  "test_samples": 7200,
+  "test_cutoff_date": "2026-08-26",
+  "regressor_train_metrics": {
+    "mae": 32.774,
+    "rmse": 50.226,
+    "r2": 0.3456,
+    "wape": 1.1026
+  },
+  "regressor_test_metrics": {
+    "mae": 36.152,
+    "rmse": 53.442,
+    "r2": 0.0393,
+    "wape": 1.2356
+  },
+  "baseline_test_metrics": {
+    "mae": 36.155,
+    "rmse": 53.893,
+    "r2": 0.0231,
+    "wape": 1.2357
+  },
+  "mae_improvement_pct": 0.01,
+  "wape_improvement_pct": 0.01,
+  "classifier_test_metrics": {
+    "accuracy": 0.5829,
+    "roc_auc": 0.614,
+    "precision": 0.4893,
+    "recall": 0.5556,
+    "f1": 0.5204,
+    "brier_score": 0.2393
+  },
+  "slice_metrics_by_donor_type": {
+    "restaurant": {
+      "count": 3720,
+      "actual_mean": 21.88,
+      "model_mae": 24.45,
+      "model_rmse": 33.929,
+      "baseline_mae": 24.351,
+      "mae_improvement_pct": -0.4
+    },
+    "grocery": {
+      "count": 2280,
+      "actual_mean": 35.61,
+      "model_mae": 46.518,
+      "model_rmse": 64.809,
+      "baseline_mae": 46.283,
+      "mae_improvement_pct": -0.5
+    },
+    "hostel_mess": {
+      "count": 720,
+      "actual_mean": 42.85,
+      "model_mae": 44.568,
+      "model_rmse": 59.693,
+      "baseline_mae": 42.999,
+      "mae_improvement_pct": -3.6
+    },
+    "caterer": {
+      "count": 480,
+      "actual_mean": 35.9,
+      "model_mae": 64.987,
+      "model_rmse": 92.865,
+      "baseline_mae": 69.263,
+      "mae_improvement_pct": 6.2
+    }
+  },
+  "features_count": 18
+}

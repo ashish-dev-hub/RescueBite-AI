@@ -16,6 +16,7 @@ import {
   Layers,
   MapPin,
   RefreshCw,
+  Sparkles,
 } from 'lucide-react';
 
 export default function DonorDashboard() {
@@ -36,11 +37,24 @@ export default function DonorDashboard() {
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [address, setAddress] = useState(user?.location?.address || '');
 
+  const [aiSupplyForecast, setAiSupplyForecast] = useState(null);
+
   const fetchMyDonations = async () => {
     setLoading(true);
     try {
       const data = await api.getDonations({ ownOnly: 'true' });
       setDonations(data.donations || []);
+
+      // Fetch Model C AI Supply Forecast for tomorrow
+      try {
+        const tomorrowStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+        const forecast = await api.getDonorSupplyForecast(tomorrowStr);
+        if (forecast && forecast.success) {
+          setAiSupplyForecast(forecast);
+        }
+      } catch (forecastErr) {
+        console.warn('Model C Supply Forecast unavailable:', forecastErr);
+      }
     } catch (err) {
       console.error('Failed to load donations:', err);
     } finally {
@@ -199,6 +213,92 @@ export default function DonorDashboard() {
         }}>
           {notification.type === 'success' ? <CheckCircle2 size={16} /> : <AlertTriangle size={16} />}
           <span>{notification.message}</span>
+        </div>
+      )}
+
+      {/* Model C AI Surplus Supply Forecast Banner */}
+      {aiSupplyForecast && (
+        <div className="fresh-card" style={{
+          padding: '1.15rem 1.35rem',
+          background: 'linear-gradient(135deg, #F0FDF4 0%, #FFFBEB 100%)',
+          border: '1px solid #BBF7D0',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              backgroundColor: '#DCFCE7',
+              color: '#15803D',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Sparkles size={20} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+                <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
+                  RescueBite Model C — AI Surplus Supply Forecast
+                </strong>
+                <span style={{
+                  fontSize: '0.7rem',
+                  backgroundColor: '#DCFCE7',
+                  color: '#15803D',
+                  padding: '0.1rem 0.45rem',
+                  borderRadius: '4px',
+                  fontWeight: 700,
+                }}>
+                  MODEL C AI
+                </span>
+                {aiSupplyForecast.has_surplus_probability !== undefined && (
+                  <span style={{
+                    fontSize: '0.7rem',
+                    backgroundColor: '#FEF3C7',
+                    color: '#B45309',
+                    padding: '0.1rem 0.45rem',
+                    borderRadius: '4px',
+                    fontWeight: 600,
+                  }}>
+                    {Math.round(aiSupplyForecast.has_surplus_probability * 100)}% Likelihood
+                  </span>
+                )}
+              </div>
+              <p style={{ fontSize: '0.82rem', color: '#374151', marginTop: '0.2rem' }}>
+                Forecast Date: <strong>{aiSupplyForecast.forecast_date}</strong> • Expected Surplus: <strong style={{ color: '#15803D', fontSize: '0.95rem' }}>{Math.round(aiSupplyForecast.predicted_surplus_meals)} meals</strong> (Uncertainty Bounds: {Math.round(aiSupplyForecast.surplus_p10)} – {Math.round(aiSupplyForecast.surplus_p90)} meals)
+              </p>
+              {aiSupplyForecast.reason_codes && aiSupplyForecast.reason_codes.length > 0 && (
+                <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
+                  {aiSupplyForecast.reason_codes.map((code, idx) => (
+                    <span key={idx} style={{
+                      fontSize: '0.72rem',
+                      backgroundColor: '#F3F4F6',
+                      color: '#4B5563',
+                      padding: '0.1rem 0.4rem',
+                      borderRadius: '3px',
+                    }}>
+                      {code}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+              Confidence Score: <strong>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
+            </div>
+            <div style={{ fontSize: '0.68rem', color: 'var(--color-muted-slate)', marginTop: '0.15rem' }}>
+              Category: <strong>{aiSupplyForecast.donor_type || 'Commercial Donor'}</strong>
+            </div>
+          </div>
         </div>
       )}
 

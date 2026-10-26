@@ -16,12 +16,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 try:
+    from .donor_supply_predictor import DonorSupplyPredictor
     from .matching_engine import MatchingEngine
     from .predict import DemandPredictor
 except ImportError:
     _src_dir = Path(__file__).resolve().parent.parent
     if str(_src_dir) not in sys.path:
         sys.path.insert(0, str(_src_dir))
+    from rescuebite_ml.donor_supply_predictor import DonorSupplyPredictor
     from rescuebite_ml.matching_engine import MatchingEngine
     from rescuebite_ml.predict import DemandPredictor
 
@@ -32,6 +34,7 @@ SYNTHETIC_DATA_DISCLAIMER = (
 # Global service singletons
 _demand_predictor: Optional[DemandPredictor] = None
 _matching_engine: Optional[MatchingEngine] = None
+_donor_supply_predictor: Optional[DonorSupplyPredictor] = None
 
 
 def get_demand_predictor() -> DemandPredictor:
@@ -50,6 +53,14 @@ def get_matching_engine() -> MatchingEngine:
     return _matching_engine
 
 
+def get_donor_supply_predictor() -> DonorSupplyPredictor:
+    """Retrieve or lazily initialize the Model C DonorSupplyPredictor singleton."""
+    global _donor_supply_predictor
+    if _donor_supply_predictor is None:
+        _donor_supply_predictor = DonorSupplyPredictor()
+    return _donor_supply_predictor
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Warm up and initialize machine learning models upon server startup."""
@@ -62,6 +73,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         get_matching_engine()
     except Exception as exc:
         print(f"[Warning] MatchingEngine warmup deferred: {exc}")
+
+    try:
+        get_donor_supply_predictor()
+    except Exception as exc:
+        print(f"[Warning] DonorSupplyPredictor warmup deferred: {exc}")
 
     yield
 
@@ -112,6 +128,46 @@ class ModelsStatusResponse(BaseModel):
     service: str = "rescuebite-ml-api"
     model_a_demand_forecaster: ModelStatusInfo
     model_b_allocation_matching: ModelStatusInfo
+    model_c_donor_supply: Optional[ModelStatusInfo] = None
+    disclaimer: str = SYNTHETIC_DATA_DISCLAIMER
+
+
+class DonorSupplyPredictionRequest(BaseModel):
+    donor_id: str = Field(..., description="Target registered donor identifier", examples=["D001"])
+    forecast_date: str = Field(
+        ..., description="Target forecast date in YYYY-MM-DD format", examples=["2026-10-27"]
+    )
+
+
+class DonorSupplyPredictionResponse(BaseModel):
+    donor_id: str
+    forecast_date: str
+    predicted_surplus_meals: float
+    has_surplus_probability: float
+    surplus_p10: float
+    surplus_p90: float
+    confidence_score: float
+    donor_type: str
+    is_fallback: bool
+    reason_codes: List[str]
+    model_version: str
+    disclaimer: str = SYNTHETIC_DATA_DISCLAIMER
+
+
+class DonorSupplyBatchItem(BaseModel):
+    donor_id: str = Field(..., examples=["D001"])
+    forecast_date: str = Field(..., examples=["2026-10-27"])
+
+
+class DonorSupplyBatchRequest(BaseModel):
+    targets: List[DonorSupplyBatchItem] = Field(
+        ..., description="List of (donor_id, forecast_date) requests"
+    )
+
+
+class DonorSupplyBatchResponse(BaseModel):
+    total: int
+    predictions: List[DonorSupplyPredictionResponse]
     disclaimer: str = SYNTHETIC_DATA_DISCLAIMER
 
 
@@ -284,10 +340,24 @@ def get_models_status() -> ModelsStatusResponse:
         },
     )
 
+    donor_pred = get_donor_supply_predictor()
+    model_c_info = ModelStatusInfo(
+        model_name="Model C: Donor Surplus Forecaster",
+        loaded=donor_pred.regressor_pipeline is not None,
+        version=donor_pred.model_version,
+        algorithm="RandomForestRegressor + RandomForestClassifier",
+        status="READY" if donor_pred.regressor_pipeline is not None else "ERROR",
+        metadata={
+            "registered_donors_count": len(donor_pred.donor_profiles),
+            "recent_history_count": len(donor_pred.recent_history),
+        },
+    )
+
     return ModelsStatusResponse(
         service="rescuebite-ml-api",
         model_a_demand_forecaster=model_a_info,
         model_b_allocation_matching=model_b_info,
+        model_c_donor_supply=model_c_info,
         disclaimer=SYNTHETIC_DATA_DISCLAIMER,
     )
 
@@ -333,6 +403,50 @@ def predict_demand_batch(request: DemandBatchRequest) -> DemandBatchResponse:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Failed to process batch demand predictions: {exc}",
+        ) from exc
+
+
+@app.post(
+    "/api/v1/donor-supply/predict",
+    response_model=DonorSupplyPredictionResponse,
+    tags=["Model C: Donor Supply Forecasting"],
+    summary="Predict Surplus Meals for Single Food Donor",
+)
+def predict_donor_supply(request: DonorSupplyPredictionRequest) -> DonorSupplyPredictionResponse:
+    """Generate expected surplus meals, occurrence probability, and bounds for a commercial food donor."""
+    predictor = get_donor_supply_predictor()
+    try:
+        result = predictor.predict_one(request.donor_id, request.forecast_date)
+        return DonorSupplyPredictionResponse(**result)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to generate donor surplus prediction: {exc}",
+        ) from exc
+
+
+@app.post(
+    "/api/v1/donor-supply/predict-batch",
+    response_model=DonorSupplyBatchResponse,
+    tags=["Model C: Donor Supply Forecasting"],
+    summary="Batch Predict Surplus Meals for Multiple Donors",
+)
+def predict_donor_supply_batch(request: DonorSupplyBatchRequest) -> DonorSupplyBatchResponse:
+    """Generate batch predictions for multiple (donor_id, forecast_date) queries."""
+    predictor = get_donor_supply_predictor()
+    targets = [(item.donor_id, item.forecast_date) for item in request.targets]
+    try:
+        raw_results = predictor.predict_batch(targets)
+        predictions = [DonorSupplyPredictionResponse(**r) for r in raw_results]
+        return DonorSupplyBatchResponse(
+            total=len(predictions),
+            predictions=predictions,
+            disclaimer=SYNTHETIC_DATA_DISCLAIMER,
+        )
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to process batch donor surplus predictions: {exc}",
         ) from exc
 
 

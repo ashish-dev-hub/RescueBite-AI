@@ -93,6 +93,17 @@ export const api = {
     return handleResponse(res);
   },
 
+  async getDonorSupplyForecast(targetDate, donorId = '') {
+    const params = new URLSearchParams();
+    if (targetDate) params.append('targetDate', targetDate);
+    if (donorId) params.append('donorId', donorId);
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+    const res = await fetch(`${BASE_URL}/donations/supply-forecast${queryString}`, {
+      headers: getAuthHeaders(),
+    });
+    return handleResponse(res);
+  },
+
   // Demands
   async getDemands(params = {}) {
     const queryString = new URLSearchParams(params).toString();

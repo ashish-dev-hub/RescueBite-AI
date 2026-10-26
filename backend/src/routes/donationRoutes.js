@@ -6,9 +6,11 @@ const {
   getDonationById,
   updateDonation,
   cancelDonation,
+  getSupplyForecast,
 } = require('../controllers/donationController');
 const { protect, authorizeRoles } = require('../middleware/authMiddleware');
 
+router.get('/supply-forecast', protect, getSupplyForecast);
 router.post('/', protect, authorizeRoles('donor'), createDonation);
 router.get('/', protect, getDonations);
 router.get('/:id', protect, getDonationById);

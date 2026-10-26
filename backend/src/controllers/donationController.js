@@ -1,5 +1,6 @@
 const Donation = require('../models/Donation');
 const Allocation = require('../models/Allocation');
+const mlClient = require('../services/mlClient');
 
 // @desc    Create a new surplus donation listing
 // @route   POST /api/donations
@@ -248,10 +249,61 @@ const cancelDonation = async (req, res, next) => {
   }
 };
 
+// @desc    Get AI supply forecast for donor (Model C)
+// @route   GET /api/donations/supply-forecast
+// @access  Private (donor or coordinator)
+const getSupplyForecast = async (req, res, next) => {
+  try {
+    let donorId = req.query.donorId;
+    if (!donorId) {
+      if (req.user && req.user.donorCode) {
+        donorId = req.user.donorCode;
+      } else if (req.user && req.user._id) {
+        // Map Mongo ObjectId deterministically to one of the 120 dataset Donors (D001-D120)
+        const hash = String(req.user._id).split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+        const num = (hash % 120) + 1;
+        donorId = `D${String(num).padStart(3, '0')}`;
+      } else {
+        donorId = 'D001';
+      }
+    }
+
+    const targetDate =
+      req.query.targetDate || new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+    const forecast = await mlClient.getDonorSupplyForecast(String(donorId), String(targetDate));
+
+    if (!forecast) {
+      return res.json({
+        success: true,
+        isFallback: true,
+        donor_id: donorId,
+        forecast_date: targetDate,
+        predicted_surplus_meals: 45.0,
+        has_surplus_probability: 0.50,
+        surplus_p10: 25.0,
+        surplus_p90: 65.0,
+        confidence_score: 0.75,
+        donor_type: 'restaurant',
+        reason_codes: ['Fallback heuristic estimate: ML serving service offline.'],
+        disclaimer: 'Fallback estimate: ML serving service offline.',
+      });
+    }
+
+    res.json({
+      success: true,
+      ...forecast,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createDonation,
   getDonations,
   getDonationById,
   updateDonation,
   cancelDonation,
+  getSupplyForecast,
 };

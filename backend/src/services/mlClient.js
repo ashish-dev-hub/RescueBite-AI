@@ -135,10 +135,40 @@ async function getRecommendedAllocations(donation, donor, topK = 5) {
   }
 }
 
+/**
+ * Model C: Predict daily surplus meals for a commercial food donor
+ * @param {string} donorId - Target donor ID (e.g. 'D001')
+ * @param {string} forecastDate - Target date string 'YYYY-MM-DD'
+ * @returns {Promise<Object|null>} Supply forecast with uncertainty intervals and probability
+ */
+async function getDonorSupplyForecast(donorId, forecastDate) {
+  try {
+    const res = await fetchWithTimeout(`${ML_API_BASE}/api/v1/donor-supply/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        donor_id: donorId,
+        forecast_date: forecastDate,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || `HTTP ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.warn(`[ML Client] Donor supply forecast fallback for donor ${donorId}:`, error.message);
+    return null;
+  }
+}
+
 module.exports = {
   isAvailable,
   getModelsStatus,
   getDemandForecast,
   getRecommendedAllocations,
+  getDonorSupplyForecast,
   ML_API_BASE,
 };
