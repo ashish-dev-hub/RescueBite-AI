@@ -246,18 +246,8 @@ export default function DonorDashboard() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
                 <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
-                  RescueBite Model C — AI Surplus Supply Forecast
+                  RescueBite
                 </strong>
-                <span style={{
-                  fontSize: '0.7rem',
-                  backgroundColor: '#DCFCE7',
-                  color: '#15803D',
-                  padding: '0.1rem 0.45rem',
-                  borderRadius: '4px',
-                  fontWeight: 700,
-                }}>
-                  MODEL C AI
-                </span>
                 {aiSupplyForecast.has_surplus_probability !== undefined && (
                   <span style={{
                     fontSize: '0.7rem',
