@@ -74,11 +74,32 @@ const STATUS_CONFIG = {
     label: 'Cancelled',
   },
   open: {
-    bg: '#EAF4EC',
-    text: '#1E5A4A',
-    border: '#CBE5D3',
-    icon: Sparkles,
-    label: 'Open',
+    bg: '#EFF6FF',
+    text: '#1D4ED8',
+    border: '#BFDBFE',
+    icon: Clock,
+    label: 'Awaiting Match',
+  },
+  partially_fulfilled: {
+    bg: '#FEF3C7',
+    text: '#B45309',
+    border: '#FDE68A',
+    icon: Clock,
+    label: 'Partially Fulfilled',
+  },
+  fulfilled: {
+    bg: '#DCFCE7',
+    text: '#15803D',
+    border: '#86EFAC',
+    icon: CheckCircle2,
+    label: 'Fulfilled',
+  },
+  standard: {
+    bg: '#F3F4F6',
+    text: '#374151',
+    border: '#E5E7EB',
+    icon: Clock,
+    label: 'Standard',
   },
   urgent: {
     bg: '#FFF1ED',
@@ -86,6 +107,13 @@ const STATUS_CONFIG = {
     border: '#FED7AA',
     icon: AlertCircle,
     label: 'Urgent',
+  },
+  critical: {
+    bg: '#FEF2F2',
+    text: '#991B1B',
+    border: '#FECACA',
+    icon: AlertCircle,
+    label: 'Critical Deficit',
   },
 };
 

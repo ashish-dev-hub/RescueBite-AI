@@ -19,6 +19,8 @@ import {
   ShieldCheck,
   Calendar,
   Sparkles,
+  Eye,
+  Trash2,
 } from 'lucide-react';
 
 const getFutureDateTime = (hoursFromNow = 4) => {
@@ -48,6 +50,9 @@ export default function NgoDashboard() {
   // Reject modal state
   const [rejectingAllocId, setRejectingAllocId] = useState(null);
   const [rejectionReason, setRejectionReason] = useState('');
+
+  // Demand detail modal state
+  const [selectedDemand, setSelectedDemand] = useState(null);
 
   const fetchNgoData = async () => {
     setLoading(true);
@@ -171,6 +176,28 @@ export default function NgoDashboard() {
       setNotification({
         type: 'error',
         message: err.message || 'Failed to confirm delivery',
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleCancelDemand = async (demandId) => {
+    if (!window.confirm('Are you sure you want to cancel this meal demand request?')) return;
+    setActionLoading(true);
+    setNotification(null);
+    try {
+      await api.cancelDemand(demandId);
+      setNotification({
+        type: 'success',
+        message: 'Meal demand request successfully cancelled.',
+      });
+      setSelectedDemand(null);
+      await fetchNgoData();
+    } catch (err) {
+      setNotification({
+        type: 'error',
+        message: err.message || 'Failed to cancel meal demand',
       });
     } finally {
       setActionLoading(false);
@@ -555,6 +582,7 @@ export default function NgoDashboard() {
                   <th>Beneficiaries</th>
                   <th>Urgency</th>
                   <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -580,10 +608,52 @@ export default function NgoDashboard() {
                     </td>
                     <td>{demand.beneficiaryCount} people</td>
                     <td>
-                      <StatusBadge status={demand.urgency} />
+                      <span
+                        onClick={() => setSelectedDemand(demand)}
+                        style={{ cursor: 'pointer', display: 'inline-block' }}
+                        title="Click to view details"
+                      >
+                        <StatusBadge status={demand.urgency} />
+                      </span>
                     </td>
                     <td>
-                      <StatusBadge status={demand.status} />
+                      <span
+                        onClick={() => setSelectedDemand(demand)}
+                        style={{ cursor: 'pointer', display: 'inline-block' }}
+                        title="Click to view details"
+                      >
+                        <StatusBadge status={demand.status} />
+                      </span>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <button
+                          onClick={() => setSelectedDemand(demand)}
+                          className="btn btn-outline btn-sm"
+                          style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
+                          title="View demand details"
+                        >
+                          <Eye size={13} />
+                          <span>View</span>
+                        </button>
+                        {demand.status === 'open' && (
+                          <button
+                            onClick={() => handleCancelDemand(demand._id)}
+                            disabled={actionLoading}
+                            className="btn btn-outline btn-sm"
+                            style={{
+                              color: '#DC2626',
+                              borderColor: '#FECACA',
+                              padding: '0.25rem 0.6rem',
+                              fontSize: '0.78rem',
+                            }}
+                            title="Cancel this demand request"
+                          >
+                            <Trash2 size={13} />
+                            <span>Cancel</span>
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -774,6 +844,161 @@ export default function NgoDashboard() {
             Confirm Decline
           </button>
         </div>
+      </Modal>
+
+      {/* Demand Details Modal */}
+      <Modal
+        isOpen={Boolean(selectedDemand)}
+        onClose={() => setSelectedDemand(null)}
+        title="Meal Demand Details"
+        subtitle="Review your registered meal demand and real-time fulfillment status"
+        maxWidth="520px"
+      >
+        {selectedDemand && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+              gap: '0.75rem',
+            }}>
+              <div style={{
+                background: 'var(--color-pale-neutral)',
+                border: '1px solid var(--color-soft-border)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '0.75rem',
+              }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>Requested Meals</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.25rem' }}>
+                  {selectedDemand.requestedMeals} meals
+                </div>
+              </div>
+
+              <div style={{
+                background: 'var(--color-pale-neutral)',
+                border: '1px solid var(--color-soft-border)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '0.75rem',
+              }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>Beneficiaries</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.25rem' }}>
+                  {selectedDemand.beneficiaryCount} people
+                </div>
+              </div>
+
+              <div style={{
+                background: 'var(--color-pale-neutral)',
+                border: '1px solid var(--color-soft-border)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '0.75rem',
+              }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>Fulfilled So Far</div>
+                <div style={{
+                  fontSize: '1.25rem',
+                  fontWeight: 800,
+                  color: selectedDemand.fulfilledMeals > 0 ? 'var(--color-network-green)' : 'var(--color-muted-slate)',
+                  marginTop: '0.25rem',
+                }}>
+                  {selectedDemand.fulfilledMeals || 0} meals
+                </div>
+              </div>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.75rem',
+              background: '#FFF',
+              border: '1px solid var(--color-soft-border)',
+              borderRadius: 'var(--radius-sm)',
+              padding: '1rem',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>Urgency Priority</span>
+                <StatusBadge status={selectedDemand.urgency} />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>Current Status</span>
+                <StatusBadge status={selectedDemand.status} />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>Needed By Deadline</span>
+                <strong style={{ fontSize: '0.85rem', color: 'var(--color-deep-forest)' }}>
+                  {new Date(selectedDemand.neededBy).toLocaleString([], {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </strong>
+              </div>
+
+              {selectedDemand.receivingCapacity && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>Receiving Capacity</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
+                    {selectedDemand.receivingCapacity} meals
+                  </span>
+                </div>
+              )}
+
+              {selectedDemand.dietaryPreferences && selectedDemand.dietaryPreferences.length > 0 && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>Dietary Preferences</span>
+                  <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+                    {selectedDemand.dietaryPreferences.map((p, idx) => (
+                      <span key={idx} className="badge badge-subtle" style={{ textTransform: 'capitalize' }}>
+                        {p}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedDemand.notes && (
+                <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--color-soft-border)', paddingTop: '0.5rem' }}>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', display: 'block', marginBottom: '0.25rem' }}>
+                    Kitchen Notes / Instructions:
+                  </span>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--color-deep-forest)', margin: 0, whiteSpace: 'pre-line' }}>
+                    {selectedDemand.notes}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: '0.5rem',
+            }}>
+              {selectedDemand.status === 'open' ? (
+                <button
+                  type="button"
+                  onClick={() => handleCancelDemand(selectedDemand._id)}
+                  disabled={actionLoading}
+                  className="btn btn-outline btn-sm"
+                  style={{ color: '#DC2626', borderColor: '#FECACA' }}
+                >
+                  <Trash2 size={14} />
+                  <span>Cancel This Demand</span>
+                </button>
+              ) : <div />}
+
+              <button
+                type="button"
+                onClick={() => setSelectedDemand(null)}
+                className="btn btn-primary btn-sm"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
