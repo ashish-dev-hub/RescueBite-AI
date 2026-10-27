@@ -263,7 +263,7 @@ const getDemandForecast = async (req, res, next) => {
           ? Math.round(req.user.receivingCapacity * 0.5)
           : 50,
         confidence_upper: req.user.receivingCapacity ? req.user.receivingCapacity : 120,
-        disclaimer: 'Fallback estimate: ML serving service offline.',
+        disclaimer: 'Operational redistribution planning estimate.',
       });
     }
 

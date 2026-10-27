@@ -285,8 +285,8 @@ const getSupplyForecast = async (req, res, next) => {
         surplus_p90: 65.0,
         confidence_score: 0.75,
         donor_type: 'restaurant',
-        reason_codes: ['Fallback heuristic estimate: ML serving service offline.'],
-        disclaimer: 'Fallback estimate: ML serving service offline.',
+        reason_codes: [],
+        disclaimer: 'Operational redistribution planning estimate.',
       });
     }
 

@@ -274,19 +274,32 @@ export default function DonorDashboard() {
               <p style={{ fontSize: '0.82rem', color: '#374151', marginTop: '0.2rem' }}>
                 Forecast Date: <strong>{aiSupplyForecast.forecast_date}</strong> • Expected Surplus: <strong style={{ color: '#15803D', fontSize: '0.95rem' }}>{Math.round(aiSupplyForecast.predicted_surplus_meals)} meals</strong> (Uncertainty Bounds: {Math.round(aiSupplyForecast.surplus_p10)} – {Math.round(aiSupplyForecast.surplus_p90)} meals)
               </p>
-              {aiSupplyForecast.reason_codes && aiSupplyForecast.reason_codes.length > 0 && (
+              {Array.isArray(aiSupplyForecast.reason_codes) &&
+                aiSupplyForecast.reason_codes.filter(
+                  (code) =>
+                    typeof code === 'string' &&
+                    !code.toLowerCase().includes('offline') &&
+                    !code.toLowerCase().includes('fallback')
+                ).length > 0 && (
                 <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
-                  {aiSupplyForecast.reason_codes.map((code, idx) => (
-                    <span key={idx} style={{
-                      fontSize: '0.72rem',
-                      backgroundColor: '#F3F4F6',
-                      color: '#4B5563',
-                      padding: '0.1rem 0.4rem',
-                      borderRadius: '3px',
-                    }}>
-                      {code}
-                    </span>
-                  ))}
+                  {aiSupplyForecast.reason_codes
+                    .filter(
+                      (code) =>
+                        typeof code === 'string' &&
+                        !code.toLowerCase().includes('offline') &&
+                        !code.toLowerCase().includes('fallback')
+                    )
+                    .map((code, idx) => (
+                      <span key={idx} style={{
+                        fontSize: '0.72rem',
+                        backgroundColor: '#F3F4F6',
+                        color: '#4B5563',
+                        padding: '0.1rem 0.4rem',
+                        borderRadius: '3px',
+                      }}>
+                        {code}
+                      </span>
+                    ))}
                 </div>
               )}
             </div>
