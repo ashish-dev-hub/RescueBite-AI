@@ -93,11 +93,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   );
 
   const handleGoogleLoginError = useCallback(() => {
-    setError('Google popup window was blocked by your browser. Please allow popups for this site, or sign in using your email and password below.');
+    setError('Google popup window was blocked by your browser. Please click the pop-up icon in your browser URL bar to allow popups, or sign in using your email and password below.');
   }, []);
 
   const handleGoogleRegisterError = useCallback(() => {
-    setError('Google popup window was blocked by your browser. Please allow popups for this site, or register using your email and password below.');
+    setError('Google popup window was blocked by your browser. Please click the pop-up icon in your browser URL bar to allow popups, or register using your email and password below.');
   }, []);
 
 
@@ -276,6 +276,15 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   width="300"
                   useOneTap={false}
                 />
+                <p style={{
+                  fontSize: '0.72rem',
+                  color: 'var(--color-muted-slate)',
+                  textAlign: 'center',
+                  marginTop: '0.45rem',
+                  lineHeight: 1.35,
+                }}>
+                  Tip: If Google popup doesn't open, allow popups in your URL bar or use email & password below.
+                </p>
               </div>
             ) : (
               <div>
@@ -503,6 +512,15 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   width="300"
                   useOneTap={false}
                 />
+                <p style={{
+                  fontSize: '0.72rem',
+                  color: 'var(--color-muted-slate)',
+                  textAlign: 'center',
+                  marginTop: '0.45rem',
+                  lineHeight: 1.35,
+                }}>
+                  Tip: If Google popup doesn't open, allow popups in your URL bar or use email & password below.
+                </p>
               </div>
             ) : (
               <div>
