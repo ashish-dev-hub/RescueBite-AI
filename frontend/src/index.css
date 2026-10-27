@@ -373,6 +373,24 @@ input::-ms-clear {
   background: #FFFFFF;
 }
 
+.data-table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.data-table-wrapper::-webkit-scrollbar-track {
+  background: #F1F5F9;
+  border-radius: 3px;
+}
+
+.data-table-wrapper::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+
+.data-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
 .data-table {
   width: 100%;
   min-width: 640px;
@@ -854,6 +872,14 @@ input::-ms-clear {
   .impact-metrics-grid {
     grid-template-columns: 1fr;
     gap: 0.75rem;
+  }
+  .fresh-card {
+    padding: 1rem !important;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 0.65rem 0.75rem !important;
+    font-size: 0.82rem !important;
   }
   .navbar-auth-text {
     display: none;

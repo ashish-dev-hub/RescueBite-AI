@@ -519,27 +519,46 @@ export default function NgoDashboard() {
           </span>
         </div>
 
-        <div className="data-table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Needed By</th>
-                <th>Requested Meals</th>
-                <th>Fulfilled</th>
-                <th>Beneficiaries</th>
-                <th>Urgency</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {demands.length === 0 ? (
+        {demands.length === 0 ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '2.5rem 1rem',
+            border: '1px dashed var(--color-soft-border)',
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--color-pale-neutral)',
+            width: '100%',
+          }}>
+            <Soup size={40} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
+            <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
+              No active meal demands registered
+            </p>
+            <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
+              Register your kitchen's daily beneficiary meal requirements so coordinators can assign surplus food.
+            </p>
+            <button
+              onClick={handleOpenDemandModal}
+              className="btn btn-primary btn-sm"
+              style={{ margin: '0 auto' }}
+            >
+              <Plus size={14} />
+              <span>Submit Meal Demand</span>
+            </button>
+          </div>
+        ) : (
+          <div className="data-table-wrapper">
+            <table className="data-table">
+              <thead>
                 <tr>
-                  <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
-                    No demands registered yet. Click "Submit Meal Demand" above.
-                  </td>
+                  <th>Needed By</th>
+                  <th>Requested Meals</th>
+                  <th>Fulfilled</th>
+                  <th>Beneficiaries</th>
+                  <th>Urgency</th>
+                  <th>Status</th>
                 </tr>
-              ) : (
-                demands.map((demand) => (
+              </thead>
+              <tbody>
+                {demands.map((demand) => (
                   <tr key={demand._id}>
                     <td>
                       <strong style={{ fontSize: '0.88rem' }}>
@@ -567,11 +586,11 @@ export default function NgoDashboard() {
                       <StatusBadge status={demand.status} />
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* Submit Demand Modal */}

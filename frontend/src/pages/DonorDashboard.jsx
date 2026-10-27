@@ -375,32 +375,47 @@ export default function DonorDashboard() {
           </span>
         </div>
 
-        <div className="data-table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Food Item</th>
-                <th>Category</th>
-                <th>Remaining / Total</th>
-                <th>Safe Storage</th>
-                <th>Pickup Deadline</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {donations.length === 0 ? (
+        {donations.length === 0 ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '2.5rem 1rem',
+            border: '1px dashed var(--color-soft-border)',
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--color-pale-neutral)',
+            width: '100%',
+          }}>
+            <Package size={40} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
+            <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
+              No active surplus listings
+            </p>
+            <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
+              Click "List Surplus Food" below to publish your first batch to local NGOs.
+            </p>
+            <button
+              onClick={handleOpenModal}
+              className="btn btn-primary btn-sm"
+              style={{ margin: '0 auto' }}
+            >
+              <Plus size={14} />
+              <span>List Surplus Food</span>
+            </button>
+          </div>
+        ) : (
+          <div className="data-table-wrapper">
+            <table className="data-table">
+              <thead>
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '3rem 1rem' }}>
-                    <Package size={36} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
-                    <p style={{ fontSize: '0.95rem', fontWeight: 600 }}>No active surplus listings</p>
-                    <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
-                      Click "List Surplus Food" above to publish your first batch to local NGOs.
-                    </p>
-                  </td>
+                  <th>Food Item</th>
+                  <th>Category</th>
+                  <th>Remaining / Total</th>
+                  <th>Safe Storage</th>
+                  <th>Pickup Deadline</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              ) : (
-                donations.map((item) => {
+              </thead>
+              <tbody>
+                {donations.map((item) => {
                   const deadlineDate = new Date(item.pickupDeadline);
                   const isExpiringSoon = deadlineDate - new Date() < 6 * 60 * 60 * 1000 && item.status === 'available';
 
@@ -474,11 +489,11 @@ export default function DonorDashboard() {
                       </td>
                     </tr>
                   );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* List Surplus Food Modal */}
