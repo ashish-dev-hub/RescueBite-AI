@@ -6,7 +6,7 @@ const Demand = require('../models/Demand');
 const VALID_TRANSITIONS = {
   proposed: ['approved', 'rejected', 'cancelled'],
   approved: ['accepted', 'rejected', 'cancelled'],
-  accepted: ['picked_up', 'cancelled'],
+  accepted: ['picked_up', 'delivered', 'cancelled'],
   picked_up: ['delivered', 'cancelled'],
   rejected: [],
   delivered: [],
@@ -307,6 +307,7 @@ const updateAllocationStatus = async (req, res, next) => {
       // Update donation status if all items are picked up
       await Donation.findByIdAndUpdate(allocation.donationId, { status: 'picked_up' });
     } else if (nextStatus === 'delivered') {
+      if (!allocation.pickedUpAt) allocation.pickedUpAt = new Date();
       allocation.deliveredAt = new Date();
       await Donation.findByIdAndUpdate(allocation.donationId, { status: 'delivered' });
     }

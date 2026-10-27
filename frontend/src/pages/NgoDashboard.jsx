@@ -312,7 +312,7 @@ export default function NgoDashboard() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                 <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
-                  RescueBite Model A — Tomorrow's Demand Forecast
+                  RescueBite Tomorrow's Demand Forecast
                 </strong>
                 <span style={{
                   fontSize: '0.7rem',
