@@ -89,20 +89,27 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Check if account was created via Google OAuth and has no password set
+    // If account was created via Google OAuth and has no password set yet,
+    // seamlessly link this password so the user can log in via both Google and Email/Password!
     if (!user.passwordHash && user.googleId) {
-      return res.status(400).json({
-        success: false,
-        message: 'This account was registered using Google Sign-In. Please click the "Continue with Google" button above to log in.',
-      });
-    }
-
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: 'Incorrect password for this account. Please try again or use Google Sign-In above.',
-      });
+      if (password && password.length >= 6) {
+        const salt = await bcrypt.genSalt(10);
+        user.passwordHash = await bcrypt.hash(password, salt);
+        await user.save();
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'This account was registered using Google. Please enter a password of at least 6 characters to log in, or click "Continue with Google".',
+        });
+      }
+    } else {
+      const isMatch = await user.matchPassword(password);
+      if (!isMatch) {
+        return res.status(401).json({
+          success: false,
+          message: 'Incorrect password for this account. Please try again or use Google Sign-In above.',
+        });
+      }
     }
 
     const token = generateToken(user._id);

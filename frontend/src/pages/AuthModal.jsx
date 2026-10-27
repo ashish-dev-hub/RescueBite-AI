@@ -93,11 +93,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   );
 
   const handleGoogleLoginError = useCallback(() => {
-    setError('Google sign-in was cancelled or failed.');
+    setError('Google popup window was blocked by your browser. Please allow popups for this site, or sign in using your email and password below.');
   }, []);
 
   const handleGoogleRegisterError = useCallback(() => {
-    setError('Google registration was cancelled or failed.');
+    setError('Google popup window was blocked by your browser. Please allow popups for this site, or register using your email and password below.');
   }, []);
 
 
@@ -264,7 +264,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           {/* Google Auth Block for Login */}
           <div style={{ marginBottom: '1.25rem' }}>
             {hasConfiguredGoogleClient ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: '44px' }}>
                 <GoogleLogin
                   onSuccess={handleGoogleSuccessCallback}
                   onError={handleGoogleLoginError}
@@ -273,7 +273,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   size="large"
                   shape="rectangular"
                   text="continue_with"
-                  width="360"
+                  width="300"
                   useOneTap={false}
                 />
               </div>
@@ -491,7 +491,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
           {/* Google Register Option */}
           <div style={{ marginBottom: '1.25rem' }}>
             {hasConfiguredGoogleClient ? (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: '44px' }}>
                 <GoogleLogin
                   onSuccess={handleGoogleSuccessCallback}
                   onError={handleGoogleRegisterError}
@@ -500,7 +500,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   size="large"
                   shape="rectangular"
                   text="signup_with"
-                  width="360"
+                  width="300"
                   useOneTap={false}
                 />
               </div>
