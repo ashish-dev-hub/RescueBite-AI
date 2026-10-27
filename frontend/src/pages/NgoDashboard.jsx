@@ -21,6 +21,12 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+const getFutureDateTime = (hoursFromNow = 4) => {
+  const d = new Date(Date.now() + hoursFromNow * 3600 * 1000);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+
 export default function NgoDashboard() {
   const { user } = useAuth();
   const [demands, setDemands] = useState([]);
@@ -34,7 +40,7 @@ export default function NgoDashboard() {
   // Demand form state
   const [requestedMeals, setRequestedMeals] = useState('');
   const [beneficiaryCount, setBeneficiaryCount] = useState('');
-  const [neededBy, setNeededBy] = useState('');
+  const [neededBy, setNeededBy] = useState(() => getFutureDateTime(4));
   const [urgency, setUrgency] = useState('standard');
   const [notes, setNotes] = useState('');
   const [dietaryPrefs, setDietaryPrefs] = useState([]);
@@ -74,16 +80,34 @@ export default function NgoDashboard() {
     fetchNgoData();
   }, []);
 
+  const handleOpenDemandModal = () => {
+    if (!neededBy) {
+      setNeededBy(getFutureDateTime(4));
+    }
+    setIsModalOpen(true);
+  };
+
   const handleCreateDemand = async (e) => {
     e.preventDefault();
     setActionLoading(true);
     setNotification(null);
 
     try {
+      let validNeededBy = neededBy;
+      if (!validNeededBy) {
+        validNeededBy = getFutureDateTime(4);
+      } else if (validNeededBy.length === 10) {
+        validNeededBy = `${validNeededBy}T18:00`;
+      }
+      const parsedDate = new Date(validNeededBy);
+      const safeNeededByIso = isNaN(parsedDate.getTime())
+        ? new Date(Date.now() + 4 * 3600 * 1000).toISOString()
+        : parsedDate.toISOString();
+
       await api.createDemand({
         requestedMeals: parseInt(requestedMeals, 10),
         beneficiaryCount: parseInt(beneficiaryCount, 10),
-        neededBy: new Date(neededBy).toISOString(),
+        neededBy: safeNeededByIso,
         receivingCapacity: user?.receivingCapacity || parseInt(requestedMeals, 10) || 0,
         urgency,
         notes,
@@ -99,7 +123,7 @@ export default function NgoDashboard() {
       setIsModalOpen(false);
       setRequestedMeals('');
       setBeneficiaryCount('');
-      setNeededBy('');
+      setNeededBy(getFutureDateTime(4));
       setNotes('');
 
       await fetchNgoData();
@@ -193,7 +217,7 @@ export default function NgoDashboard() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleOpenDemandModal}
             className="btn btn-primary"
             style={{ padding: '0.65rem 1.25rem' }}
           >
@@ -589,14 +613,63 @@ export default function NgoDashboard() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div className="form-group">
-              <label className="form-label">Needed By (Deadline) *</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                <label className="form-label" style={{ marginBottom: 0 }}>Needed By (Deadline) *</label>
+                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Date & Time</span>
+              </div>
               <input
                 type="datetime-local"
                 required
                 className="form-input"
                 value={neededBy}
                 onChange={(e) => setNeededBy(e.target.value)}
+                onBlur={(e) => {
+                  const val = e.target.value;
+                  if (!val) {
+                    setNeededBy(getFutureDateTime(4));
+                  } else if (val.length === 10) {
+                    setNeededBy(`${val}T18:00`);
+                  }
+                }}
               />
+              <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
+                {[
+                  { label: '+4 Hours', hours: 4 },
+                  { label: '+8 Hours', hours: 8 },
+                  { label: 'Tomorrow 12 PM', target: 'noon' },
+                  { label: 'Tomorrow 6 PM', target: 'evening' },
+                ].map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      if (preset.hours) {
+                        setNeededBy(getFutureDateTime(preset.hours));
+                      } else if (preset.target === 'noon') {
+                        const d = new Date(Date.now() + 86400000);
+                        const pad = (n) => String(n).padStart(2, '0');
+                        setNeededBy(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T12:00`);
+                      } else if (preset.target === 'evening') {
+                        const d = new Date(Date.now() + 86400000);
+                        const pad = (n) => String(n).padStart(2, '0');
+                        setNeededBy(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T18:00`);
+                      }
+                    }}
+                    style={{
+                      fontSize: '0.72rem',
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid var(--color-soft-border)',
+                      backgroundColor: '#F3F4F6',
+                      color: '#374151',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="form-group">

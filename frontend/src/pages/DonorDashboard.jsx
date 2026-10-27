@@ -19,6 +19,12 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+const getFutureDateTime = (hoursFromNow = 4) => {
+  const d = new Date(Date.now() + hoursFromNow * 3600 * 1000);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+
 export default function DonorDashboard() {
   const { user } = useAuth();
   const [donations, setDonations] = useState([]);
@@ -32,7 +38,7 @@ export default function DonorDashboard() {
   const [category, setCategory] = useState('Prepared Hot Meals');
   const [quantityMeals, setQuantityMeals] = useState('');
   const [storageInfo, setStorageInfo] = useState('Refrigerated (4°C)');
-  const [pickupDeadline, setPickupDeadline] = useState('');
+  const [pickupDeadline, setPickupDeadline] = useState(() => getFutureDateTime(4));
   const [dietaryTags, setDietaryTags] = useState([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [address, setAddress] = useState(user?.location?.address || '');
@@ -66,18 +72,36 @@ export default function DonorDashboard() {
     fetchMyDonations();
   }, []);
 
+  const handleOpenModal = () => {
+    if (!pickupDeadline) {
+      setPickupDeadline(getFutureDateTime(4));
+    }
+    setIsModalOpen(true);
+  };
+
   const handleCreateDonation = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setNotification(null);
 
     try {
+      let validDeadline = pickupDeadline;
+      if (!validDeadline) {
+        validDeadline = getFutureDateTime(4);
+      } else if (validDeadline.length === 10) {
+        validDeadline = `${validDeadline}T18:00`;
+      }
+      const parsedDate = new Date(validDeadline);
+      const safeDeadlineIso = isNaN(parsedDate.getTime())
+        ? new Date(Date.now() + 4 * 3600 * 1000).toISOString()
+        : parsedDate.toISOString();
+
       await api.createDonation({
         foodName,
         category,
         quantityMeals: parseInt(quantityMeals, 10),
         storageInfo,
-        pickupDeadline: new Date(pickupDeadline).toISOString(),
+        pickupDeadline: safeDeadlineIso,
         dietaryInfo: dietaryTags,
         specialInstructions,
         location: {
@@ -96,7 +120,7 @@ export default function DonorDashboard() {
       setFoodName('');
       setQuantityMeals('');
       setSpecialInstructions('');
-      setPickupDeadline('');
+      setPickupDeadline(getFutureDateTime(4));
       setDietaryTags([]);
 
       await fetchMyDonations();
@@ -178,7 +202,7 @@ export default function DonorDashboard() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleOpenModal}
             className="btn btn-primary"
             style={{ padding: '0.65rem 1.25rem' }}
           >
@@ -525,14 +549,63 @@ export default function DonorDashboard() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Pickup Deadline *</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                <label className="form-label" style={{ marginBottom: 0 }}>Pickup Deadline *</label>
+                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Date & Time</span>
+              </div>
               <input
                 type="datetime-local"
                 required
                 className="form-input"
                 value={pickupDeadline}
                 onChange={(e) => setPickupDeadline(e.target.value)}
+                onBlur={(e) => {
+                  const val = e.target.value;
+                  if (!val) {
+                    setPickupDeadline(getFutureDateTime(4));
+                  } else if (val.length === 10) {
+                    setPickupDeadline(`${val}T18:00`);
+                  }
+                }}
               />
+              <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
+                {[
+                  { label: '+4 Hours', hours: 4 },
+                  { label: '+8 Hours', hours: 8 },
+                  { label: 'Tomorrow 12 PM', target: 'noon' },
+                  { label: 'Tomorrow 6 PM', target: 'evening' },
+                ].map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      if (preset.hours) {
+                        setPickupDeadline(getFutureDateTime(preset.hours));
+                      } else if (preset.target === 'noon') {
+                        const d = new Date(Date.now() + 86400000);
+                        const pad = (n) => String(n).padStart(2, '0');
+                        setPickupDeadline(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T12:00`);
+                      } else if (preset.target === 'evening') {
+                        const d = new Date(Date.now() + 86400000);
+                        const pad = (n) => String(n).padStart(2, '0');
+                        setPickupDeadline(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T18:00`);
+                      }
+                    }}
+                    style={{
+                      fontSize: '0.72rem',
+                      padding: '0.2rem 0.5rem',
+                      borderRadius: '4px',
+                      border: '1px solid var(--color-soft-border)',
+                      backgroundColor: '#F3F4F6',
+                      color: '#374151',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
