@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
 import { Building, Soup, Compass, AlertCircle, Info, Eye, EyeOff } from 'lucide-react';
@@ -54,31 +54,51 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [address, setAddress] = useState('');
   const [receivingCapacity, setReceivingCapacity] = useState('');
 
-  const handleGoogleSuccess = async (credential) => {
-    setError('');
-    setLoading(true);
-    try {
-      const extraData = mode === 'register' ? {
-        role: registerRole,
-        organization,
-        location: { address },
-        receivingCapacity: registerRole === 'ngo' ? (parseInt(receivingCapacity, 10) || 0) : 0,
-      } : {};
+  // Keep latest registration context in a ref so GoogleLogin callbacks never need to re-create
+  const regContextRef = useRef({ mode, registerRole, organization, address, receivingCapacity });
+  useEffect(() => {
+    regContextRef.current = { mode, registerRole, organization, address, receivingCapacity };
+  }, [mode, registerRole, organization, address, receivingCapacity]);
 
-      const loggedUser = await loginWithGoogle(credential, extraData);
-      if (onSuccess) onSuccess(loggedUser);
-      onClose();
-    } catch (err) {
-      const msg = err.message || '';
-      if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
-        setError('Cannot connect to the server. Please check your internet connection and try again.');
-      } else {
-        setError(msg || 'Google sign-in failed. Please try again.');
+  // Stable Google Auth success handler (does not re-create on form keystrokes)
+  const handleGoogleSuccessCallback = useCallback(
+    async (credentialResponse) => {
+      if (!credentialResponse?.credential) return;
+      setError('');
+      setLoading(true);
+      try {
+        const { mode: currentMode, registerRole: currentRole, organization: currentOrg, address: currentAddr, receivingCapacity: currentCap } = regContextRef.current;
+        const extraData = currentMode === 'register' ? {
+          role: currentRole,
+          organization: currentOrg,
+          location: { address: currentAddr },
+          receivingCapacity: currentRole === 'ngo' ? (parseInt(currentCap, 10) || 0) : 0,
+        } : {};
+
+        const loggedUser = await loginWithGoogle(credentialResponse.credential, extraData);
+        if (onSuccess) onSuccess(loggedUser);
+        onClose();
+      } catch (err) {
+        const msg = err.message || '';
+        if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
+          setError('Cannot connect to the server. Please check your internet connection and try again.');
+        } else {
+          setError(msg || 'Google sign-in failed. Please try again.');
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [loginWithGoogle, onSuccess, onClose]
+  );
+
+  const handleGoogleLoginError = useCallback(() => {
+    setError('Google sign-in was cancelled or failed.');
+  }, []);
+
+  const handleGoogleRegisterError = useCallback(() => {
+    setError('Google registration was cancelled or failed.');
+  }, []);
 
 
   const handleDemoGoogleLogin = async () => {
@@ -246,14 +266,15 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             {hasConfiguredGoogleClient ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                 <GoogleLogin
-                  onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
-                  onError={() => setError('Google sign-in was cancelled or failed.')}
+                  onSuccess={handleGoogleSuccessCallback}
+                  onError={handleGoogleLoginError}
                   type="standard"
                   theme="outline"
                   size="large"
                   shape="rectangular"
                   text="continue_with"
-                  width="100%"
+                  width="360"
+                  useOneTap={false}
                 />
               </div>
             ) : (
@@ -472,14 +493,15 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
             {hasConfiguredGoogleClient ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                 <GoogleLogin
-                  onSuccess={(res) => res.credential && handleGoogleSuccess(res.credential)}
-                  onError={() => setError('Google registration was cancelled or failed.')}
+                  onSuccess={handleGoogleSuccessCallback}
+                  onError={handleGoogleRegisterError}
                   type="standard"
                   theme="outline"
                   size="large"
                   shape="rectangular"
                   text="signup_with"
-                  width="100%"
+                  width="360"
+                  useOneTap={false}
                 />
               </div>
             ) : (

@@ -21,6 +21,12 @@ const app = express();
 // Middlewares
 app.use(express.json());
 
+// Set Cross-Origin-Opener-Policy for seamless Google OAuth popup postMessage communication
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  next();
+});
+
 // Support CORS_ORIGIN env variable (single or comma-separated list), localhost, and Vercel domains
 const configuredOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)
