@@ -298,31 +298,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                 </span>
               </div>
 
-              {/* Match Confidence Score Gauge */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                backgroundColor: 'var(--color-pale-neutral)',
-                padding: '0.65rem 0.85rem',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: '1rem',
-              }}>
-                <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-dark-slate)' }}>
-                  ML Match Confidence
-                </span>
-                <span style={{
-                  fontSize: '0.82rem',
-                  fontWeight: 800,
-                  backgroundColor: 'var(--color-soft-mint)',
-                  color: 'var(--color-network-green)',
-                  padding: '0.2rem 0.6rem',
-                  borderRadius: 'var(--radius-pill)',
-                  border: '1px solid var(--color-soft-mint-border)',
-                }}>
-                  {currentScenario.confidence}% Feasible
-                </span>
-              </div>
+              
 
               {/* Visual Connected Route Path */}
               <div style={{ position: 'relative', padding: '0.25rem 0' }}>
