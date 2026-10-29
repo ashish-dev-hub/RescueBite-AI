@@ -135,31 +135,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         <div className="hero-split-grid">
           {/* LEFT: Engaging Value Story & CTAs */}
           <div className="hero-text-content">
-            {/* Live Operational Status Pill */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.55rem',
-              padding: '0.35rem 0.85rem',
-              borderRadius: 'var(--radius-pill)',
-              backgroundColor: 'var(--color-soft-mint)',
-              border: '1px solid var(--color-soft-mint-border)',
-              color: 'var(--color-network-green)',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              marginBottom: '1.25rem',
-            }}>
-              <span style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-network-green)',
-                display: 'inline-block',
-                animation: 'pingBadge 2.2s infinite',
-              }} />
-              <span>THE FRESH NETWORK • LIVE AI FOOD RESCUE</span>
-            </div>
+            
 
             <h1 className="hero-headline">
               Good food. Better routes.{' '}
@@ -258,41 +234,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               )}
             </div>
 
-            {/* Community Social Proof Strip */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              paddingTop: '1rem',
-              borderTop: '1px solid var(--color-soft-mint-border)',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                {['#2F7D67', '#173B35', '#E78665', '#0F766E'].map((bg, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      backgroundColor: bg,
-                      color: '#FFFFFF',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.65rem',
-                      fontWeight: 700,
-                      border: '2px solid #FFFFFF',
-                      marginLeft: idx === 0 ? 0 : '-7px',
-                    }}
-                  >
-                    {idx === 0 ? 'MB' : idx === 1 ? 'HS' : idx === 2 ? 'AB' : 'RB'}
-                  </div>
-                ))}
-              </div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-dark-slate)', margin: 0 }}>
-                Trusted by <strong>50+ commercial food donors</strong> & shelters across 14 districts
-              </p>
-            </div>
+            
           </div>
 
           {/* RIGHT: Creative Interactive Live AI Match Card */}
@@ -343,28 +285,17 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleNextScenario}
-                  title="Click to view another live scenario"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.35rem',
-                    background: 'var(--color-pale-neutral)',
-                    border: '1px solid var(--color-soft-border)',
-                    borderRadius: 'var(--radius-pill)',
-                    padding: '0.25rem 0.65rem',
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
-                    color: 'var(--color-network-green)',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  <RefreshCw size={12} />
-                  <span>Next Live Simulation</span>
-                </button>
+                <span style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  backgroundColor: 'var(--color-soft-mint)',
+                  color: 'var(--color-network-green)',
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: 'var(--radius-pill)',
+                  border: '1px solid var(--color-soft-mint-border)',
+                }}>
+                  Live Dispatch
+                </span>
               </div>
 
               {/* Match Confidence Score Gauge */}
