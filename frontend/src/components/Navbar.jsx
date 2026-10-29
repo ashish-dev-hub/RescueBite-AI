@@ -86,13 +86,14 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
   return (
     <header style={{
-      backgroundColor: 'var(--color-deep-forest)',
+      backgroundColor: 'rgba(23, 59, 53, 0.98)',
+      backdropFilter: 'blur(12px)',
       color: '#FFFFFF',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
       position: 'sticky',
       top: 0,
       zIndex: 50,
-      boxShadow: '0 2px 8px rgba(17, 43, 39, 0.25)',
+      boxShadow: '0 4px 16px rgba(17, 43, 39, 0.28)',
       width: '100%',
     }}>
       <div className="navbar-container" style={{
@@ -142,7 +143,10 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                 fontWeight: 700,
                 backgroundColor: 'rgba(234, 244, 236, 0.2)',
                 color: '#A5D6B8',
-                padding: '0.1rem 0.35rem',
+                padding: '0.1rem 0.45rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.3rem',
                 borderRadius: '4px',
               }}>
                 AI

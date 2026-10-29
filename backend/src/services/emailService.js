@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
 
 /**
- * Configure email transporter
- * Supports custom SMTP (Host, Port, User, Pass) or service (like 'gmail')
+ * Configure Nodemailer email transporter
+ * Supports standard Gmail service or custom SMTP (Host, Port, User, Pass)
  */
 const getTransporter = () => {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_SERVICE, EMAIL_USER, EMAIL_PASS } = process.env;
 
+  // Custom SMTP configuration (e.g. SendGrid, Mailgun, Brevo, AWS SES, or custom domain)
   if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
     return nodemailer.createTransport({
       host: SMTP_HOST,
@@ -19,6 +20,7 @@ const getTransporter = () => {
     });
   }
 
+  // Gmail or specified email service with App Password
   if (EMAIL_USER && EMAIL_PASS) {
     return nodemailer.createTransport({
       service: EMAIL_SERVICE || 'gmail',
@@ -33,13 +35,22 @@ const getTransporter = () => {
 };
 
 /**
- * Send password reset OTP email
+ * Send password reset OTP email using Nodemailer
  * @param {string} to - Recipient email
- * @param {string} otp - 6-digit OTP code
+ * @param {string} otp - 6-digit OTP verification code
  * @param {string} userName - User's name
  */
 const sendPasswordResetEmail = async (to, otp, userName = 'RescueBite Partner') => {
   const transporter = getTransporter();
+
+  if (!transporter) {
+    console.error('[RescueBite Auth] Nodemailer error: Email transporter not configured.');
+    console.error('Please configure EMAIL_USER & EMAIL_PASS (or SMTP_USER & SMTP_PASS) in backend environment variables.');
+    return {
+      sent: false,
+      error: 'SMTP credentials are not configured on the server. Please add EMAIL_USER and EMAIL_PASS (Gmail App Password) in your backend environment variables.',
+    };
+  }
 
   const appName = 'RescueBite AI';
   const fromAddress = process.env.EMAIL_FROM || `"RescueBite AI Support" <${process.env.EMAIL_USER || process.env.SMTP_USER || 'no-reply@rescuebite.org'}>`;
@@ -96,21 +107,6 @@ const sendPasswordResetEmail = async (to, otp, userName = 'RescueBite Partner') 
     </html>
   `;
 
-  if (!transporter) {
-    console.log('\n======================================================');
-    console.log(`[RescueBite Auth] PASSWORD RESET CODE for: ${to}`);
-    console.log(`Code: ${otp}`);
-    console.log(`Expires in: 15 minutes`);
-    console.log(`(Email transporter not configured. Set SMTP_USER & SMTP_PASS in backend/.env to send real emails)`);
-    console.log('======================================================\n');
-    return {
-      sent: false,
-      preview: true,
-      otp,
-      message: 'Email service is running in local/test mode. Check server console for code.',
-    };
-  }
-
   try {
     const info = await transporter.sendMail({
       from: fromAddress,
@@ -120,18 +116,16 @@ const sendPasswordResetEmail = async (to, otp, userName = 'RescueBite Partner') 
       html: htmlContent,
     });
 
-    console.log(`[RescueBite Auth] Password reset email sent to ${to}: ${info.messageId}`);
+    console.log(`[RescueBite Auth] Nodemailer sent password reset email to ${to}: ${info.messageId}`);
     return {
       sent: true,
       messageId: info.messageId,
     };
   } catch (error) {
-    console.error('[RescueBite Auth] Error sending email via transporter:', error.message);
-    // Don't crash; return fail status with fallback info
+    console.error('[RescueBite Auth] Nodemailer sendMail error:', error.message);
     return {
       sent: false,
       error: error.message,
-      otp,
     };
   }
 };
@@ -139,4 +133,3 @@ const sendPasswordResetEmail = async (to, otp, userName = 'RescueBite Partner') 
 module.exports = {
   sendPasswordResetEmail,
 };
-

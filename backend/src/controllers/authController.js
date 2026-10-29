@@ -305,17 +305,19 @@ const forgotPassword = async (req, res, next) => {
 
     await user.save({ validateBeforeSave: false });
 
-    // Send email using email service
+    // Send email using Nodemailer
     const emailResult = await sendPasswordResetEmail(user.email, otp, user.name);
-    const isEmailSent = emailResult && emailResult.sent;
+
+    if (!emailResult || !emailResult.sent) {
+      return res.status(500).json({
+        success: false,
+        message: emailResult?.error || 'Failed to send verification email via Nodemailer. Please configure SMTP_USER & SMTP_PASS (or EMAIL_USER & EMAIL_PASS) in backend environment settings.',
+      });
+    }
 
     res.json({
       success: true,
-      message: isEmailSent
-        ? `A 6-digit verification code has been sent to ${user.email}.`
-        : `Verification code generated for ${user.email}. Please check your email or use the code below to reset.`,
-      // Return devOtp if email is in dev/preview mode or local testing
-      devOtp: (!isEmailSent || process.env.NODE_ENV !== 'production') ? otp : undefined,
+      message: `A 6-digit verification code has been sent to ${user.email}. Please check your inbox and spam folder.`,
     });
   } catch (error) {
     next(error);

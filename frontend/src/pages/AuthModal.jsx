@@ -54,7 +54,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [resetConfirmPassword, setResetConfirmPassword] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [devOtpNotice, setDevOtpNotice] = useState('');
 
   const [registerRole, setRegisterRole] = useState('donor'); // 'donor' | 'ngo' | 'coordinator'
   const [name, setName] = useState('');
@@ -70,7 +69,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       setMode(initialMode);
       setError('');
       setSuccessMsg('');
-      setDevOtpNotice('');
     }
   }, [isOpen, initialMode]);
 
@@ -214,9 +212,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     try {
       const res = await forgotPassword(forgotEmail.trim());
       setSuccessMsg(res.message || 'A 6-digit verification code has been generated.');
-      if (res.devOtp) {
-        setDevOtpNotice(res.devOtp);
-      }
       setMode('reset');
     } catch (err) {
       setError(err.message || 'Failed to send reset code. Please check your email.');
@@ -280,9 +275,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     try {
       const res = await forgotPassword(forgotEmail.trim());
       setSuccessMsg(res.message || 'A new verification code has been sent.');
-      if (res.devOtp) {
-        setDevOtpNotice(res.devOtp);
-      }
     } catch (err) {
       setError(err.message || 'Failed to resend verification code.');
     } finally {
@@ -682,40 +674,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       {/* VIEW: RESET PASSWORD (STEP 2) */}
       {mode === 'reset' && (
         <form onSubmit={handleResetSubmit}>
-          {/* Dev/Demo OTP Helper Badge */}
-          {devOtpNotice && (
-            <div style={{
-              padding: '0.65rem 0.85rem',
-              backgroundColor: 'var(--color-soft-mint, #EAF5F0)',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-network-green, #2F7D67)',
-              fontSize: '0.8rem',
-              color: 'var(--color-deep-forest)',
-              marginBottom: '1rem',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-              <span>Test Code: <strong>{devOtpNotice}</strong></span>
-              <button
-                type="button"
-                onClick={() => setResetOtp(devOtpNotice)}
-                style={{
-                  background: 'var(--color-network-green, #2F7D67)',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  borderRadius: '4px',
-                  padding: '0.2rem 0.55rem',
-                  fontSize: '0.75rem',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                }}
-              >
-                Autofill Code
-              </button>
-            </div>
-          )}
-
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
