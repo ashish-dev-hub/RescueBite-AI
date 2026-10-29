@@ -14,7 +14,6 @@ import {
   Clock,
   Heart,
   ChevronRight,
-  Zap,
   CheckCircle2,
   RefreshCw,
   Users,
@@ -156,7 +155,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             {/* Feature Highlights Pills */}
             <div className="hero-badges-row">
               <span className="hero-badge-pill">
-                <Zap size={14} color="var(--color-network-green)" />
+                <Clock size={14} color="var(--color-network-green)" />
                 <span>15-Min Rapid Dispatch</span>
               </span>
               <span className="hero-badge-pill">
@@ -248,7 +247,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             {/* Floating Bottom Badge */}
             <div className="floating-chip floating-chip-bottom">
               <Clock size={14} color="var(--color-network-green)" />
-              <span>⚡ Transit Time: {currentScenario.transitTime}</span>
+              <span>Transit Time: {currentScenario.transitTime}</span>
             </div>
 
             {/* Main Interactive Dispatch Radar Card */}
