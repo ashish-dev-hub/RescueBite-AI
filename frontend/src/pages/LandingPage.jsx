@@ -874,9 +874,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                 {activeRoleTab === 'coordinator' && 'Live Priority Queue'}
                 {activeRoleTab === 'ngo' && 'Active Intake Quotas'}
               </span>
-              <span style={{ fontSize: '0.7rem', color: 'var(--color-network-green)', fontWeight: 600 }}>
-                ● Real-time Sync
-              </span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
