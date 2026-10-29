@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
+const { sendPasswordResetEmail } = require('../services/emailService');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'rescuebite_dev_secret_key_2026_super_secure', {
@@ -270,4 +272,123 @@ const googleLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, updateProfile, googleLogin };
+// @desc    Forgot Password - Request 6-digit verification code
+// @route   POST /api/auth/forgot-password
+// @access  Public
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter your registered email address.',
+      });
+    }
+
+    const cleanEmail = String(email || '').toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No account found with this email address. Please verify or register a new account.',
+      });
+    }
+
+    // Generate 6-digit verification OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Hash the OTP and store in database with 15-minute expiry
+    const hashedToken = crypto.createHash('sha256').update(otp).digest('hex');
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000; // 15 mins
+
+    await user.save({ validateBeforeSave: false });
+
+    // Send email using email service
+    const emailResult = await sendPasswordResetEmail(user.email, otp, user.name);
+    const isEmailSent = emailResult && emailResult.sent;
+
+    res.json({
+      success: true,
+      message: isEmailSent
+        ? `A 6-digit verification code has been sent to ${user.email}.`
+        : `Verification code generated for ${user.email}. Please check your email or use the code below to reset.`,
+      // Return devOtp if email is in dev/preview mode or local testing
+      devOtp: (!isEmailSent || process.env.NODE_ENV !== 'production') ? otp : undefined,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Reset Password with 6-digit verification code
+// @route   POST /api/auth/reset-password
+// @access  Public
+const resetPassword = async (req, res, next) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide your email, verification code, and new password.',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 6 characters long.',
+      });
+    }
+
+    const cleanEmail = String(email || '').toLowerCase().trim();
+    const cleanOtp = String(otp || '').trim();
+
+    // Hash the entered OTP to compare with DB hashed token
+    const hashedToken = crypto.createHash('sha256').update(cleanOtp).digest('hex');
+
+    const user = await User.findOne({
+      email: cleanEmail,
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired verification code. Please check the code or request a new one.',
+      });
+    }
+
+    // Set and hash new password
+    const salt = await bcrypt.genSalt(10);
+    user.passwordHash = await bcrypt.hash(newPassword, salt);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    // Generate auth token for immediate seamless login
+    const token = generateToken(user._id);
+
+    res.json({
+      success: true,
+      message: 'Your password has been successfully reset! You are now logged in.',
+      token,
+      user: user.toSafeObject(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  getMe,
+  updateProfile,
+  googleLogin,
+  forgotPassword,
+  resetPassword,
+};

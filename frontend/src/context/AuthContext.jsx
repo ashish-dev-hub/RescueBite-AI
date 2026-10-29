@@ -80,6 +80,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const forgotPassword = async (email) => {
+    setError(null);
+    try {
+      return await api.forgotPassword(email);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  const resetPassword = async ({ email, otp, newPassword }) => {
+    setError(null);
+    try {
+      const res = await api.resetPassword({ email, otp, newPassword });
+      if (res?.token && res?.user) {
+        localStorage.setItem('rescuebite_token', res.token);
+        setToken(res.token);
+        setUser(res.user);
+      }
+      return res;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('rescuebite_token');
     setToken(null);
@@ -98,6 +124,8 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         loginWithGoogle,
+        forgotPassword,
+        resetPassword,
         logout,
       }}
     >

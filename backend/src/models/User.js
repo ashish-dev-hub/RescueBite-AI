@@ -59,6 +59,14 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0, // applicable for NGOs (meals per delivery or per day)
     },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpire: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -73,6 +81,8 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.methods.toSafeObject = function () {
   const obj = this.toObject();
   delete obj.passwordHash;
+  delete obj.resetPasswordToken;
+  delete obj.resetPasswordExpire;
   return obj;
 };
 

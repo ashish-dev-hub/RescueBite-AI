@@ -17,6 +17,7 @@ donations_df["day_name"] = donations_df["created_dt"].dt.day_name()
 
 # Donor lifespans: first donation date and last donation date
 donor_spans = donations_df.groupby("donor_id")["date"].agg(["min", "max", "nunique", "count"])
+# pyrefly: ignore[missing-attribute]
 donor_spans["span_days"] = (pd.to_datetime(donor_spans["max"]) - pd.to_datetime(donor_spans["min"])).dt.days + 1
 donor_spans["active_fraction"] = donor_spans["nunique"] / donor_spans["span_days"]
 

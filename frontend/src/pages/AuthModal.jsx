@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
-import { Building, Soup, Compass, AlertCircle, Info, Eye, EyeOff } from 'lucide-react';
+import { Building, Soup, Compass, AlertCircle, Info, Eye, EyeOff, CheckCircle2, ArrowLeft, KeyRound, Mail, RefreshCw } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 
 function GoogleIcon({ size = 18 }) {
@@ -28,9 +28,10 @@ function GoogleIcon({ size = 18 }) {
 }
 
 export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'login' }) {
-  const { login, register, loginWithGoogle } = useAuth();
-  const [mode, setMode] = useState(initialMode); // 'login' | 'register'
+  const { login, register, loginWithGoogle, forgotPassword, resetPassword } = useAuth();
+  const [mode, setMode] = useState(initialMode); // 'login' | 'register' | 'forgot' | 'reset'
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [showConfigHelp, setShowConfigHelp] = useState(false);
 
@@ -46,6 +47,15 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
+  // Forgot & Reset Password states
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [resetOtp, setResetOtp] = useState('');
+  const [resetNewPassword, setResetNewPassword] = useState('');
+  const [resetConfirmPassword, setResetConfirmPassword] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [devOtpNotice, setDevOtpNotice] = useState('');
+
   const [registerRole, setRegisterRole] = useState('donor'); // 'donor' | 'ngo' | 'coordinator'
   const [name, setName] = useState('');
   const [organization, setOrganization] = useState('');
@@ -54,13 +64,23 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [address, setAddress] = useState('');
   const [receivingCapacity, setReceivingCapacity] = useState('');
 
+  // Reset mode to initialMode when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setMode(initialMode);
+      setError('');
+      setSuccessMsg('');
+      setDevOtpNotice('');
+    }
+  }, [isOpen, initialMode]);
+
   // Keep latest registration context in a ref so GoogleLogin callbacks never need to re-create
   const regContextRef = useRef({ mode, registerRole, organization, address, receivingCapacity });
   useEffect(() => {
     regContextRef.current = { mode, registerRole, organization, address, receivingCapacity };
   }, [mode, registerRole, organization, address, receivingCapacity]);
 
-  // Stable Google Auth success handler (does not re-create on form keystrokes)
+  // Stable Google Auth success handler
   const handleGoogleSuccessCallback = useCallback(
     async (credentialResponse) => {
       if (!credentialResponse?.credential) return;
@@ -100,12 +120,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     setError('Google popup window was blocked by your browser. Please click the pop-up icon in your browser URL bar to allow popups, or register using your email and password below.');
   }, []);
 
-
   const handleDemoGoogleLogin = async () => {
     setError('');
     setLoading(true);
     try {
-      // Use unique sub IDs per role so accounts don't collide in MongoDB
       let demoSub, demoEmail, demoName, demoOrg;
       if (mode === 'register' && registerRole === 'coordinator') {
         demoSub = 'demo-coord-sub-003';
@@ -124,7 +142,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
         demoOrg = 'Metro Kitchens';
       }
 
-      // Format: demo-google:<sub>:<email>:<name>
       const demoCredential = `demo-google:${demoSub}:${demoEmail}:${demoName}`;
 
       const extraData = mode === 'register' ? {
@@ -138,7 +155,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       if (onSuccess) onSuccess(loggedUser);
       onClose();
     } catch (err) {
-      // Show clear error with helpful context for connection issues
       const msg = err.message || '';
       if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
         setError('Cannot reach the backend server. If running locally, start the backend with: npm run dev:backend');
@@ -150,10 +166,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     }
   };
 
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     setLoading(true);
     try {
       const loggedUser = await login(loginEmail.trim(), loginPassword);
@@ -169,7 +185,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+    setSuccessMsg('');
     setLoading(true);
     try {
       const registeredUser = await register({
@@ -190,58 +206,190 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     }
   };
 
+  const handleForgotSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+    setLoading(true);
+    try {
+      const res = await forgotPassword(forgotEmail.trim());
+      setSuccessMsg(res.message || 'A 6-digit verification code has been generated.');
+      if (res.devOtp) {
+        setDevOtpNotice(res.devOtp);
+      }
+      setMode('reset');
+    } catch (err) {
+      setError(err.message || 'Failed to send reset code. Please check your email.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+
+    if (resetNewPassword !== resetConfirmPassword) {
+      setError('Passwords do not match. Please verify both passwords match.');
+      return;
+    }
+
+    if (resetNewPassword.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (!resetOtp || resetOtp.trim().length !== 6) {
+      setError('Please enter the 6-digit verification code.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await resetPassword({
+        email: forgotEmail.trim(),
+        otp: resetOtp.trim(),
+        newPassword: resetNewPassword,
+      });
+
+      setSuccessMsg(res.message || 'Password reset successful! You are now logged in.');
+      if (onSuccess && res.user) {
+        setTimeout(() => {
+          onSuccess(res.user);
+          onClose();
+        }, 1200);
+      } else {
+        setTimeout(() => {
+          setMode('login');
+          setLoginEmail(forgotEmail);
+          setSuccessMsg('Password updated successfully! Please sign in with your new password.');
+        }, 1200);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to reset password. Please check your verification code.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setError('');
+    setSuccessMsg('');
+    setLoading(true);
+    try {
+      const res = await forgotPassword(forgotEmail.trim());
+      setSuccessMsg(res.message || 'A new verification code has been sent.');
+      if (res.devOtp) {
+        setDevOtpNotice(res.devOtp);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to resend verification code.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getModalTitle = () => {
+    if (mode === 'forgot') return 'Reset Password';
+    if (mode === 'reset') return 'Enter Verification Code';
+    return mode === 'login' ? 'Sign In to RescueBite AI' : 'Join The Fresh Network';
+  };
+
+  const getModalSubtitle = () => {
+    if (mode === 'forgot') return 'Enter your registered email to receive a password recovery code';
+    if (mode === 'reset') return `Enter the 6-digit code sent for ${forgotEmail} and set your new password`;
+    return mode === 'login'
+      ? 'Enter your registered email and password to access your portal'
+      : 'Register as a surplus food donor, recipient NGO, or operations coordinator';
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={mode === 'login' ? 'Sign In to RescueBite AI' : 'Join The Fresh Network'}
-      subtitle={
-        mode === 'login'
-          ? 'Enter your registered email and password to access your portal'
-          : 'Register as a surplus food donor, recipient NGO, or operations coordinator'
-      }
+      title={getModalTitle()}
+      subtitle={getModalSubtitle()}
       maxWidth="500px"
     >
-      {/* Mode Switcher Tabs */}
-      <div style={{
-        display: 'flex',
-        backgroundColor: 'var(--color-pale-neutral)',
-        borderRadius: 'var(--radius-btn)',
-        padding: '0.25rem',
-        marginBottom: '1.25rem',
-      }}>
-        <button
-          onClick={() => { setMode('login'); setError(''); }}
-          style={{
-            flex: 1,
-            padding: '0.5rem',
-            borderRadius: 'var(--radius-btn-sm)',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            backgroundColor: mode === 'login' ? '#FFFFFF' : 'transparent',
-            color: mode === 'login' ? 'var(--color-deep-forest)' : 'var(--color-muted-slate)',
-            boxShadow: mode === 'login' ? 'var(--shadow-subtle)' : 'none',
-          }}
-        >
-          Sign In
-        </button>
-        <button
-          onClick={() => { setMode('register'); setError(''); }}
-          style={{
-            flex: 1,
-            padding: '0.5rem',
-            borderRadius: 'var(--radius-btn-sm)',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            backgroundColor: mode === 'register' ? '#FFFFFF' : 'transparent',
-            color: mode === 'register' ? 'var(--color-deep-forest)' : 'var(--color-muted-slate)',
-            boxShadow: mode === 'register' ? 'var(--shadow-subtle)' : 'none',
-          }}
-        >
-          Register (All Roles)
-        </button>
-      </div>
+      {/* Mode Switcher Tabs or Back Navigation */}
+      {mode === 'login' || mode === 'register' ? (
+        <div style={{
+          display: 'flex',
+          backgroundColor: 'var(--color-pale-neutral)',
+          borderRadius: 'var(--radius-btn)',
+          padding: '0.25rem',
+          marginBottom: '1.25rem',
+        }}>
+          <button
+            onClick={() => { setMode('login'); setError(''); setSuccessMsg(''); }}
+            style={{
+              flex: 1,
+              padding: '0.5rem',
+              borderRadius: 'var(--radius-btn-sm)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              backgroundColor: mode === 'login' ? '#FFFFFF' : 'transparent',
+              color: mode === 'login' ? 'var(--color-deep-forest)' : 'var(--color-muted-slate)',
+              boxShadow: mode === 'login' ? 'var(--shadow-subtle)' : 'none',
+            }}
+          >
+            Sign In
+          </button>
+          <button
+            onClick={() => { setMode('register'); setError(''); setSuccessMsg(''); }}
+            style={{
+              flex: 1,
+              padding: '0.5rem',
+              borderRadius: 'var(--radius-btn-sm)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              backgroundColor: mode === 'register' ? '#FFFFFF' : 'transparent',
+              color: mode === 'register' ? 'var(--color-deep-forest)' : 'var(--color-muted-slate)',
+              boxShadow: mode === 'register' ? 'var(--shadow-subtle)' : 'none',
+            }}
+          >
+            Register (All Roles)
+          </button>
+        </div>
+      ) : (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1.25rem',
+          paddingBottom: '0.75rem',
+          borderBottom: '1px solid var(--color-soft-border, #E2E8E4)',
+        }}>
+          <button
+            type="button"
+            onClick={() => {
+              setMode('login');
+              setError('');
+              setSuccessMsg('');
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--color-network-green, #2F7D67)',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.2rem 0',
+            }}
+          >
+            <ArrowLeft size={16} /> Back to Sign In
+          </button>
+          <span style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+            Step {mode === 'forgot' ? '1 of 2' : '2 of 2'}
+          </span>
+        </div>
+      )}
 
+      {/* Error Alert */}
       {error && (
         <div style={{
           display: 'flex',
@@ -259,7 +407,27 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
         </div>
       )}
 
-      {mode === 'login' ? (
+      {/* Success Alert */}
+      {successMsg && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.75rem',
+          backgroundColor: '#E8F5E9',
+          color: '#1B5E20',
+          border: '1px solid #C8E6C9',
+          borderRadius: 'var(--radius-md)',
+          fontSize: '0.85rem',
+          marginBottom: '1rem',
+        }}>
+          <CheckCircle2 size={16} />
+          <span>{successMsg}</span>
+        </div>
+      )}
+
+      {/* VIEW: LOGIN */}
+      {mode === 'login' && (
         <div>
           {/* Google Auth Block for Login */}
           <div style={{ marginBottom: '1.25rem' }}>
@@ -372,7 +540,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 onChange={(e) => setLoginEmail(e.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: '0.4rem' }}>
               <label className="form-label">Password</label>
               <div style={{ position: 'relative', width: '100%' }}>
                 <input
@@ -409,17 +577,303 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 </button>
               </div>
             </div>
+
+            {/* Forgot Password Link */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.1rem' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setForgotEmail(loginEmail || '');
+                  setMode('forgot');
+                  setError('');
+                  setSuccessMsg('');
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-network-green, #2F7D67)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '0.2rem 0',
+                  textDecoration: 'underline',
+                }}
+              >
+                Forgot Password?
+              </button>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
               className="btn btn-primary"
-              style={{ width: '100%', marginTop: '0.5rem' }}
+              style={{ width: '100%' }}
             >
               {loading ? 'Authenticating...' : 'Sign In'}
             </button>
           </form>
         </div>
-      ) : (
+      )}
+
+      {/* VIEW: FORGOT PASSWORD (STEP 1) */}
+      {mode === 'forgot' && (
+        <form onSubmit={handleForgotSubmit}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '1.25rem',
+            padding: '1rem',
+            backgroundColor: 'var(--color-pale-neutral, #F5F7F6)',
+            borderRadius: 'var(--radius-md)',
+          }}>
+            <div style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-soft-mint, #EAF5F0)',
+              color: 'var(--color-network-green, #2F7D67)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 0.5rem auto',
+            }}>
+              <KeyRound size={22} />
+            </div>
+            <p style={{ fontSize: '0.85rem', color: 'var(--color-dark-slate)', margin: 0, lineHeight: 1.45 }}>
+              Enter the email associated with your RescueBite account. We'll send a 6-digit verification code to reset your password.
+            </p>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Registered Email Address</label>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <input
+                type="email"
+                required
+                className="form-input"
+                placeholder="name@organization.com"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                style={{ width: '100%', paddingLeft: '2.4rem', boxSizing: 'border-box' }}
+              />
+              <Mail
+                size={16}
+                style={{
+                  position: 'absolute',
+                  left: '0.75rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--color-muted-slate)',
+                }}
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary"
+            style={{ width: '100%', marginTop: '0.5rem' }}
+          >
+            {loading ? 'Sending Verification Code...' : 'Send Verification Code'}
+          </button>
+        </form>
+      )}
+
+      {/* VIEW: RESET PASSWORD (STEP 2) */}
+      {mode === 'reset' && (
+        <form onSubmit={handleResetSubmit}>
+          {/* Dev/Demo OTP Helper Badge */}
+          {devOtpNotice && (
+            <div style={{
+              padding: '0.65rem 0.85rem',
+              backgroundColor: 'var(--color-soft-mint, #EAF5F0)',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--color-network-green, #2F7D67)',
+              fontSize: '0.8rem',
+              color: 'var(--color-deep-forest)',
+              marginBottom: '1rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+              <span>Test Code: <strong>{devOtpNotice}</strong></span>
+              <button
+                type="button"
+                onClick={() => setResetOtp(devOtpNotice)}
+                style={{
+                  background: 'var(--color-network-green, #2F7D67)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '0.2rem 0.55rem',
+                  fontSize: '0.75rem',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+              >
+                Autofill Code
+              </button>
+            </div>
+          )}
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0.6rem 0.75rem',
+            backgroundColor: 'var(--color-pale-neutral, #F5F7F6)',
+            borderRadius: 'var(--radius-sm)',
+            marginBottom: '1rem',
+            fontSize: '0.82rem',
+          }}>
+            <span style={{ color: 'var(--color-muted-slate)' }}>Email: <strong>{forgotEmail}</strong></span>
+            <button
+              type="button"
+              onClick={() => {
+                setMode('forgot');
+                setError('');
+                setSuccessMsg('');
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--color-network-green)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '0.8rem',
+                textDecoration: 'underline',
+              }}
+            >
+              Change
+            </button>
+          </div>
+
+          <div className="form-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="form-label">6-Digit Verification Code</label>
+              <button
+                type="button"
+                onClick={handleResendOtp}
+                disabled={loading}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-network-green, #2F7D67)',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                }}
+              >
+                <RefreshCw size={12} /> Resend Code
+              </button>
+            </div>
+            <input
+              type="text"
+              required
+              maxLength={6}
+              className="form-input"
+              placeholder="123456"
+              value={resetOtp}
+              onChange={(e) => setResetOtp(e.target.value.replace(/\D/g, ''))}
+              style={{
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                letterSpacing: '0.3em',
+                textAlign: 'center',
+              }}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">New Password</label>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <input
+                type={showResetPassword ? 'text' : 'password'}
+                required
+                className="form-input"
+                placeholder="At least 6 characters"
+                value={resetNewPassword}
+                onChange={(e) => setResetNewPassword(e.target.value)}
+                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowResetPassword((prev) => !prev)}
+                style={{
+                  position: 'absolute',
+                  right: '0.75rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0.35rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-muted-slate, #687872)',
+                  zIndex: 20,
+                }}
+                aria-label={showResetPassword ? 'Hide password' : 'Show password'}
+              >
+                {showResetPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Confirm New Password</label>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                required
+                className="form-input"
+                placeholder="Re-type new password"
+                value={resetConfirmPassword}
+                onChange={(e) => setResetConfirmPassword(e.target.value)}
+                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                style={{
+                  position: 'absolute',
+                  right: '0.75rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0.35rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--color-muted-slate, #687872)',
+                  zIndex: 20,
+                }}
+                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary"
+            style={{ width: '100%', marginTop: '0.5rem' }}
+          >
+            {loading ? 'Updating Password...' : 'Reset Password & Sign In'}
+          </button>
+        </form>
+      )}
+
+      {/* VIEW: REGISTER */}
+      {mode === 'register' && (
         <form onSubmit={handleRegisterSubmit}>
           <div className="form-group">
             <label className="form-label">I am registering as:</label>

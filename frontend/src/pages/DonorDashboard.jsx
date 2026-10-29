@@ -272,18 +272,6 @@ export default function DonorDashboard() {
                 <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
                   RescueBite
                 </strong>
-                {aiSupplyForecast.has_surplus_probability !== undefined && (
-                  <span style={{
-                    fontSize: '0.7rem',
-                    backgroundColor: '#FEF3C7',
-                    color: '#B45309',
-                    padding: '0.1rem 0.45rem',
-                    borderRadius: '4px',
-                    fontWeight: 600,
-                  }}>
-                    {Math.round(aiSupplyForecast.has_surplus_probability * 100)}% Likelihood
-                  </span>
-                )}
               </div>
               <p style={{ fontSize: '0.82rem', color: '#374151', marginTop: '0.2rem' }}>
                 Forecast Date: <strong>{aiSupplyForecast.forecast_date}</strong> • Expected Surplus: <strong style={{ color: '#15803D', fontSize: '0.95rem' }}>{Math.round(aiSupplyForecast.predicted_surplus_meals)} meals</strong> (Uncertainty Bounds: {Math.round(aiSupplyForecast.surplus_p10)} – {Math.round(aiSupplyForecast.surplus_p90)} meals)
