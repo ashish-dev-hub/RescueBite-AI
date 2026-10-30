@@ -43,6 +43,8 @@ app.use(
         'http://127.0.0.1:5173',
         'http://localhost:3000',
         'http://127.0.0.1:3000',
+        'https://rescue-bite-ai.vercel.app',
+        'https://rescuebite.vercel.app',
         ...configuredOrigins,
       ];
 
@@ -50,15 +52,17 @@ app.use(
         allowedOrigins.includes(origin) ||
         origin.startsWith('http://localhost:') ||
         origin.startsWith('http://127.0.0.1:') ||
-        origin.endsWith('.vercel.app') ||
+        origin.includes('vercel.app') ||
         process.env.NODE_ENV !== 'production';
 
       if (isAllowed) {
         return callback(null, true);
       }
-      return callback(new Error(`Blocked by CORS: origin ${origin} is not allowed`));
+      return callback(null, false);
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
   })
 );
 

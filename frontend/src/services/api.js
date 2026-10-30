@@ -10,6 +10,20 @@ const getAuthHeaders = () => {
   };
 };
 
+async function safeFetch(url, options = {}) {
+  try {
+    return await fetch(url, options);
+  } catch (err) {
+    const msg = err?.message || '';
+    if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
+      throw new Error(
+        'Backend connection failed: Your Render backend service is currently suspended or starting up. Please check your Render dashboard to resume it.'
+      );
+    }
+    throw err;
+  }
+}
+
 async function handleResponse(response) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -34,7 +48,7 @@ async function handleResponse(response) {
 export const api = {
   // Auth
   async login(email, password) {
-    const res = await fetch(`${BASE_URL}/auth/login`, {
+    const res = await safeFetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -43,7 +57,7 @@ export const api = {
   },
 
   async register(userData) {
-    const res = await fetch(`${BASE_URL}/auth/register`, {
+    const res = await safeFetch(`${BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),
@@ -52,7 +66,7 @@ export const api = {
   },
 
   async googleAuth(credential, extraData = {}) {
-    const res = await fetch(`${BASE_URL}/auth/google`, {
+    const res = await safeFetch(`${BASE_URL}/auth/google`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ credential, ...extraData }),
@@ -61,7 +75,7 @@ export const api = {
   },
 
   async forgotPassword(email) {
-    const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
+    const res = await safeFetch(`${BASE_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
@@ -70,7 +84,7 @@ export const api = {
   },
 
   async resetPassword({ email, otp, newPassword }) {
-    const res = await fetch(`${BASE_URL}/auth/reset-password`, {
+    const res = await safeFetch(`${BASE_URL}/auth/reset-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, otp, newPassword }),
@@ -79,7 +93,7 @@ export const api = {
   },
 
   async getMe() {
-    const res = await fetch(`${BASE_URL}/auth/me`, {
+    const res = await safeFetch(`${BASE_URL}/auth/me`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
@@ -88,14 +102,14 @@ export const api = {
   // Donations
   async getDonations(params = {}) {
     const queryString = new URLSearchParams(params).toString();
-    const res = await fetch(`${BASE_URL}/donations?${queryString}`, {
+    const res = await safeFetch(`${BASE_URL}/donations?${queryString}`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
   },
 
   async createDonation(donationData) {
-    const res = await fetch(`${BASE_URL}/donations`, {
+    const res = await safeFetch(`${BASE_URL}/donations`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(donationData),
@@ -104,7 +118,7 @@ export const api = {
   },
 
   async cancelDonation(id) {
-    const res = await fetch(`${BASE_URL}/donations/${id}/cancel`, {
+    const res = await safeFetch(`${BASE_URL}/donations/${id}/cancel`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
     });
@@ -116,7 +130,7 @@ export const api = {
     if (targetDate) params.append('targetDate', targetDate);
     if (donorId) params.append('donorId', donorId);
     const queryString = params.toString() ? `?${params.toString()}` : '';
-    const res = await fetch(`${BASE_URL}/donations/supply-forecast${queryString}`, {
+    const res = await safeFetch(`${BASE_URL}/donations/supply-forecast${queryString}`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
@@ -125,21 +139,21 @@ export const api = {
   // Demands
   async getDemands(params = {}) {
     const queryString = new URLSearchParams(params).toString();
-    const res = await fetch(`${BASE_URL}/demands?${queryString}`, {
+    const res = await safeFetch(`${BASE_URL}/demands?${queryString}`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
   },
 
   async getMyDemands() {
-    const res = await fetch(`${BASE_URL}/demands/my`, {
+    const res = await safeFetch(`${BASE_URL}/demands/my`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
   },
 
   async createDemand(demandData) {
-    const res = await fetch(`${BASE_URL}/demands`, {
+    const res = await safeFetch(`${BASE_URL}/demands`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(demandData),
@@ -148,7 +162,7 @@ export const api = {
   },
 
   async cancelDemand(id) {
-    const res = await fetch(`${BASE_URL}/demands/${id}/cancel`, {
+    const res = await safeFetch(`${BASE_URL}/demands/${id}/cancel`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
     });
@@ -160,7 +174,7 @@ export const api = {
     if (targetDate) params.append('targetDate', targetDate);
     if (ngoId) params.append('ngoId', ngoId);
     const queryString = params.toString() ? `?${params.toString()}` : '';
-    const res = await fetch(`${BASE_URL}/demands/forecast${queryString}`, {
+    const res = await safeFetch(`${BASE_URL}/demands/forecast${queryString}`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
@@ -168,7 +182,7 @@ export const api = {
 
   // Matching
   async getRecommendations() {
-    const res = await fetch(`${BASE_URL}/matching/recommendations`, {
+    const res = await safeFetch(`${BASE_URL}/matching/recommendations`, {
       method: 'POST',
       headers: getAuthHeaders(),
     });
@@ -177,14 +191,14 @@ export const api = {
 
   async getEligibleForNgo(ngoId) {
     const queryString = ngoId ? `?ngoId=${ngoId}` : '';
-    const res = await fetch(`${BASE_URL}/matching/eligible-for-ngo${queryString}`, {
+    const res = await safeFetch(`${BASE_URL}/matching/eligible-for-ngo${queryString}`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
   },
 
   async getMlModelStatus() {
-    const res = await fetch(`${BASE_URL}/matching/model-status`, {
+    const res = await safeFetch(`${BASE_URL}/matching/model-status`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
@@ -193,14 +207,14 @@ export const api = {
   // Allocations
   async getAllocations(params = {}) {
     const queryString = new URLSearchParams(params).toString();
-    const res = await fetch(`${BASE_URL}/allocations?${queryString}`, {
+    const res = await safeFetch(`${BASE_URL}/allocations?${queryString}`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
   },
 
   async createAllocation(allocationData) {
-    const res = await fetch(`${BASE_URL}/allocations`, {
+    const res = await safeFetch(`${BASE_URL}/allocations`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(allocationData),
@@ -209,7 +223,7 @@ export const api = {
   },
 
   async respondAllocation(id, action, rejectionReason = '') {
-    const res = await fetch(`${BASE_URL}/allocations/${id}/respond`, {
+    const res = await safeFetch(`${BASE_URL}/allocations/${id}/respond`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
       body: JSON.stringify({ action, rejectionReason }),
@@ -218,7 +232,7 @@ export const api = {
   },
 
   async updateAllocationStatus(id, nextStatus, note = '') {
-    const res = await fetch(`${BASE_URL}/allocations/${id}/status`, {
+    const res = await safeFetch(`${BASE_URL}/allocations/${id}/status`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
       body: JSON.stringify({ nextStatus, note }),
@@ -228,7 +242,7 @@ export const api = {
 
   // Analytics
   async getAnalyticsOverview() {
-    const res = await fetch(`${BASE_URL}/analytics/overview`, {
+    const res = await safeFetch(`${BASE_URL}/analytics/overview`, {
       headers: getAuthHeaders(),
     });
     return handleResponse(res);
