@@ -298,6 +298,9 @@ const forgotPassword = async (req, res, next) => {
     // Generate 6-digit verification OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
+    // Log the OTP on the server for immediate debugging and Render logs tracking
+    console.log(`[RescueBite Auth] Generated password reset OTP for ${user.email}: [${otp}] (valid for 15 mins)`);
+
     // Hash the OTP and store in database with 15-minute expiry
     const hashedToken = crypto.createHash('sha256').update(otp).digest('hex');
     user.resetPasswordToken = hashedToken;

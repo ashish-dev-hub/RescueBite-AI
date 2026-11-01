@@ -7,27 +7,36 @@ const nodemailer = require('nodemailer');
 const getTransporter = () => {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_SERVICE, EMAIL_USER, EMAIL_PASS } = process.env;
 
+  const cleanPass = (pass) => (pass ? String(pass).replace(/\s+/g, '').trim() : '');
+
   // Custom SMTP configuration (e.g. SendGrid, Mailgun, Brevo, AWS SES, or custom domain)
   if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+    const port = parseInt(SMTP_PORT || '587', 10);
     return nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: parseInt(SMTP_PORT || '587', 10),
-      secure: SMTP_PORT === '465',
+      host: SMTP_HOST.trim(),
+      port,
+      secure: port === 465,
       auth: {
-        user: SMTP_USER,
-        pass: SMTP_PASS,
+        user: SMTP_USER.trim(),
+        pass: cleanPass(SMTP_PASS),
       },
+      connectionTimeout: 10000, // 10s timeout to prevent hanging
+      greetingTimeout: 5000,
+      socketTimeout: 15000,
     });
   }
 
   // Gmail or specified email service with App Password
   if (EMAIL_USER && EMAIL_PASS) {
     return nodemailer.createTransport({
-      service: EMAIL_SERVICE || 'gmail',
+      service: (EMAIL_SERVICE || 'gmail').trim(),
       auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS,
+        user: EMAIL_USER.trim(),
+        pass: cleanPass(EMAIL_PASS),
       },
+      connectionTimeout: 10000, // 10s timeout to prevent hanging
+      greetingTimeout: 5000,
+      socketTimeout: 15000,
     });
   }
 
@@ -123,9 +132,24 @@ const sendPasswordResetEmail = async (to, otp, userName = 'RescueBite Partner') 
     };
   } catch (error) {
     console.error('[RescueBite Auth] Nodemailer sendMail error:', error.message);
+    let friendlyMsg = error.message;
+
+    if (
+      error.code === 'EAUTH' ||
+      (error.message && (
+        error.message.includes('Username and Password not accepted') ||
+        error.message.includes('Invalid login') ||
+        error.message.includes('535')
+      ))
+    ) {
+      friendlyMsg = 'Email authentication failed. Please ensure 2-Step Verification is ON in your Google account and you are using a 16-character App Password (not your standard Gmail account password) in EMAIL_PASS.';
+    } else if (error.code === 'ETIMEDOUT' || error.code === 'ESOCKET') {
+      friendlyMsg = 'Connection to email server timed out. Please check your network or try again in a few moments.';
+    }
+
     return {
       sent: false,
-      error: error.message,
+      error: friendlyMsg,
     };
   }
 };
