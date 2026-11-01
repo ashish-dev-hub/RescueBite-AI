@@ -1439,105 +1439,163 @@ input::-ms-clear {
   flex-wrap: wrap;
 }
 
-/* Tactile Dual Cards & Center Circle Connector */
+/* Landing Navbar Role Pills (Bhojan Bandhu Reference) */
+.landing-role-pills-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.nav-role-pill {
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  background-color: #FFFDF9;
+  border: 1px solid #E5DBC5;
+  color: #2C221E;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 2px 0 #E5DBC5;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-body);
+}
+
+.nav-role-pill:hover {
+  background-color: #FFFFFF;
+  border-color: #C44824;
+  color: #C44824;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #D9CEB5;
+}
+
+.nav-role-pill:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Tactile Dual Cards & Architectural Green Dome Arch */
 .hero-cards-stack {
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
   width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 0;
 }
 
 .hero-card-donor {
   width: 100%;
-  max-width: 440px;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-soft-border);
-  border-radius: var(--radius-card);
-  padding: 1.5rem 1.75rem;
-  box-shadow: 4px 6px 0px var(--color-card-bevel);
+  max-width: 430px;
+  background: #FFFDF9;
+  border: 1px solid #E5DBC5;
+  border-radius: 22px;
+  padding: 1.65rem 1.85rem;
+  box-shadow: 6px 8px 0px var(--color-card-bevel, #E5DAC4);
   align-self: flex-start;
-  transition: transform 0.2s ease;
+  transform: rotate(-2.2deg);
+  transform-origin: center center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
 }
 
-.hero-card-donor:hover,
-.hero-card-shelter:hover {
-  transform: translateY(-2px);
+.hero-card-donor:hover {
+  transform: rotate(-2.2deg) translateY(-3px);
+  box-shadow: 8px 11px 0px #DACFB7;
 }
 
-.hero-circle-connector {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: var(--color-network-green);
+.hero-shelter-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  align-self: flex-end;
+  margin-top: 2rem;
+  box-sizing: border-box;
+}
+
+/* Iconic Green Semicircular Dome Arch */
+.hero-arch-connector {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 145px;
+  height: 98px;
+  background-color: #1F6F43;
+  border-top-left-radius: 9999px;
+  border-top-right-radius: 9999px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   color: #FFFFFF;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 0.85rem;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: 0 -2px 10px rgba(31, 111, 67, 0.18);
+}
+
+.hero-arch-connector .hero-arch-num {
   font-family: var(--font-heading);
+  font-size: 2.3rem;
   font-weight: 800;
-  border: 4px solid var(--color-warm-ivory);
-  box-shadow: 0 4px 10px rgba(31, 111, 67, 0.22);
-  margin: -14px 0 -14px 2rem;
-  z-index: 5;
-  position: relative;
-}
-
-.hero-circle-connector span.num {
-  font-size: 1.3rem;
   line-height: 1;
-}
-
-.hero-circle-connector span.unit {
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  opacity: 0.9;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
 }
 
 .hero-card-shelter {
   width: 100%;
-  max-width: 440px;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-soft-border);
-  border-radius: var(--radius-card);
-  padding: 1.5rem 1.75rem;
-  box-shadow: 4px 6px 0px var(--color-card-bevel);
-  align-self: flex-end;
-  transition: transform 0.2s ease;
+  background: #FFFDF9;
+  border: 1px solid #E5DBC5;
+  border-radius: 22px;
+  padding: 1.65rem 1.85rem;
+  box-shadow: 6px 8px 0px var(--color-card-bevel, #E5DAC4);
+  transform: rotate(1.8deg);
+  transform-origin: center center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  z-index: 2; /* Sits directly on top of the bottom half of the arch */
+  box-sizing: border-box;
+}
+
+.hero-card-shelter:hover {
+  transform: rotate(1.8deg) translateY(-3px);
+  box-shadow: 8px 11px 0px #DACFB7;
 }
 
 .hero-card-label {
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   margin-bottom: 0.4rem;
 }
 
 .hero-card-title {
   font-family: var(--font-heading);
-  font-size: 1.28rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: var(--color-deep-forest);
+  color: var(--color-deep-forest, #2C221E);
   margin-bottom: 0.25rem;
   line-height: 1.25;
 }
 
 .hero-card-desc {
-  font-size: 0.88rem;
-  color: var(--color-muted-slate);
-  margin-bottom: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--color-muted-slate, #685B52);
+  margin-bottom: 0.95rem;
   line-height: 1.45;
 }
 
 .hero-card-pill {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.85rem;
   border-radius: var(--radius-pill);
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
 }
 
@@ -1577,272 +1635,35 @@ input::-ms-clear {
     max-width: 100%;
     align-self: center;
   }
-  .hero-circle-connector {
-    margin: -14px 0 -14px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-bhojan-section {
-    padding: 2.5rem 1rem;
-  }
-  .hero-bhojan-headline {
-    font-size: 2.35rem;
-  }
-  .hero-bhojan-ctas {
-    flex-direction: column;
-    width: 100%;
-  }
-  .hero-bhojan-ctas button {
-    width: 100%;
-  }
-  .hero-card-donor,
-  .hero-card-shelter {
-    padding: 1.2rem 1.25rem;
-  }
-}
-
-
-
-/* ==========================================================================
-   Wave 3: Bhojan Bandhu Timeline, Score Breakdown & Section Styles
-   ========================================================================== */
-
-.timeline-bhojan-container {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-soft-border);
-  border-radius: var(--radius-card);
-  box-shadow: 4px 6px 0px var(--color-card-bevel);
-  overflow: hidden;
-  margin-top: 2rem;
-}
-
-.timeline-meta-bar {
-  padding: 0.9rem 1.5rem;
-  background: var(--color-pale-neutral);
-  border-bottom: 1px solid var(--color-soft-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--color-deep-forest);
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.timeline-step-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.timeline-step-node {
-  padding: 1.75rem 1.5rem;
-  border-right: 1px solid var(--color-soft-border);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.timeline-step-node:last-child {
-  border-right: none;
-}
-
-.t-node-time {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--color-terracotta);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 0.45rem;
-}
-
-.t-node-title {
-  font-family: var(--font-heading);
-  font-size: 1.18rem;
-  font-weight: 800;
-  color: var(--color-deep-forest);
-  margin-bottom: 0.45rem;
-  line-height: 1.25;
-}
-
-.t-node-body {
-  font-size: 0.86rem;
-  color: var(--color-muted-slate);
-  line-height: 1.55;
-  flex: 1;
-}
-
-/* 4-Part Segmented Score Breakdown Bar */
-.score-visual-card {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-soft-border);
-  border-radius: var(--radius-card);
-  box-shadow: 4px 6px 0px var(--color-card-bevel);
-  padding: 1.75rem 2rem;
-  margin-top: 2rem;
-}
-
-.score-bar-segmented {
-  display: flex;
-  height: 12px;
-  border-radius: 6px;
-  overflow: hidden;
-  margin: 1.15rem 0 1rem 0;
-  background: #E5DBC5;
-}
-
-.seg-demand { background-color: var(--color-network-green); width: 35%; }
-.seg-urgency { background-color: var(--color-terracotta); width: 25%; }
-.seg-proximity { background-color: #2F6D59; width: 20%; }
-.seg-storage { background-color: #685B52; width: 20%; }
-
-.score-breakdown-legend {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-soft-border);
-}
-
-.legend-col strong {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--color-deep-forest);
-  margin-bottom: 0.25rem;
-}
-
-.legend-col p {
-  font-size: 0.78rem;
-  color: var(--color-muted-slate);
-  line-height: 1.45;
-  margin: 0;
-}
-
-/* Section Header Editorial */
-.section-bhojan-header {
-  text-align: left;
-  max-width: 680px;
-  margin-bottom: 2.25rem;
-}
-
-.section-bhojan-title {
-  font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
-  font-weight: 800;
-  color: var(--color-deep-forest);
-  line-height: 1.18;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
-}
-
-.section-bhojan-sub {
-  font-size: 0.98rem;
-  color: var(--color-muted-slate);
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* Role Selector Segmented Bar (Replacing pill buttons) */
-.role-segmented-nav {
-  display: inline-flex;
-  background: var(--color-pale-neutral);
-  padding: 0.35rem;
-  border-radius: var(--radius-btn);
-  border: 1px solid var(--color-soft-border);
-  gap: 0.35rem;
-  margin-bottom: 1.75rem;
-  flex-wrap: wrap;
-}
-
-.role-segment-btn {
-  padding: 0.65rem 1.25rem;
-  border-radius: 10px;
-  font-family: var(--font-heading);
-  font-size: 0.88rem;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--color-muted-slate);
-  background: transparent;
-}
-
-.role-segment-btn.active {
-  background: #FFFDF9;
-  color: var(--color-deep-forest);
-  box-shadow: 0 2px 4px rgba(44, 34, 30, 0.08);
-}
-
-@media (max-width: 860px) {
-  .timeline-step-grid {
-    grid-template-columns: 1fr;
-  }
-  .timeline-step-node {
-    border-right: none;
-    border-bottom: 1px solid var(--color-soft-border);
-  }
-  .timeline-step-node:last-child {
-    border-bottom: none;
-  }
-  .score-breakdown-legend {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .score-breakdown-legend {
-    grid-template-columns: 1fr;
-  }
-  .score-visual-card {
-    padding: 1.25rem;
-  }
-  .timeline-step-node {
-    padding: 1.25rem;
-  }
-}
-
-
-/* Additional Mobile Polishing */
-@media (max-width: 680px) {
-  .role-segmented-nav {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-  .role-segment-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-bhojan-headline {
-    font-size: clamp(2rem, 8.5vw, 2.6rem) !important;
-    line-height: 1.1 !important;
-    word-break: break-word;
-  }
-  .hero-bhojan-section {
-    padding: 2rem 0.5rem 1.5rem 0.5rem !important;
-  }
-  .hero-circle-connector {
-    margin: -14px auto -14px auto !important;
-  }
   .hero-cards-stack {
-    padding: 0 0.25rem;
+    padding: 2.5rem 0.25rem 1rem 0.25rem;
+    max-width: 100%;
   }
-  .hero-card-donor,
+  .hero-card-donor {
+    align-self: center;
+    max-width: 100%;
+    transform: rotate(-1.2deg);
+    padding: 1.25rem 1.15rem !important;
+  }
+  .hero-shelter-wrapper {
+    align-self: center;
+    max-width: 100%;
+    margin-top: 2.5rem;
+  }
   .hero-card-shelter {
-    padding: 1.1rem 1rem !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
+    transform: rotate(1deg);
+    padding: 1.25rem 1.15rem !important;
+  }
+  .hero-arch-connector {
+    top: -46px;
+    width: 125px;
+    height: 85px;
+  }
+  .hero-arch-connector .hero-arch-num {
+    font-size: 1.95rem;
+  }
+  .landing-role-pills-group {
+    display: none !important;
   }
 }
 
