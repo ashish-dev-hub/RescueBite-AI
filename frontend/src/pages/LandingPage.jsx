@@ -637,60 +637,219 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             </button>
           </div>
 
-          {/* Interactive Role Snapshot Card (Indian Context) */}
+          {/* Interactive Role Live Console (Editorial Handcrafted Card) */}
           <div style={{
             backgroundColor: '#FAF4EB',
             borderRadius: 'var(--radius-card)',
             border: '1px solid var(--color-soft-border)',
             padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-soft-border)' }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-deep-forest)' }}>
-                {activeRoleTab === 'donor' && 'Active Kitchen Consignments'}
-                {activeRoleTab === 'coordinator' && 'Priority Allocation Queue'}
-                {activeRoleTab === 'ngo' && 'Shelter Intake Demands'}
-              </span>
-              <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-muted-slate)' }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingBottom: '0.65rem',
+              borderBottom: '1px solid var(--color-soft-border)',
+            }}>
+              <div>
+                <span style={{
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  color: 'var(--color-coffee-dark)',
+                  display: 'block',
+                }}>
+                  {activeRoleTab === 'donor' && 'Active Kitchen Consignments'}
+                  {activeRoleTab === 'coordinator' && 'Live Priority Queue'}
+                  {activeRoleTab === 'ngo' && 'Verified Shelter Needs'}
+                </span>
+                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
+                  {activeRoleTab === 'donor' && 'Ward 4 • Metro Bistro Hub'}
+                  {activeRoleTab === 'coordinator' && 'Central Delhi Command Desk'}
+                  {activeRoleTab === 'ngo' && 'East District Community Hub'}
+                </span>
+              </div>
+              <span style={{
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                color: 'var(--color-terracotta)',
+                backgroundColor: '#FFF4ED',
+                padding: '0.15rem 0.5rem',
+                borderRadius: '4px',
+                border: '1px solid #FAD5C5',
+              }}>
                 Sample data
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ padding: '0.85rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.86rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                  <span>Fresh Dal Makhani &amp; Jeera Rice</span>
-                  <span style={{ color: 'var(--color-network-green)' }}>45 Meals</span>
+            {/* TAB-SPECIFIC EDITORIAL WORKSPACES */}
+            {activeRoleTab === 'donor' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
+                      Fresh Dal Makhani &amp; Jeera Rice
+                    </strong>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-forest-green)' }}>
+                      45 Meals
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem' }}>
+                    <span>Hot Holding (&gt;60&deg;C)</span>
+                    <span style={{ fontWeight: 600, color: 'var(--color-terracotta)' }}>Pickup within 35 mins</span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
-                  <span>Hot Holding (&gt;60&deg;C)</span>
-                  <span>Pickup: Within 40m</span>
-                </div>
-              </div>
 
-              <div style={{ padding: '0.85rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.86rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                  <span>60 Tandoori Rotis &amp; Mix Sabzi</span>
-                  <span style={{ color: 'var(--color-network-green)' }}>60 Portions</span>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
+                      60 Tandoori Rotis &amp; Mix Sabzi
+                    </strong>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-forest-green)' }}>
+                      60 Portions
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem' }}>
+                    <span>Ambient Thermal Crate</span>
+                    <span>Ready for 8:00 PM dispatch</span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
-                  <span>Ambient Insulated Crate</span>
-                  <span>Pickup: Today, 8:00 PM</span>
-                </div>
-              </div>
 
-              <div style={{
-                padding: '0.65rem 0.85rem',
-                backgroundColor: 'var(--color-soft-mint)',
-                borderRadius: '8px',
-                border: '1px solid var(--color-soft-mint-border)',
-                fontSize: '0.76rem',
-                color: 'var(--color-network-green)',
-                fontWeight: 700,
-                textAlign: 'center',
-              }}>
-                &bull; Matched with Hope Shelter &bull; Score: 94/100
+                {/* Handcrafted Dispatch Receipt Box */}
+                <div style={{
+                  backgroundColor: '#FFFDF9',
+                  borderRadius: '10px',
+                  border: '1px solid var(--color-soft-border)',
+                  borderLeft: '4px solid var(--color-forest-green)',
+                  padding: '0.85rem 1rem',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <span style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--color-forest-green)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Automated Route Match
+                    </span>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-coffee-dark)', fontVariantNumeric: 'tabular-nums' }}>
+                      94/100 Score
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', margin: '0 0 0.35rem 0', fontWeight: 600 }}>
+                    Hope Shelter Community Kitchen (2.4 km via Ring Road)
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
+                    <span>Assigned Courier: Electric Van #04</span>
+                    <span>Estimated transit: 18 mins</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
+
+            {activeRoleTab === 'coordinator' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
+                      Metro Bistro &rarr; Hope Shelter
+                    </strong>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-terracotta)' }}>
+                      96% Rank #1
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.76rem', color: 'var(--color-muted-slate)', margin: '0.25rem 0' }}>
+                    45 Hot Meals • 2.4 km distance • 1h 45m safe window
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-forest-green)', fontWeight: 600 }}>
+                    <span>Demand 35 • Urgency 25 • Route 20 • Storage 16</span>
+                    <span>1-Click Approval Ready</span>
+                  </div>
+                </div>
+
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
+                      Grand Banquet &rarr; Seva Rasoi
+                    </strong>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-forest-green)' }}>
+                      92% Rank #2
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.76rem', color: 'var(--color-muted-slate)', margin: '0.25rem 0' }}>
+                    80 Pure Veg Portions • 3.1 km distance • Holding confirmed
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
+                    <span>Chilled Insulated transport required</span>
+                    <span>Scheduled 8:30 PM</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  padding: '0.65rem 0.85rem',
+                  backgroundColor: '#FFFDF9',
+                  borderRadius: '8px',
+                  border: '1px solid var(--color-soft-border)',
+                  fontSize: '0.74rem',
+                  color: 'var(--color-muted-slate)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}>
+                  <span>City Dispatch: <strong>3 Active Couriers</strong></span>
+                  <span>Avg Match: <strong>4.2 mins</strong></span>
+                </div>
+              </div>
+            )}
+
+            {activeRoleTab === 'ngo' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-forest-green)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
+                      Evening Intake Quota
+                    </strong>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-forest-green)' }}>
+                      50 Meals
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.76rem', color: 'var(--color-coffee-dark)', margin: '0.25rem 0', fontWeight: 600 }}>
+                    Allocated: 45 Meals from Metro Bistro (Arriving ~18 mins)
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
+                    <span>Dietary: Vegetarian / Hot Dal &amp; Rice</span>
+                    <span style={{ color: 'var(--color-forest-green)', fontWeight: 700 }}>In Transit</span>
+                  </div>
+                </div>
+
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
+                      Breakfast Intake Quota
+                    </strong>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-muted-slate)' }}>
+                      35 Portions
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem' }}>
+                    <span>Needed by Tomorrow 7:30 AM</span>
+                    <span style={{ color: 'var(--color-terracotta)', fontWeight: 600 }}>Awaiting Morning Surplus</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  padding: '0.65rem 0.85rem',
+                  backgroundColor: '#FFFDF9',
+                  borderRadius: '8px',
+                  border: '1px solid var(--color-soft-border)',
+                  fontSize: '0.74rem',
+                  color: 'var(--color-muted-slate)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}>
+                  <span>Intake Capacity: <strong>120 Meals / day</strong></span>
+                  <span>Safety: <strong>Temp Handover Logged</strong></span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
