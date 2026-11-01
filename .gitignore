@@ -24,6 +24,10 @@ Thumbs.db
 
 # Workspace agent configs
 .agents/
+.agent/
+
+# Planning and sketches
+.planning/
 
 # Local ML summary documentation
 ML WORK .md
