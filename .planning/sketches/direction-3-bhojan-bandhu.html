@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direction 3: Bhojan Bandhu — RescueBite AI Sketch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --bg-cream: #FAF7F0;
+      --bg-card: #FFFFFF;
+      --ink-deep: #132A22;
+      --ink-soft: #4E6057;
+      --ink-whisper: #81938A;
+      --border-clay: #E3DCCC;
+      --border-ink: #132A22;
+      --accent-saffron: #D97706;
+      --accent-saffron-light: #FEF3C7;
+      --brand-forest: #193C30;
+      --brand-forest-hover: #102820;
+      --radius-subtle: 4px;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'DM Sans', -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-cream);
+      color: var(--ink-deep);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Masthead Notice */
+    .guild-masthead {
+      border-bottom: 1px solid var(--border-clay);
+      padding: 0.65rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      background: var(--bg-cream);
+    }
+    .badge-sample-pill {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border: 1px solid var(--border-clay);
+      border-radius: 999px;
+      background: #FFFFFF;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border-clay);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-cream);
+    }
+    .logo-container {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+    .logo-main {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--brand-forest);
+      letter-spacing: -0.01em;
+    }
+    .logo-sub {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    nav a {
+      color: var(--ink-deep);
+      text-decoration: none;
+    }
+    .btn-warm {
+      background: var(--brand-forest);
+      color: #FFFFFF;
+      padding: 0.65rem 1.35rem;
+      border-radius: var(--radius-subtle);
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Hero Section */
+    .hero-guild {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      padding: 4rem 0 3.5rem 0;
+      border-bottom: 1px solid var(--border-clay);
+      gap: 3rem;
+      align-items: center;
+    }
+    .hero-h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+      line-height: 1.12;
+      font-weight: 600;
+      color: var(--brand-forest);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+    .hero-h1 span {
+      font-style: italic;
+      color: var(--accent-saffron);
+    }
+    .hero-summary {
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .hero-actions-warm {
+      display: flex;
+      gap: 1rem;
+    }
+    .btn-outline-clay {
+      background: transparent;
+      border: 1px solid var(--border-clay);
+      color: var(--ink-deep);
+      padding: 0.65rem 1.35rem;
+      border-radius: var(--radius-subtle);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* 3D Hero Frame */
+    .hero-visual-frame {
+      border: 1px solid var(--border-clay);
+      background: #F3EFE4;
+      border-radius: var(--radius-subtle);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 10px rgba(19, 42, 34, 0.04);
+    }
+    .frame-caption {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border-clay);
+      background: #FAF7F0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+    }
+    #three-guild-canvas {
+      width: 100%;
+      height: 380px;
+    }
+    .visual-overlay-card {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      background: #FFFFFF;
+      border: 1px solid var(--border-clay);
+      border-radius: var(--radius-subtle);
+      padding: 0.95rem 1.2rem;
+    }
+
+    /* Single Real Listing Journey */
+    .section-wrap {
+      padding: 4.5rem 0;
+      border-bottom: 1px solid var(--border-clay);
+    }
+    .section-heading-block {
+      max-width: 680px;
+      margin-bottom: 2.75rem;
+    }
+    .section-h2 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--brand-forest);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .section-p {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    /* Step Journey Card */
+    .journey-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-clay);
+      border-radius: var(--radius-subtle);
+      padding: 2rem;
+    }
+    .journey-header {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-clay);
+      font-size: 0.85rem;
+    }
+    .journey-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .j-step {
+      border-left: 2px solid var(--border-clay);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .j-step.active {
+      border-color: var(--accent-saffron);
+    }
+    .j-time {
+      font-size: 0.75rem;
+      color: var(--accent-saffron);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .j-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink-deep);
+      margin-bottom: 0.45rem;
+    }
+    .j-body {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+
+    /* Score Bar Visual Component */
+    .matching-bar-box {
+      margin-top: 2.5rem;
+      background: #FAF7F0;
+      border: 1px solid var(--border-clay);
+      border-radius: var(--radius-subtle);
+      padding: 1.5rem;
+    }
+    .score-bar-segmented {
+      display: flex;
+      height: 10px;
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 0.75rem 0;
+      background: #E6DFD1;
+    }
+    .b-seg-1 { background: var(--brand-forest); width: 35%; }
+    .b-seg-2 { background: var(--accent-saffron); width: 25%; }
+    .b-seg-3 { background: #3B7260; width: 20%; }
+    .b-seg-4 { background: #7C9B8F; width: 20%; }
+
+    /* Switcher */
+    .direction-switcher {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink-deep);
+      color: #FFFFFF;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.8rem;
+      font-family: monospace;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    .direction-switcher a {
+      color: #A3BFB5;
+      text-decoration: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+    }
+    .direction-switcher a.active {
+      color: #FFFFFF;
+      background: var(--brand-forest);
+    }
+
+    @media (max-width: 860px) {
+      .hero-guild { grid-template-columns: 1fr; }
+      .journey-timeline { grid-template-columns: 1fr; }
+      .j-step { border-left: 2px solid var(--border-clay); margin-bottom: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Switcher -->
+  <div class="direction-switcher">
+    <span>SKETCH REVIEWS:</span>
+    <a href="direction-1-civic-dispatch.html">1: Civic Dispatch (Editorial)</a>
+    <a href="direction-2-supply-ledger.html">2: Supply Ledger (Tactical)</a>
+    <a href="direction-3-bhojan-bandhu.html" class="active">3: Bhojan Bandhu (Warm Guild)</a>
+  </div>
+
+  <div class="guild-masthead">
+    <div>COMMUNITY FOOD COMMONS • BENGALURU & DELHI CIRCLE</div>
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <span class="badge-sample-pill">Sample data active</span>
+      <span>Indiranagar Kitchen Hub</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo-container">
+      <span class="logo-main">RescueBite</span>
+      <span class="logo-sub">भोजन बन्धु</span>
+    </div>
+    <nav>
+      <a href="#story">The Journey</a>
+      <a href="#kitchens">Kitchen Directory</a>
+      <a href="#ledger">Impact Ledger</a>
+      <button class="btn-warm">Allocation Desk</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero-guild">
+      <div>
+        <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-saffron); margin-bottom: 0.75rem; display: block;">
+          Warmth in Distribution • Zero Waste In Transit
+        </span>
+        <h1 class="hero-h1">
+          Surplus food, distributed with <span>dignity and care</span>.
+        </h1>
+        <p class="hero-summary">
+          RescueBite helps banquets, hotels, and community caterers deliver freshly prepared meals to neighborhood shelters across India before hot and cold safe holding windows close.
+        </p>
+        <div class="hero-actions-warm">
+          <button class="btn-warm">Open Coordinator Desk</button>
+          <button class="btn-outline-clay">Donate Surplus Kitchen Food</button>
+        </div>
+
+        <div style="margin-top: 2.75rem; display: flex; gap: 3rem; border-top: 1px solid var(--border-clay); padding-top: 1.5rem;">
+          <div>
+            <div style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600; color: var(--brand-forest);">
+              184 <span style="font-size: 0.85rem; font-family: var(--font-sans); color: var(--ink-soft);">meals</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--ink-soft);">
+              Served Today (Sample data)
+            </div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 600; color: var(--brand-forest);">
+              12 <span style="font-size: 0.85rem; font-family: var(--font-sans); color: var(--ink-soft);">mins</span>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--ink-soft);">
+              Average Transit Time
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero 3D Visual Frame -->
+      <div class="hero-visual-frame">
+        <div class="frame-caption">
+          <span>CITY SURPLUS TOPOLOGY (ISOMETRIC)</span>
+          <span>12 KITCHENS • 5 SHELTERS</span>
+        </div>
+        <div id="three-guild-canvas"></div>
+        <div class="visual-overlay-card">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.35rem;">
+            <span>South Indian Tiffin Surplus → Vidyaranyapura Shelter</span>
+            <span style="color: var(--accent-saffron);">95% Feasible</span>
+          </div>
+          <div class="score-bar-segmented">
+            <div class="b-seg-1"></div>
+            <div class="b-seg-2"></div>
+            <div class="b-seg-3"></div>
+            <div class="b-seg-4"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--ink-soft);">
+            <span>Demand (35%)</span>
+            <span>Urgency (25%)</span>
+            <span>Distance (20%)</span>
+            <span>Storage (20%)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Replacement of 3 Cards with Real Listing Journey -->
+    <section class="section-wrap" id="story">
+      <div class="section-heading-block">
+        <h2 class="section-h2">A Verified Real-World Rescue</h2>
+        <p class="section-p">
+          Follow the lifecycle of an evening surplus batch from Bangalore Club Banquets to the Shanti Nilayam Shelter.
+        </p>
+      </div>
+
+      <div class="journey-card">
+        <div class="journey-header">
+          <div><strong>Listing #BLR-8104</strong> • South Kitchen Annex</div>
+          <div style="color: var(--brand-forest); font-weight: 600;">Status: Delivered & Served (Sample data)</div>
+        </div>
+
+        <div class="journey-timeline">
+          <div class="j-step active">
+            <div class="j-time">20:15 • DECLARED</div>
+            <div class="j-title">Kitchen Post</div>
+            <div class="j-body">
+              Bangalore Club logs <strong>55 Fresh Meal Portions</strong> (Sambar, Bisi Bele Bath, Curd Rice). Stored in insulated hot containers.
+            </div>
+          </div>
+
+          <div class="j-step active">
+            <div class="j-time">20:18 • ENGINE SCORE</div>
+            <div class="j-title">Local Match</div>
+            <div class="j-body">
+              Constraint engine prioritizes Shanti Nilayam Shelter (60 meals needed, 1.9 km transit distance, score 95/100).
+            </div>
+          </div>
+
+          <div class="j-step active">
+            <div class="j-time">20:21 • DISPATCHED</div>
+            <div class="j-title">Human Signoff</div>
+            <div class="j-body">
+              Coordinator reviews hot holding temperature log and assigns verified volunteer delivery partner.
+            </div>
+          </div>
+
+          <div class="j-step active">
+            <div class="j-time">20:44 • NOURISHED</div>
+            <div class="j-title">Intake Complete</div>
+            <div class="j-body">
+              Shelter team accepts warm food, plates dinner for 55 residents. Zero plastic, zero spoilage.
+            </div>
+          </div>
+        </div>
+
+        <div class="matching-bar-box">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+            <span>How the Match Engine Decided</span>
+            <span style="color: var(--brand-forest);">Overall Score: 95 / 100</span>
+          </div>
+          <div class="score-bar-segmented" style="height: 12px;">
+            <div class="b-seg-1"></div>
+            <div class="b-seg-2"></div>
+            <div class="b-seg-3"></div>
+            <div class="b-seg-4"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.35rem;">
+            <span>Demand Match: 35/35</span>
+            <span>Urgency Window: 24/25</span>
+            <span>Distance (1.9 km): 18/20</span>
+            <span>Safe Storage: 18/20</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top: 1px solid var(--border-clay); padding: 2.5rem 2rem; margin-top: 3rem; background: var(--bg-cream);">
+    <div class="container" style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--ink-soft);">
+      <div>RescueBite AI • Bhojan Bandhu Commons</div>
+      <div>Direction 3: Warm Humanist Guild</div>
+    </div>
+  </footer>
+
+  <script>
+    (function initGuild3D() {
+      const container = document.getElementById('three-guild-canvas');
+      if (!container || !window.THREE) return;
+
+      const w = container.clientWidth || 500;
+      const h = container.clientHeight || 380;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xF3EFE4);
+
+      const camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 1000);
+      camera.position.set(22, 26, 26);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setSize(w, h);
+      container.appendChild(renderer.domElement);
+
+      const grid = new THREE.GridHelper(32, 16, 0x193C30, 0xD7CFC0);
+      scene.add(grid);
+
+      // Donors (Warm Forest Pillars)
+      const dGeo = new THREE.CylinderGeometry(0.5, 0.5, 1.0, 8);
+      const dMat = new THREE.MeshBasicMaterial({ color: 0x193C30 });
+      const donors = [
+        [-8, 0.5, -7], [-4, 0.5, -9], [3, 0.5, -6], [7, 0.5, -8],
+        [-9, 0.5, 1], [-2, 0.5, 0], [4, 0.5, -1], [9, 0.5, 2],
+        [-6, 0.5, 6], [1, 0.5, 5], [6, 0.5, 6], [-2, 0.5, 8]
+      ];
+      donors.forEach(p => {
+        const m = new THREE.Mesh(dGeo, dMat);
+        m.position.set(p[0], p[1], p[2]);
+        scene.add(m);
+      });
+
+      // Shelters (Warm Saffron Cylinders)
+      const sGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.6, 6);
+      const sMat = new THREE.MeshBasicMaterial({ color: 0xD97706 });
+      const shelters = [
+        [-6, 0.3, -4], [2, 0.3, -3], [-5, 0.3, 3], [5, 0.3, 2], [0, 0.3, 7]
+      ];
+      shelters.forEach(p => {
+        const m = new THREE.Mesh(sGeo, sMat);
+        m.position.set(p[0], p[1], p[2]);
+        scene.add(m);
+      });
+
+      // Arc curve
+      const curve = new THREE.QuadraticBezierCurve3(
+        new THREE.Vector3(-2, 0.8, 0),
+        new THREE.Vector3(0, 5, -1),
+        new THREE.Vector3(2, 0.5, -3)
+      );
+      const pts = curve.getPoints(50);
+      const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
+      const lineMat = new THREE.LineBasicMaterial({ color: 0xD97706 });
+      const arc = new THREE.Line(lineGeo, lineMat);
+      scene.add(arc);
+
+      const sphereGeo = new THREE.SphereGeometry(0.35, 12, 12);
+      const sphereMat = new THREE.MeshBasicMaterial({ color: 0x193C30 });
+      const bead = new THREE.Mesh(sphereGeo, sphereMat);
+      scene.add(bead);
+
+      let step = 0;
+      function loop() {
+        requestAnimationFrame(loop);
+        step = (step + 0.008) % 1;
+        bead.position.copy(curve.getPoint(step));
+        grid.rotation.y += 0.0004;
+        renderer.render(scene, camera);
+      }
+      loop();
+
+      window.addEventListener('resize', () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        if (width && height) {
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+          renderer.setSize(width, height);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
