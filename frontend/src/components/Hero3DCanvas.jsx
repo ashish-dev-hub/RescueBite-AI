@@ -447,6 +447,7 @@ export default function Hero3DCanvas() {
         style={{
           width: '100%',
           height: '100%',
+          touchAction: 'pan-y',
           cursor: 'grab',
         }}
       />

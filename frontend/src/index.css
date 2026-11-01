@@ -135,75 +135,186 @@ input, select, textarea {
   width: 100%;
 }
 
-/* Responsive Navigation */
-.desktop-nav {
+/* ==========================================================================
+   Clean & Robust Bhojan Bandhu Navbar Styles
+   ========================================================================== */
+.navbar-header {
+  background-color: #FAF4EB;
+  border-bottom: 1px solid #E5DBC5;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+}
+
+.navbar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.navbar-brand {
+  cursor: pointer;
+  user-select: none;
   display: flex;
   align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.navbar-brand-text {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-terracotta);
+}
+
+.desktop-plain-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 1.75rem !important;
+  flex: 1;
+  margin: 0 1.5rem;
+}
+
+.desktop-nav-link {
+  background: none;
+  border: none;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #685B52;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.desktop-nav-link:hover {
+  color: #2C221E;
+}
+
+.desktop-nav-link.active {
+  font-weight: 700;
+  color: #2C221E;
+  border-bottom: 2px solid var(--color-terracotta);
+}
+
+.navbar-right-cluster {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.desktop-auth-cluster {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  position: relative;
+}
+
+/* Strictly hide mobile buttons on desktop */
+.mobile-hamburger-btn {
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--color-coffee-dark);
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-soft-border);
+  box-shadow: 0 2px 0 var(--color-card-bevel);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.mobile-hamburger-btn:hover {
+  background-color: var(--color-warm-bg);
+  transform: translateY(1px);
+}
+
+.mobile-profile-quick-btn {
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-soft-mint);
+  color: var(--color-forest-green);
+  font-weight: 800;
+  font-size: 0.9rem;
+  border: 1px solid var(--color-soft-mint-border);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mobile-drawer-container {
+  background-color: var(--color-warm-bg);
+  border-top: 1px solid var(--color-soft-border);
+  padding: 1rem 1.25rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: drawerSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-drawer-links {
+  display: flex;
+  flex-direction: column;
   gap: 0.35rem;
 }
 
-.mobile-menu-btn {
-  display: none !important;
+.mobile-drawer-link {
+  text-align: left;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--color-coffee-dark);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Medium-large screens (1080px - 1320px): Compact tabs so desktop nav fits without pushing right section */
-@media (max-width: 1320px) {
-  .navbar-container {
-    padding: 0.55rem 1rem !important;
-    gap: 0.5rem !important;
-  }
-  .desktop-nav {
-    gap: 0.2rem !important;
-  }
-  .desktop-nav-btn {
-    padding: 0.4rem 0.55rem !important;
-    font-size: 0.8rem !important;
-    gap: 0.3rem !important;
-  }
-  .brand-tagline {
-    display: none !important;
-  }
-  .user-profile-name {
-    max-width: 80px !important;
-  }
+.mobile-drawer-link.active {
+  background-color: var(--color-card-bg);
+  color: var(--color-terracotta);
+  border-color: var(--color-soft-border);
+  box-shadow: 0 2px 0 var(--color-card-bevel);
+  font-weight: 700;
 }
 
-/* Tablet & split-screen (<= 1080px): Switch to mobile drawer to prevent any crowding */
-@media (max-width: 1080px) {
-  .desktop-nav {
-    display: none !important;
-  }
-  .mobile-menu-btn {
-    display: flex !important;
-  }
+.mobile-drawer-active-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-terracotta);
 }
 
-/* Mobile screens (<= 640px) */
-@media (max-width: 640px) {
-  .navbar-container {
-    padding: 0.5rem 0.75rem !important;
-  }
-  .user-profile-name {
-    display: none !important;
-  }
-  .user-profile-btn {
-    padding: 0.35rem 0.55rem !important;
-  }
-  .user-profile-dropdown {
-    width: 270px !important;
-    right: 0 !important;
-  }
-}
-
-/* Ultra small mobile (<= 380px) */
-@media (max-width: 380px) {
-  .user-profile-role-badge {
-    display: none !important;
-  }
-}
-
-.mobile-drawer {
-  animation: drawerSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+.mobile-drawer-divider {
+  height: 1px;
+  background-color: var(--color-soft-border);
+  margin: 0.25rem 0;
 }
 
 @keyframes drawerSlideDown {
@@ -216,6 +327,9 @@ input, select, textarea {
     transform: translateY(0);
   }
 }
+
+/* Tablet & Mobile Breakpoints */
+
 
 .main-content {
   flex: 1;
@@ -1488,29 +1602,7 @@ input::-ms-clear {
   }
 }
 
-@media (max-width: 860px) {
-  .desktop-plain-nav {
-    display: none !important;
-  }
-  .desktop-auth-cluster {
-    display: none !important;
-  }
-  .mobile-hamburger-btn {
-    display: flex !important;
-  }
-  .mobile-profile-quick-btn {
-    display: flex !important;
-  }
-}
 
-@media (max-width: 600px) {
-  .navbar-container {
-    padding: 0.75rem 1rem !important;
-  }
-  .navbar-brand-text {
-    font-size: 1.35rem;
-  }
-}
 
 /* ==========================================================================
    Wave 3: Bhojan Bandhu Timeline, Score Breakdown & Section Styles
