@@ -280,288 +280,261 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         </div>
       </section>
 
-      {/* THE 3-STEP OPERATIONS JOURNEY */}
-      <section style={{ marginBottom: '3.75rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2.25rem' }}>
+      {/* REAL LISTING LIFECYCLE TIMELINE (Replaces 01/02/03 cards) */}
+      <section style={{ marginBottom: '4.5rem' }}>
+        <div className="section-bhojan-header">
           <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.35rem',
-            padding: '0.25rem 0.75rem',
-            borderRadius: 'var(--radius-pill)',
-            backgroundColor: 'var(--color-soft-mint)',
+            fontSize: '0.74rem',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
             color: 'var(--color-network-green)',
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            marginBottom: '0.5rem',
+            marginBottom: '0.45rem',
           }}>
-            <Sparkles size={13} />
-            <span>EXPLAINABLE RESCUE LIFECYCLE</span>
+            Case Audit &bull; Grounded Operations
           </div>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', color: 'var(--color-deep-forest)', fontWeight: 800 }}>
-            How RescueBite Works
+          <h2 className="section-bhojan-title">
+            The Path of One Listing
           </h2>
-          <p style={{ fontSize: '0.92rem', color: 'var(--color-muted-slate)', maxWidth: '600px', margin: '0.35rem auto 0 auto' }}>
-            A dependable, rule-constrained pipeline replacing ad-hoc phone calls and food spoilage.
+          <p className="section-bhojan-sub">
+            Follow an actual evening surplus consignment from a banquet kitchen to a community dining hall through verified decision checkpoints.
           </p>
         </div>
 
-        <div className="operations-steps-grid">
-          {/* Step 1 */}
-          <div className="step-card-connected">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.1rem' }}>
-              <div style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--color-soft-mint)',
-                color: 'var(--color-network-green)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Building size={22} />
-              </div>
-              <span style={{
-                fontSize: '1.75rem',
-                fontWeight: 900,
-                color: 'var(--color-soft-mint-border)',
-                fontFamily: 'monospace',
-              }}>
-                01
-              </span>
-            </div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              1. List Surplus in Seconds
-            </h3>
-            <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', lineHeight: 1.6, marginBottom: '1rem' }}>
-              Donors publish surplus listings with meal count, preparation timestamp, safe storage requirements (refrigerated, hot holding), and exact pickup deadlines.
-            </p>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.72rem', backgroundColor: 'var(--color-pale-neutral)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--color-dark-slate)', fontWeight: 500 }}>
-                • 10-sec listing form
-              </span>
-              <span style={{ fontSize: '0.72rem', backgroundColor: 'var(--color-pale-neutral)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--color-dark-slate)', fontWeight: 500 }}>
-                • Auto expiry timer
-              </span>
-            </div>
+        {/* Real Single Listing Timeline */}
+        <div className="timeline-bhojan-container">
+          <div className="timeline-meta-bar">
+            <span>CASE AUDIT #RB-DEL-4091 &bull; CONNAUGHT PLACE TO PAHAR GANJ CORRIDOR</span>
+            <span style={{ color: 'var(--color-network-green)' }}>Status: Verified Delivered (Sample data)</span>
           </div>
 
-          {/* Step 2 */}
-          <div className="step-card-connected">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.1rem' }}>
-              <div style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--color-soft-mint)',
-                color: 'var(--color-network-green)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Sparkles size={22} />
-              </div>
-              <span style={{
-                fontSize: '1.75rem',
-                fontWeight: 900,
-                color: 'var(--color-soft-mint-border)',
-                fontFamily: 'monospace',
-              }}>
-                02
-              </span>
+          <div className="timeline-step-grid">
+            <div className="timeline-step-node">
+              <div className="t-node-time">19:10 IST &bull; LOGGED</div>
+              <h3 className="t-node-title">Surplus Declared</h3>
+              <p className="t-node-body">
+                Hotel Imperial declares <strong>45 Fresh Hot Meals</strong> (Dal Makhani, Jeera Rice, Subz Korma). Safe storage requirement: Hot holding (&gt;60&deg;C).
+              </p>
             </div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              2. Match Local Need with AI
-            </h3>
-            <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', lineHeight: 1.6, marginBottom: '1rem' }}>
-              The constraint-aware engine ranks feasible matches using demand fit (35%), deadline urgency (25%), travel proximity (20%), and storage capacity (20%), with explainable reason codes.
-            </p>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.72rem', backgroundColor: 'var(--color-pale-neutral)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--color-dark-slate)', fontWeight: 500 }}>
-                • Multi-factor ranking
-              </span>
-              <span style={{ fontSize: '0.72rem', backgroundColor: 'var(--color-pale-neutral)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--color-dark-slate)', fontWeight: 500 }}>
-                • Cold-chain safety check
-              </span>
+
+            <div className="timeline-step-node">
+              <div className="t-node-time">19:14 IST &bull; SCORING</div>
+              <h3 className="t-node-title">Constraint Scoring</h3>
+              <p className="t-node-body">
+                Engine evaluates nearby shelters. Hope Shelter selected with <strong>94/100 match score</strong> (50 meals needed, 2.1 km transit distance).
+              </p>
+            </div>
+
+            <div className="timeline-step-node">
+              <div className="t-node-time">19:18 IST &bull; DISPATCHED</div>
+              <h3 className="t-node-title">Coordinator Approval</h3>
+              <p className="t-node-body">
+                Operations desk verifies safe holding temperature window, approves digital dispatch, and assigns courier volunteer.
+              </p>
+            </div>
+
+            <div className="timeline-step-node">
+              <div className="t-node-time">19:42 IST &bull; DELIVERED</div>
+              <h3 className="t-node-title">Intake Verified</h3>
+              <p className="t-node-body">
+                Shelter supervisor verifies food temperature integrity and distributes dinner to 45 residents. Audit trail closed.
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Step 3 */}
-          <div className="step-card-connected">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.1rem' }}>
-              <div style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--color-soft-mint)',
-                color: 'var(--color-network-green)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Truck size={22} />
-              </div>
-              <span style={{
-                fontSize: '1.75rem',
-                fontWeight: 900,
-                color: 'var(--color-soft-mint-border)',
-                fontFamily: 'monospace',
-              }}>
-                03
-              </span>
-            </div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              3. Confirm & Deliver Safely
+        {/* Visual 4-Part Segmented Score Breakdown Bar */}
+        <div className="score-visual-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h3 style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '1.25rem',
+              fontWeight: 800,
+              color: 'var(--color-deep-forest)',
+              margin: 0,
+            }}>
+              Explainable Matching Breakdown
             </h3>
-            <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', lineHeight: 1.6, marginBottom: '1rem' }}>
-              The coordinator approves allocations, the NGO accepts or rejects, and pickup and delivery milestones are timestamped into a tamper-proof audit trail for ESG reporting.
-            </p>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.72rem', backgroundColor: 'var(--color-pale-neutral)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--color-dark-slate)', fontWeight: 500 }}>
-                • 1-Click approval
-              </span>
-              <span style={{ fontSize: '0.72rem', backgroundColor: 'var(--color-pale-neutral)', padding: '0.2rem 0.5rem', borderRadius: '4px', color: 'var(--color-dark-slate)', fontWeight: 500 }}>
-                • Tamper-proof logs
-              </span>
+            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-muted-slate)' }}>
+              Deterministic Formula &bull; 94 / 100 Overall Score
+            </span>
+          </div>
+
+          <div className="score-bar-segmented">
+            <div className="seg-demand" title="Demand Fit: 35/35"></div>
+            <div className="seg-urgency" title="Urgency Window: 24/25"></div>
+            <div className="seg-proximity" title="Proximity (2.1 km): 18/20"></div>
+            <div className="seg-storage" title="Safe Hot Chain: 17/20"></div>
+          </div>
+
+          <div className="score-breakdown-legend">
+            <div className="legend-col">
+              <strong>35% Demand Fit</strong>
+              <p>Direct volume and meal type alignment with shelter evening quota.</p>
+            </div>
+            <div className="legend-col">
+              <strong>25% Deadline Urgency</strong>
+              <p>Safe food holding window before risk of spoilage.</p>
+            </div>
+            <div className="legend-col">
+              <strong>20% Road Proximity</strong>
+              <p>Under 15 minutes expected travel time (2.1 km transit distance).</p>
+            </div>
+            <div className="legend-col">
+              <strong>20% Storage Protocol</strong>
+              <p>Thermal insulated carrier verification (&gt;60&deg;C hot holding).</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* INTERACTIVE ROLE EXPLORER SHOWCASE */}
-      <section style={{
-        backgroundColor: '#FFFFFF',
-        borderRadius: 'var(--radius-xl)',
-        border: '1px solid var(--color-soft-border)',
-        padding: '2.5rem 2rem',
-        boxShadow: 'var(--shadow-subtle)',
-        marginBottom: '3.75rem',
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.85rem)', color: 'var(--color-deep-forest)', fontWeight: 800 }}>
-            Dedicated Workspaces for Every Partner
-          </h2>
-          <p style={{ fontSize: '0.9rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
-            Choose your role to explore features tailored specifically for your operational workflow:
-          </p>
-
-          {/* Role Selector Tabs */}
+      {/* OPERATIONAL PORTALS SHOWCASE */}
+      <section style={{ marginBottom: '4.5rem' }}>
+        <div className="section-bhojan-header">
           <div style={{
-            display: 'inline-flex',
-            backgroundColor: 'var(--color-pale-neutral)',
-            padding: '0.35rem',
-            borderRadius: 'var(--radius-pill)',
-            gap: '0.35rem',
-            marginTop: '1.25rem',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
+            fontSize: '0.74rem',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            color: 'var(--color-network-green)',
+            marginBottom: '0.45rem',
           }}>
-            <button
-              type="button"
-              onClick={() => setActiveRoleTab('donor')}
-              className={`interactive-tab-btn ${activeRoleTab === 'donor' ? 'active' : ''}`}
-            >
-              <Building size={16} />
-              <span>Food Donors</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveRoleTab('coordinator')}
-              className={`interactive-tab-btn ${activeRoleTab === 'coordinator' ? 'active' : ''}`}
-            >
-              <ShieldCheck size={16} />
-              <span>Operations Coordinators</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveRoleTab('ngo')}
-              className={`interactive-tab-btn ${activeRoleTab === 'ngo' ? 'active' : ''}`}
-            >
-              <Soup size={16} />
-              <span>Recipient NGOs</span>
-            </button>
+            Dedicated Tools
           </div>
+          <h2 className="section-bhojan-title">
+            Workspaces for Every Partner
+          </h2>
+          <p className="section-bhojan-sub">
+            Tailored interfaces designed for commercial donors, dispatch coordinators, and community shelters.
+          </p>
         </div>
 
-        {/* Dynamic Role Content Card */}
+        {/* Clean Segmented Control (No Pills) */}
+        <div className="role-segmented-nav">
+          <button
+            type="button"
+            onClick={() => setActiveRoleTab('donor')}
+            className={`role-segment-btn ${activeRoleTab === 'donor' ? 'active' : ''}`}
+          >
+            <Building size={16} />
+            <span>Food Donors</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveRoleTab('coordinator')}
+            className={`role-segment-btn ${activeRoleTab === 'coordinator' ? 'active' : ''}`}
+          >
+            <ShieldCheck size={16} />
+            <span>Operations Coordinators</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveRoleTab('ngo')}
+            className={`role-segment-btn ${activeRoleTab === 'ngo' ? 'active' : ''}`}
+          >
+            <Soup size={16} />
+            <span>Recipient NGOs</span>
+          </button>
+        </div>
+
+        {/* Dynamic Role Card */}
         <div style={{
-          backgroundColor: 'var(--color-pale-neutral)',
-          borderRadius: 'var(--radius-lg)',
+          backgroundColor: '#FFFDF9',
+          borderRadius: 'var(--radius-card)',
           border: '1px solid var(--color-soft-border)',
-          padding: '2rem',
+          boxShadow: '4px 6px 0px var(--color-card-bevel)',
+          padding: '2.25rem',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-          gap: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+          gap: '2.5rem',
           alignItems: 'center',
         }}>
           <div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', padding: '0.25rem 0.65rem', borderRadius: 'var(--radius-pill)', backgroundColor: 'var(--color-soft-mint)', color: 'var(--color-network-green)', fontSize: '0.76rem', fontWeight: 700, marginBottom: '0.75rem' }}>
-              {activeRoleTab === 'donor' && 'RESTAURANTS • CATERERS • GROCERS'}
-              {activeRoleTab === 'coordinator' && 'CITY LOGISTICS DISPATCH COMMAND'}
-              {activeRoleTab === 'ngo' && 'COMMUNITY SHELTERS • FOOD PANTRIES'}
+            <div style={{
+              fontSize: '0.74rem',
+              fontWeight: 800,
+              color: 'var(--color-network-green)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: '0.5rem',
+            }}>
+              {activeRoleTab === 'donor' && 'Hotels &bull; Caterers &bull; Commercial Kitchens'}
+              {activeRoleTab === 'coordinator' && 'City Logistics Command'}
+              {activeRoleTab === 'ngo' && 'Community Shelters &bull; Day Centers'}
             </div>
 
-            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginBottom: '0.75rem' }}>
+            <h3 style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '1.45rem',
+              fontWeight: 800,
+              color: 'var(--color-deep-forest)',
+              marginBottom: '0.75rem',
+              lineHeight: 1.25,
+            }}>
               {activeRoleTab === 'donor' && 'List Surplus in Seconds & Track Impact'}
-              {activeRoleTab === 'coordinator' && '3-Column AI Allocation Command Center'}
-              {activeRoleTab === 'ngo' && 'Predictive Demand & Instant Offer Acceptance'}
+              {activeRoleTab === 'coordinator' && 'Review Matches & Authorize Dispatch'}
+              {activeRoleTab === 'ngo' && 'Submit Needs & Confirm Meal Intake'}
             </h3>
 
-            <p style={{ fontSize: '0.9rem', color: 'var(--color-muted-slate)', lineHeight: 1.6, marginBottom: '1.25rem' }}>
-              {activeRoleTab === 'donor' && 'Turn unsold wholesome food into verified community meals. Real-time notifications tell you when a coordinator approves an allocation and when drivers are dispatched.'}
-              {activeRoleTab === 'coordinator' && 'Review prioritized surplus matches, verify cold-chain travel windows, and approve allocations in a single click with human-in-the-loop oversight.'}
-              {activeRoleTab === 'ngo' && 'Never worry about dinner shortages. Submit your meal quotas, view incoming matching food items, and verify dietary suitability with full transparency.'}
+            <p style={{
+              fontSize: '0.92rem',
+              color: 'var(--color-muted-slate)',
+              lineHeight: 1.6,
+              marginBottom: '1.5rem',
+            }}>
+              {activeRoleTab === 'donor' && 'Publish surplus wholesome food with storage protocol details. Instant alerts notify you as soon as a local coordinator assigns a verified courier.'}
+              {activeRoleTab === 'coordinator' && 'Evaluate candidate matches ranked by urgency and distance. One-click approval ensures safe food moves within strict temperature boundaries.'}
+              {activeRoleTab === 'ngo' && 'Submit daily dinner quotas for your residents. Receive notifications on matching incoming surplus and verify meal temperature upon arrival.'}
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', marginBottom: '1.75rem' }}>
               {activeRoleTab === 'donor' && (
                 <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Instant surplus posting with hot/cold storage tags</span>
+                    <span>Instant surplus declaration with hot/cold storage tags</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Countdown timers before safety expiration</span>
+                    <span>Real-time countdown to safety expiry window</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Automatic tax deduction & ESG impact summary</span>
+                    <span>Direct environmental impact summary (CO₂e & food saved)</span>
                   </div>
                 </>
               )}
 
               {activeRoleTab === 'coordinator' && (
                 <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Ranked recommendations sorted by urgency and route fit</span>
+                    <span>Explainable ranking sorted by urgency and route feasibility</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Live constraint verification (dietary, temperature, transit)</span>
+                    <span>Transit time boundary checks against declared holding limits</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Direct driver allocation and audit logging</span>
+                    <span>1-Click dispatch approval with volunteer courier assignment</span>
                   </div>
                 </>
               )}
 
               {activeRoleTab === 'ngo' && (
                 <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>AI-forecasted meal demand based on historical intake</span>
+                    <span>Submit meal requirements by dietary type (Veg, Jain, Halal)</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>1-Tap allocation acceptance or reasoned rejection</span>
+                    <span>Accept or reject matched allocations with reasoned feedback</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--color-dark-slate)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.86rem', color: 'var(--color-deep-forest)' }}>
                     <CheckCircle2 size={16} color="var(--color-network-green)" />
-                    <span>Delivery milestone tracking with estimated arrival</span>
+                    <span>Timestamped intake confirmation for ESG and audit reporting</span>
                   </div>
                 </>
               )}
@@ -569,206 +542,257 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
             <button
               onClick={() => onSelectRole(activeRoleTab)}
-              className="btn btn-primary"
-              style={{ padding: '0.75rem 1.4rem', fontSize: '0.92rem' }}
+              className="btn-terracotta"
             >
               <span>
                 {activeRoleTab === 'donor' && 'Launch Donor Portal'}
                 {activeRoleTab === 'coordinator' && 'Launch Allocation Desk'}
                 {activeRoleTab === 'ngo' && 'Launch NGO Portal'}
               </span>
-              <ChevronRight size={16} />
+              <ArrowRight size={16} />
             </button>
           </div>
 
-          {/* Interactive Visual Snapshot for selected role */}
+          {/* Interactive Role Snapshot Card (Indian Context) */}
           <div style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: 'var(--radius-md)',
+            backgroundColor: '#FAF4EB',
+            borderRadius: 'var(--radius-card)',
             border: '1px solid var(--color-soft-border)',
-            padding: '1.25rem',
-            boxShadow: 'var(--shadow-card)',
+            padding: '1.5rem',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-soft-border)' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                {activeRoleTab === 'donor' && 'Active Surplus Listings'}
-                {activeRoleTab === 'coordinator' && 'Live Priority Queue'}
-                {activeRoleTab === 'ngo' && 'Active Intake Quotas'}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-soft-border)' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-deep-forest)' }}>
+                {activeRoleTab === 'donor' && 'Active Kitchen Consignments'}
+                {activeRoleTab === 'coordinator' && 'Priority Allocation Queue'}
+                {activeRoleTab === 'ngo' && 'Shelter Intake Demands'}
+              </span>
+              <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-muted-slate)' }}>
+                Sample data
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-              <div style={{ padding: '0.75rem', backgroundColor: 'var(--color-pale-neutral)', borderRadius: '6px', border: '1px solid var(--color-soft-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', fontWeight: 600 }}>
-                  <span>Fresh Prepared Main Entrees</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ padding: '0.85rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.86rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
+                  <span>Fresh Dal Makhani &amp; Jeera Rice</span>
                   <span style={{ color: 'var(--color-network-green)' }}>45 Meals</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.2rem' }}>
-                  <span>Hot Holding (&gt;60°C)</span>
-                  <span>Pickup: Within 45m</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
+                  <span>Hot Holding (&gt;60&deg;C)</span>
+                  <span>Pickup: Within 40m</span>
                 </div>
               </div>
 
-              <div style={{ padding: '0.75rem', backgroundColor: 'var(--color-pale-neutral)', borderRadius: '6px', border: '1px solid var(--color-soft-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', fontWeight: 600 }}>
-                  <span>Assorted Artisan Breads & Pastries</span>
-                  <span style={{ color: 'var(--color-network-green)' }}>60 Items</span>
+              <div style={{ padding: '0.85rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.86rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
+                  <span>60 Tandoori Rotis &amp; Mix Sabzi</span>
+                  <span style={{ color: 'var(--color-network-green)' }}>60 Portions</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.2rem' }}>
-                  <span>Ambient Safe Storage</span>
-                  <span>Pickup: Today, 6:00 PM</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
+                  <span>Ambient Insulated Crate</span>
+                  <span>Pickup: Today, 8:00 PM</span>
                 </div>
               </div>
 
-              <div style={{ padding: '0.65rem', backgroundColor: 'var(--color-soft-mint)', borderRadius: '6px', border: '1px dashed var(--color-network-green)', textAlign: 'center', fontSize: '0.75rem', color: 'var(--color-network-green)', fontWeight: 600 }}>
-                ✓ AI matched with nearest shelter in 0.4 seconds
+              <div style={{
+                padding: '0.65rem 0.85rem',
+                backgroundColor: 'var(--color-soft-mint)',
+                borderRadius: '8px',
+                border: '1px solid var(--color-soft-mint-border)',
+                fontSize: '0.76rem',
+                color: 'var(--color-network-green)',
+                fontWeight: 700,
+                textAlign: 'center',
+              }}>
+                &bull; Matched with Hope Shelter &bull; Score: 94/100
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* INTERACTIVE IMPACT ESTIMATOR MINI-WIDGET */}
-      <section style={{
-        backgroundColor: 'var(--color-pale-neutral)',
-        borderRadius: 'var(--radius-xl)',
-        border: '1px solid var(--color-soft-border)',
-        padding: '2.5rem 2rem',
-        marginBottom: '3.75rem',
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
+      {/* INTERACTIVE IMPACT ESTIMATOR (Tactile & Clean) */}
+      <section style={{ marginBottom: '4.5rem' }}>
+        <div className="section-bhojan-header">
           <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.35rem',
-            padding: '0.25rem 0.75rem',
-            borderRadius: 'var(--radius-pill)',
-            backgroundColor: 'var(--color-soft-mint)',
+            fontSize: '0.74rem',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
             color: 'var(--color-network-green)',
-            fontSize: '0.76rem',
-            fontWeight: 700,
-            marginBottom: '0.5rem',
+            marginBottom: '0.45rem',
           }}>
-            <Sliders size={13} />
-            <span>INTERACTIVE CALCULATOR</span>
+            Environmental Calculator
           </div>
-          <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.85rem)', color: 'var(--color-deep-forest)', fontWeight: 800 }}>
-            Estimate Your Community & Environmental Impact
+          <h2 className="section-bhojan-title">
+            Project Your Rescue Impact
           </h2>
-          <p style={{ fontSize: '0.9rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
-            Select your regular surplus meal volume to see what you could prevent and nourish:
+          <p className="section-bhojan-sub">
+            Select your regular surplus meal volume to calculate projected landfill diversion and community meals:
           </p>
-
-          {/* Quick Select Buttons */}
-          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', marginTop: '1rem', flexWrap: 'wrap' }}>
-            {[25, 50, 100, 250, 500].map((meals) => (
-              <button
-                key={meals}
-                type="button"
-                onClick={() => setCalculatorMeals(meals)}
-                style={{
-                  padding: '0.45rem 1rem',
-                  borderRadius: 'var(--radius-pill)',
-                  border: `2px solid ${calculatorMeals === meals ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
-                  backgroundColor: calculatorMeals === meals ? 'var(--color-network-green)' : '#FFFFFF',
-                  color: calculatorMeals === meals ? '#FFFFFF' : 'var(--color-dark-slate)',
-                  fontWeight: 700,
-                  fontSize: '0.85rem',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                {meals} Meals / Day
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Impact Calculations 4-Grid */}
+        {/* Volume Selectors */}
+        <div style={{ display: 'flex', gap: '0.65rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+          {[25, 50, 100, 250, 500].map((meals) => (
+            <button
+              key={meals}
+              type="button"
+              onClick={() => setCalculatorMeals(meals)}
+              style={{
+                padding: '0.55rem 1.15rem',
+                borderRadius: 'var(--radius-btn)',
+                border: `2px solid ${calculatorMeals === meals ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
+                backgroundColor: calculatorMeals === meals ? 'var(--color-network-green)' : '#FFFDF9',
+                color: calculatorMeals === meals ? '#FFFFFF' : 'var(--color-deep-forest)',
+                fontWeight: 700,
+                fontSize: '0.86rem',
+                cursor: 'pointer',
+                boxShadow: calculatorMeals === meals ? '0 2px 6px rgba(31, 111, 67, 0.25)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {meals} Meals / Day
+            </button>
+          ))}
+        </div>
+
+        {/* 4 Impact Calculations Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
-          gap: '1rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+          gap: '1.25rem',
         }}>
-          <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-soft-border)', textAlign: 'center' }}>
-            <Soup size={22} color="var(--color-network-green)" style={{ margin: '0 auto 0.4rem auto' }} />
-            <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-network-green)', margin: 0 }}>
+          <div style={{
+            background: '#FFFDF9',
+            padding: '1.65rem 1.4rem',
+            borderRadius: 'var(--radius-card)',
+            border: '1px solid var(--color-soft-border)',
+            boxShadow: '4px 6px 0px var(--color-card-bevel)',
+          }}>
+            <p style={{
+              fontSize: '2.1rem',
+              fontWeight: 800,
+              fontFamily: 'var(--font-heading)',
+              color: 'var(--color-network-green)',
+              margin: '0 0 0.2rem 0',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
               {calculatorMeals}
             </p>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', margin: '0.2rem 0 0 0' }}>
-              Hungry Neighbours Fed
-            </p>
+            <strong style={{ fontSize: '0.88rem', color: 'var(--color-deep-forest)', display: 'block', marginBottom: '0.2rem' }}>
+              People Nourished
+            </strong>
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)' }}>
+              Per redistribution run (Estimated)
+            </span>
           </div>
 
-          <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-soft-border)', textAlign: 'center' }}>
-            <Leaf size={22} color="#0F766E" style={{ margin: '0 auto 0.4rem auto' }} />
-            <p style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0F766E', margin: 0 }}>
-              {kgFood} <span style={{ fontSize: '0.85rem' }}>kg</span>
+          <div style={{
+            background: '#FFFDF9',
+            padding: '1.65rem 1.4rem',
+            borderRadius: 'var(--radius-card)',
+            border: '1px solid var(--color-soft-border)',
+            boxShadow: '4px 6px 0px var(--color-card-bevel)',
+          }}>
+            <p style={{
+              fontSize: '2.1rem',
+              fontWeight: 800,
+              fontFamily: 'var(--font-heading)',
+              color: 'var(--color-deep-forest)',
+              margin: '0 0 0.2rem 0',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {kgFood} <span style={{ fontSize: '0.95rem' }}>kg</span>
             </p>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', margin: '0.2rem 0 0 0' }}>
-              Edible Food Kept Out of Landfill
-            </p>
+            <strong style={{ fontSize: '0.88rem', color: 'var(--color-deep-forest)', display: 'block', marginBottom: '0.2rem' }}>
+              Edible Food Rescued
+            </strong>
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)' }}>
+              Kept out of city landfills (Estimated)
+            </span>
           </div>
 
-          <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-soft-border)', textAlign: 'center' }}>
-            <Sparkles size={22} color="var(--color-deep-forest)" style={{ margin: '0 auto 0.4rem auto' }} />
-            <p style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-deep-forest)', margin: 0 }}>
-              {co2Avoided} <span style={{ fontSize: '0.85rem' }}>kg</span>
+          <div style={{
+            background: '#FFFDF9',
+            padding: '1.65rem 1.4rem',
+            borderRadius: 'var(--radius-card)',
+            border: '1px solid var(--color-soft-border)',
+            boxShadow: '4px 6px 0px var(--color-card-bevel)',
+          }}>
+            <p style={{
+              fontSize: '2.1rem',
+              fontWeight: 800,
+              fontFamily: 'var(--font-heading)',
+              color: 'var(--color-terracotta)',
+              margin: '0 0 0.2rem 0',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {co2Avoided} <span style={{ fontSize: '0.95rem' }}>kg</span>
             </p>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', margin: '0.2rem 0 0 0' }}>
-              Greenhouse CO₂e Prevented
-            </p>
+            <strong style={{ fontSize: '0.88rem', color: 'var(--color-deep-forest)', display: 'block', marginBottom: '0.2rem' }}>
+              CO₂e Emissions Prevented
+            </strong>
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)' }}>
+              Greenhouse gas avoidance (Estimated)
+            </span>
           </div>
 
-          <div style={{ background: '#FFFFFF', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-soft-border)', textAlign: 'center' }}>
-            <Droplet size={22} color="#2563EB" style={{ margin: '0 auto 0.4rem auto' }} />
-            <p style={{ fontSize: '1.6rem', fontWeight: 800, color: '#2563EB', margin: 0 }}>
-              {waterSaved.toLocaleString()} <span style={{ fontSize: '0.85rem' }}>L</span>
+          <div style={{
+            background: '#FFFDF9',
+            padding: '1.65rem 1.4rem',
+            borderRadius: 'var(--radius-card)',
+            border: '1px solid var(--color-soft-border)',
+            boxShadow: '4px 6px 0px var(--color-card-bevel)',
+          }}>
+            <p style={{
+              fontSize: '2.1rem',
+              fontWeight: 800,
+              fontFamily: 'var(--font-heading)',
+              color: '#2563EB',
+              margin: '0 0 0.2rem 0',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {waterSaved.toLocaleString()} <span style={{ fontSize: '0.95rem' }}>L</span>
             </p>
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)', margin: '0.2rem 0 0 0' }}>
+            <strong style={{ fontSize: '0.88rem', color: 'var(--color-deep-forest)', display: 'block', marginBottom: '0.2rem' }}>
               Embedded Water Conserved
-            </p>
+            </strong>
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)' }}>
+              Agricultural water footprint (Estimated)
+            </span>
           </div>
         </div>
       </section>
 
-      {/* COMMUNITY TESTIMONIAL BANNER */}
+      {/* GROUNDED INDIAN COMMUNITY TESTIMONIAL BANNER */}
       <section style={{
-        backgroundColor: 'var(--color-deep-forest)',
+        backgroundColor: '#193C30',
         color: '#FFFFFF',
-        borderRadius: 'var(--radius-xl)',
-        padding: '2.5rem 2rem',
+        borderRadius: 'var(--radius-card)',
+        padding: '3rem 2.25rem',
         textAlign: 'center',
+        border: '1px solid #112920',
+        boxShadow: '4px 6px 0px var(--color-card-bevel)',
         position: 'relative',
-        overflow: 'hidden',
       }}>
-        <div style={{
-          position: 'absolute',
-          top: '-30px',
-          right: '-30px',
-          width: '180px',
-          height: '180px',
-          borderRadius: '50%',
-          backgroundColor: 'rgba(47, 125, 103, 0.25)',
-          pointerEvents: 'none',
-        }} />
-
-        <Sprout size={36} color="var(--color-soft-mint)" style={{ margin: '0 auto 0.75rem auto' }} />
         <p style={{
-          fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+          fontFamily: 'var(--font-heading)',
+          fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
           fontWeight: 600,
-          fontStyle: 'italic',
-          maxWidth: '780px',
-          margin: '0 auto 1.25rem auto',
+          fontStyle: 'normal',
+          maxWidth: '820px',
+          margin: '0 auto 1.5rem auto',
           lineHeight: 1.6,
-          color: '#EAF4EC',
+          color: '#FAF4EB',
         }}>
-          &ldquo;RescueBite replaced chaotic last-minute phone calls with predictable, safe meal arrivals. Our kitchen team can now focus entirely on serving our community.&rdquo;
+          &ldquo;RescueBite replaced chaotic last-minute calls with predictable, safe meal arrivals. Our kitchen and community volunteers can now focus on serving hot, wholesome dinner plates with complete dignity.&rdquo;
         </p>
-        <p style={{ fontSize: '0.85rem', color: '#A5B5AE', margin: 0 }}>
-          &mdash; <strong>Maria Santos</strong>, Program Director at Hope Community Kitchen
+        <p style={{ fontSize: '0.86rem', color: '#C8E2D1', margin: 0, fontWeight: 500 }}>
+          &mdash; <strong style={{ color: '#FFFFFF' }}>Sardar Gurpreet Singh</strong>, Kitchen Lead &bull; Gurudwara Langar Annex, Delhi NCR (Sample data)
         </p>
       </section>
+
     </div>
   );
 }

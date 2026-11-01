@@ -1475,3 +1475,207 @@ input::-ms-clear {
     display: flex !important;
   }
 }
+
+/* ==========================================================================
+   Wave 3: Bhojan Bandhu Timeline, Score Breakdown & Section Styles
+   ========================================================================== */
+
+.timeline-bhojan-container {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-soft-border);
+  border-radius: var(--radius-card);
+  box-shadow: 4px 6px 0px var(--color-card-bevel);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.timeline-meta-bar {
+  padding: 0.9rem 1.5rem;
+  background: var(--color-pale-neutral);
+  border-bottom: 1px solid var(--color-soft-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-deep-forest);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timeline-step-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.timeline-step-node {
+  padding: 1.75rem 1.5rem;
+  border-right: 1px solid var(--color-soft-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-step-node:last-child {
+  border-right: none;
+}
+
+.t-node-time {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-terracotta);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+
+.t-node-title {
+  font-family: var(--font-heading);
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--color-deep-forest);
+  margin-bottom: 0.45rem;
+  line-height: 1.25;
+}
+
+.t-node-body {
+  font-size: 0.86rem;
+  color: var(--color-muted-slate);
+  line-height: 1.55;
+  flex: 1;
+}
+
+/* 4-Part Segmented Score Breakdown Bar */
+.score-visual-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-soft-border);
+  border-radius: var(--radius-card);
+  box-shadow: 4px 6px 0px var(--color-card-bevel);
+  padding: 1.75rem 2rem;
+  margin-top: 2rem;
+}
+
+.score-bar-segmented {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1.15rem 0 1rem 0;
+  background: #E5DBC5;
+}
+
+.seg-demand { background-color: var(--color-network-green); width: 35%; }
+.seg-urgency { background-color: var(--color-terracotta); width: 25%; }
+.seg-proximity { background-color: #2F6D59; width: 20%; }
+.seg-storage { background-color: #685B52; width: 20%; }
+
+.score-breakdown-legend {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-soft-border);
+}
+
+.legend-col strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-deep-forest);
+  margin-bottom: 0.25rem;
+}
+
+.legend-col p {
+  font-size: 0.78rem;
+  color: var(--color-muted-slate);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Section Header Editorial */
+.section-bhojan-header {
+  text-align: left;
+  max-width: 680px;
+  margin-bottom: 2.25rem;
+}
+
+.section-bhojan-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  color: var(--color-deep-forest);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.section-bhojan-sub {
+  font-size: 0.98rem;
+  color: var(--color-muted-slate);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Role Selector Segmented Bar (Replacing pill buttons) */
+.role-segmented-nav {
+  display: inline-flex;
+  background: var(--color-pale-neutral);
+  padding: 0.35rem;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--color-soft-border);
+  gap: 0.35rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.role-segment-btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-muted-slate);
+  background: transparent;
+}
+
+.role-segment-btn.active {
+  background: #FFFDF9;
+  color: var(--color-deep-forest);
+  box-shadow: 0 2px 4px rgba(44, 34, 30, 0.08);
+}
+
+@media (max-width: 860px) {
+  .timeline-step-grid {
+    grid-template-columns: 1fr;
+  }
+  .timeline-step-node {
+    border-right: none;
+    border-bottom: 1px solid var(--color-soft-border);
+  }
+  .timeline-step-node:last-child {
+    border-bottom: none;
+  }
+  .score-breakdown-legend {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .score-breakdown-legend {
+    grid-template-columns: 1fr;
+  }
+  .score-visual-card {
+    padding: 1.25rem;
+  }
+  .timeline-step-node {
+    padding: 1.25rem;
+  }
+}
