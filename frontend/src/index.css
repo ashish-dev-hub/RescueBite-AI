@@ -1667,3 +1667,342 @@ input::-ms-clear {
   }
 }
 
+
+/* ==========================================================================
+   Bhojan Bandhu Sections: Timeline, Score Breakdown & Partner Workspaces
+   ========================================================================== */
+
+.section-bhojan-wrapper {
+  margin-bottom: 4.5rem;
+}
+
+.section-bhojan-header {
+  margin-bottom: 2rem;
+}
+
+.section-bhojan-tag {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-network-green, #1F6F43);
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  background-color: #EAF5F0;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid #D1E7DD;
+}
+
+.section-bhojan-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.2vw, 2.45rem);
+  font-weight: 800;
+  color: var(--color-deep-forest, #2C221E);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0.35rem 0 0.5rem 0;
+}
+
+.section-bhojan-sub {
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  color: var(--color-muted-slate, #685B52);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 680px;
+}
+
+/* Timeline Container Card */
+.timeline-bhojan-container {
+  background-color: #FFFDF9;
+  border: 1px solid #E5DBC5;
+  border-radius: 20px;
+  box-shadow: 5px 7px 0px var(--color-card-bevel, #E5DAC4);
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  box-sizing: border-box;
+}
+
+.timeline-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #EFE6D5;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.timeline-meta-bar .meta-corridor {
+  color: #685B52;
+}
+
+.timeline-meta-bar .meta-status {
+  color: #1F6F43;
+  background-color: #EAF5F0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid #D1E7DD;
+}
+
+.timeline-step-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+}
+
+.timeline-step-node {
+  background-color: #FAF4EB;
+  border: 1px solid #E5DBC5;
+  border-radius: 16px;
+  padding: 1.25rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.timeline-step-node:hover {
+  transform: translateY(-2px);
+  background-color: #FFFDF9;
+  box-shadow: 0 4px 12px rgba(44, 34, 30, 0.06);
+}
+
+.t-node-time {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #1F6F43;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.t-node-time span {
+  background-color: #1F6F43;
+  color: #FFFFFF;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.68rem;
+}
+
+.t-node-title {
+  font-family: var(--font-heading);
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #2C221E;
+  margin: 0 0 0.45rem 0;
+  line-height: 1.25;
+}
+
+.t-node-body {
+  font-size: 0.85rem;
+  color: #685B52;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Explainable Matching Breakdown Card */
+.score-visual-card {
+  background-color: #FFFDF9;
+  border: 1px solid #E5DBC5;
+  border-radius: 20px;
+  box-shadow: 5px 7px 0px var(--color-card-bevel, #E5DAC4);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.score-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.score-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #2C221E;
+  margin: 0 0 0.25rem 0;
+}
+
+.score-card-sub {
+  font-size: 0.86rem;
+  color: #685B52;
+  margin: 0;
+}
+
+.score-pill-overall {
+  background-color: #EAF5F0;
+  border: 1px solid #C4E3D4;
+  color: #1F6F43;
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+/* Multi-Colored Segmented Bar */
+.score-bar-segmented {
+  display: flex;
+  height: 28px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.seg-demand {
+  background-color: #1F6F43;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seg-urgency {
+  background-color: #C44824;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seg-proximity {
+  background-color: #F2A33A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seg-storage {
+  background-color: #4A7A68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seg-label {
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  padding: 0 0.5rem;
+}
+
+/* 4-Column Metric Breakdown Legend */
+.score-breakdown-legend {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.legend-col {
+  background-color: #FAF4EB;
+  border: 1px solid #E5DBC5;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+
+.legend-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.dot-demand { background-color: #1F6F43; }
+.dot-urgency { background-color: #C44824; }
+.dot-proximity { background-color: #F2A33A; }
+.dot-storage { background-color: #4A7A68; }
+
+.legend-col strong {
+  display: block;
+  font-size: 0.88rem;
+  color: #2C221E;
+  margin-bottom: 0.25rem;
+}
+
+.legend-col p {
+  font-size: 0.8rem;
+  color: #685B52;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Role Segmented Navigation Buttons */
+.role-segmented-nav {
+  display: inline-flex;
+  background-color: #EFE6D5;
+  border-radius: 14px;
+  padding: 0.35rem;
+  gap: 0.35rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.role-segment-btn {
+  background-color: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #685B52;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.role-segment-btn.active {
+  background-color: #FFFDF9;
+  color: #2C221E;
+  box-shadow: 0 2px 0 var(--color-card-bevel, #E5DAC4);
+}
+
+.role-segment-btn:hover:not(.active) {
+  color: #2C221E;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive adjustments for Bhojan Bandhu elements */
+@media (max-width: 992px) {
+  .timeline-step-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .score-breakdown-legend {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .timeline-step-grid {
+    grid-template-columns: 1fr;
+  }
+  .score-breakdown-legend {
+    grid-template-columns: 1fr;
+  }
+  .timeline-bhojan-container,
+  .score-visual-card {
+    padding: 1.25rem 1rem;
+  }
+  .seg-label {
+    display: none;
+  }
+}
