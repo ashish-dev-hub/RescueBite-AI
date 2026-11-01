@@ -126,60 +126,27 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
     <div style={{ maxWidth: '1280px', margin: '0 auto', paddingBottom: '3rem', position: 'relative' }}>
       
       {/* CREATIVE HERO SECTION WITH SPLIT LAYOUT & AMBIENT GLOW */}
-      <section className="hero-ambient-container">
-        {/* Soft Ambient Organic Glows in Brand Colors */}
-        <div className="ambient-glow-1" />
-        <div className="ambient-glow-2" />
-
-        <div className="hero-split-grid">
-          {/* LEFT: Engaging Value Story & CTAs */}
+      <section className="hero-bhojan-section">
+        <div className="hero-bhojan-grid">
+          {/* LEFT: Engaging Value Story & CTAs (Faithful to Reference Design) */}
           <div className="hero-text-content">
-            
-
-            <h1 className="hero-headline">
-              Good food. Better routes.{' '}
-              <span className="hero-highlight">Stronger communities.</span>
+            <h1 className="hero-bhojan-headline">
+              Good food.<br />
+              Better routes.<br />
+              <span className="hero-bhojan-accent">Stronger communities.</span>
             </h1>
 
-            <p style={{
-              fontSize: 'clamp(0.95rem, 1.6vw, 1.12rem)',
-              color: 'var(--color-muted-slate)',
-              lineHeight: 1.65,
-              marginBottom: '1.5rem',
-              maxWidth: '560px',
-            }}>
-              RescueBite AI bridges the gap between commercial food surplus and neighborhood meal programs.
-              Predict local shelter needs, match safe surplus within transit windows, and coordinate verified human-approved allocations.
+            <p className="hero-bhojan-sub">
+              Kitchens share what is left. Neighbourhood meal programmes pick it up while it is still warm.
             </p>
 
-            {/* Feature Highlights Pills */}
-            <div className="hero-badges-row">
-              <span className="hero-badge-pill">
-                <Clock size={14} color="var(--color-network-green)" />
-                <span>15-Min Rapid Dispatch</span>
-              </span>
-              <span className="hero-badge-pill">
-                <ShieldCheck size={14} color="var(--color-network-green)" />
-                <span>Cold-Chain Verified</span>
-              </span>
-              <span className="hero-badge-pill">
-                <Leaf size={14} color="var(--color-network-green)" />
-                <span>Direct ESG Metrics</span>
-              </span>
-            </div>
-
             {/* CTA Buttons */}
-            <div className="hero-cta-buttons" style={{ justifyContent: 'flex-start', marginBottom: '2rem' }}>
+            <div className="hero-bhojan-ctas">
               {isAuthenticated ? (
                 <>
                   <button
                     onClick={() => onSelectRole(user?.role === 'coordinator' ? 'coordinator' : user?.role === 'donor' ? 'donor' : 'ngo')}
-                    className="btn btn-primary"
-                    style={{
-                      padding: '0.85rem 1.85rem',
-                      fontSize: '0.98rem',
-                      boxShadow: '0 4px 14px rgba(47, 125, 103, 0.35)',
-                    }}
+                    className="btn-terracotta"
                   >
                     <span>
                       {user?.role === 'coordinator'
@@ -193,26 +160,16 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
                   <button
                     onClick={() => onSelectRole('impact')}
-                    className="btn btn-outline"
-                    style={{
-                      padding: '0.85rem 1.5rem',
-                      fontSize: '0.98rem',
-                      backgroundColor: '#FFFFFF',
-                    }}
+                    className="btn-tactile-secondary"
                   >
-                    <span>View Live Impact</span>
+                    <span>Live Impact (Sample data)</span>
                   </button>
                 </>
               ) : (
                 <>
                   <button
                     onClick={() => onSelectRole('coordinator')}
-                    className="btn btn-primary"
-                    style={{
-                      padding: '0.85rem 1.85rem',
-                      fontSize: '0.98rem',
-                      boxShadow: '0 4px 14px rgba(47, 125, 103, 0.35)',
-                    }}
+                    className="btn-terracotta"
                   >
                     <span>Open Allocation Desk</span>
                     <ArrowRight size={18} />
@@ -220,340 +177,104 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
                   <button
                     onClick={onOpenAuth}
-                    className="btn btn-outline"
-                    style={{
-                      padding: '0.85rem 1.5rem',
-                      fontSize: '0.98rem',
-                      backgroundColor: '#FFFFFF',
-                    }}
+                    className="btn-tactile-secondary"
                   >
-                    <span>Sign In / Register</span>
+                    <span>Sign in</span>
                   </button>
                 </>
               )}
             </div>
-
-            
           </div>
 
-          {/* RIGHT: Creative Interactive Live AI Match Card */}
-          <div style={{ position: 'relative' }}>
-            {/* Floating Top Badge */}
-            <div className="floating-chip floating-chip-top">
-              <Leaf size={14} color="#15803D" />
-              <span>🌱 1,240 kg CO₂ Prevented</span>
+          {/* RIGHT: Tactile Floating Cards with 12-min circle clearly in-between */}
+          <div className="hero-cards-stack">
+            {/* Donor Card */}
+            <div className="hero-card-donor">
+              <div className="hero-card-label" style={{ color: '#1F6F43' }}>
+                DONOR &bull; SAMPLE DATA
+              </div>
+              <h3 className="hero-card-title">
+                Metro Bistro &amp; Bakery
+              </h3>
+              <p className="hero-card-desc">
+                45 fresh hot meals: rice, dal, veggies
+              </p>
+              <span
+                className="hero-card-pill"
+                style={{
+                  backgroundColor: 'var(--color-mustard)',
+                  color: 'var(--color-deep-forest)',
+                }}
+              >
+                Hot holding
+              </span>
             </div>
 
-            {/* Floating Bottom Badge */}
-            <div className="floating-chip floating-chip-bottom">
-              <Clock size={14} color="var(--color-network-green)" />
-              <span>Transit Time: {currentScenario.transitTime}</span>
+            {/* 12-min Circle Connector clearly BETWEEN donor and shelter cards */}
+            <div className="hero-circle-connector" title="Average transit interval">
+              <span className="num">12</span>
+              <span className="unit">mins</span>
             </div>
 
-            {/* Main Interactive Dispatch Radar Card */}
-            <div className="dispatch-sim-card">
-              {/* Card Header with Interactive Cycle Button */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingBottom: '0.85rem',
-                borderBottom: '1px solid var(--color-soft-border)',
-                marginBottom: '1rem',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--color-soft-mint)',
-                    color: 'var(--color-network-green)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <Sparkles size={14} />
-                  </div>
-                  <div>
-                    <h4 style={{ fontSize: '0.88rem', fontWeight: 700, margin: 0, color: 'var(--color-deep-forest)' }}>
-                      AI Match In Progress
-                    </h4>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>
-                      {currentScenario.badge}
-                    </span>
-                  </div>
-                </div>
-
-                <span style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
+            {/* Shelter Card */}
+            <div className="hero-card-shelter">
+              <div className="hero-card-label" style={{ color: '#C44824' }}>
+                SHELTER &bull; 2.4 KM
+              </div>
+              <h3 className="hero-card-title">
+                Hope Shelter Community Kitchen
+              </h3>
+              <p className="hero-card-desc">
+                Needs 50 meals for evening dinner intake
+              </p>
+              <span
+                className="hero-card-pill"
+                style={{
                   backgroundColor: 'var(--color-soft-mint)',
                   color: 'var(--color-network-green)',
-                  padding: '0.2rem 0.55rem',
-                  borderRadius: 'var(--radius-pill)',
-                  border: '1px solid var(--color-soft-mint-border)',
-                }}>
-                  Live Dispatch
-                </span>
-              </div>
-
-              
-
-              {/* Visual Connected Route Path */}
-              <div style={{ position: 'relative', padding: '0.25rem 0' }}>
-                {/* Donor Node */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.85rem' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: 'var(--color-soft-mint)',
-                    color: 'var(--color-network-green)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    border: '1px solid var(--color-soft-mint-border)',
-                  }}>
-                    <Building size={16} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                        {currentScenario.donorName}
-                      </span>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
-                        {currentScenario.donorLocation}
-                      </span>
-                    </div>
-                    <p style={{ fontSize: '0.76rem', color: 'var(--color-dark-slate)', margin: '0.15rem 0 0 0' }}>
-                      <strong>{currentScenario.donorItem}</strong>
-                    </p>
-                    <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.25rem' }}>
-                      <span style={{
-                        fontSize: '0.68rem',
-                        backgroundColor: '#FFFFFF',
-                        border: '1px solid var(--color-soft-border)',
-                        padding: '0.1rem 0.4rem',
-                        borderRadius: '4px',
-                        color: 'var(--color-muted-slate)',
-                      }}>
-                        {currentScenario.prepTime}
-                      </span>
-                      <span style={{
-                        fontSize: '0.68rem',
-                        backgroundColor: 'var(--color-soft-mint)',
-                        border: '1px solid var(--color-soft-mint-border)',
-                        padding: '0.1rem 0.4rem',
-                        borderRadius: '4px',
-                        color: 'var(--color-network-green)',
-                        fontWeight: 600,
-                      }}>
-                        {currentScenario.donorStorage}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Animated Connecting Dispatch Track */}
-                <div style={{
-                  margin: '0.25rem 0 0.85rem 15px',
-                  paddingLeft: '1.25rem',
-                  borderLeft: '2px dashed var(--color-network-green)',
-                  position: 'relative',
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.35rem 0.65rem',
-                    backgroundColor: 'var(--color-pale-neutral)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontSize: '0.72rem',
-                    color: 'var(--color-dark-slate)',
-                    width: 'fit-content',
-                  }}>
-                    <Truck size={14} color="var(--color-network-green)" />
-                    <span>Estimated transit: <strong>{currentScenario.transitTime}</strong> ({currentScenario.safeWindow})</span>
-                  </div>
-                </div>
-
-                {/* NGO Recipient Node */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: '#FEF3C7',
-                    color: '#B45309',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    border: '1px solid #FDE68A',
-                  }}>
-                    <Soup size={16} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                        {currentScenario.ngoName}
-                      </span>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
-                        {currentScenario.ngoLocation}
-                      </span>
-                    </div>
-                    <p style={{ fontSize: '0.76rem', color: 'var(--color-dark-slate)', margin: '0.15rem 0 0 0' }}>
-                      <strong>{currentScenario.ngoNeed}</strong> &bull; {currentScenario.ngoReason}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* AI Explainable Reason Code Chips */}
-              <div style={{
-                display: 'flex',
-                gap: '0.35rem',
-                flexWrap: 'wrap',
-                marginTop: '1.15rem',
-                paddingTop: '0.85rem',
-                borderTop: '1px solid var(--color-soft-border)',
-              }}>
-                {currentScenario.reasonCodes.map((code, idx) => (
-                  <span
-                    key={idx}
-                    style={{
-                      fontSize: '0.7rem',
-                      fontWeight: 600,
-                      backgroundColor: 'var(--color-soft-mint)',
-                      color: 'var(--color-network-green)',
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: 'var(--radius-xs)',
-                      border: '1px solid var(--color-soft-mint-border)',
-                    }}
-                  >
-                    ✓ {code}
-                  </span>
-                ))}
-              </div>
+                }}
+              >
+                Approved by coordinator
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Live Confirmed Impact Metric Cards Bar */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
-          gap: '1rem',
-          marginTop: '2.5rem',
-          position: 'relative',
-          zIndex: 1,
-        }}>
-          {/* Card 1: Delivered Meals */}
-          <div className="hero-stat-card">
-            <div>
-              <p style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Delivered Meals
-              </p>
-              <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', margin: '0.2rem 0 0.15rem 0' }}>
-                {metrics.totalDeliveredMeals || 184}
-              </p>
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
-                Nourishing community tables
-              </span>
+        {/* Grounded Metrics Ribbon with Sample Data Labels */}
+        <div className="hero-sample-ticker">
+          <div>
+            <div className="sample-stat-val">
+              {metrics.totalDeliveredMeals || 184}
             </div>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: 'var(--color-soft-mint)',
-              color: 'var(--color-network-green)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Soup size={18} />
+            <div className="sample-stat-label">
+              Delivered Meals (Sample data)
             </div>
           </div>
 
-          {/* Card 2: Active Surplus Offers */}
-          <div className="hero-stat-card">
-            <div>
-              <p style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Active Surplus Offers
-              </p>
-              <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', margin: '0.2rem 0 0.15rem 0' }}>
-                {metrics.activeDonationsCount || 6}
-              </p>
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-network-green)', fontWeight: 600 }}>
-                • Ready for dispatch now
-              </span>
+          <div>
+            <div className="sample-stat-val">
+              {metrics.activeDonationsCount || 6}
             </div>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: 'var(--color-pale-neutral)',
-              color: 'var(--color-deep-forest)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Building size={18} />
+            <div className="sample-stat-label">
+              Active Surplus Offers (Sample data)
             </div>
           </div>
 
-          {/* Card 3: Open Demands */}
-          <div className="hero-stat-card">
-            <div>
-              <p style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Shelter Intake Needs
-              </p>
-              <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', margin: '0.2rem 0 0.15rem 0' }}>
-                {metrics.openDemandsCount || 5}
-              </p>
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
-                Registered pantry centers
-              </span>
+          <div>
+            <div className="sample-stat-val">
+              12 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>mins</span>
             </div>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: '#FEF3C7',
-              color: '#B45309',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Heart size={18} />
+            <div className="sample-stat-label">
+              Avg. Transit Interval (Sample data)
             </div>
           </div>
 
-          {/* Card 4: Environmental Savings */}
-          <div className="hero-stat-card">
-            <div>
-              <p style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Landfill Waste Avoided
-              </p>
-              <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F766E', margin: '0.2rem 0 0.15rem 0' }}>
-                {metrics.environmentalEstimates?.kgFoodSaved || 82} <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>kg</span>
-              </p>
-              <span style={{ fontSize: '0.72rem', color: '#0F766E', fontWeight: 600 }}>
-                Direct ESG certified offset
-              </span>
+          <div>
+            <div className="sample-stat-val">
+              1,240 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>kg</span>
             </div>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: '#F0FDFA',
-              color: '#0F766E',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Leaf size={18} />
+            <div className="sample-stat-label">
+              CO₂e Prevented (Sample data)
             </div>
           </div>
         </div>

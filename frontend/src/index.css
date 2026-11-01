@@ -5,54 +5,59 @@
 
 :root {
   /* Color Palette Tokens */
-  --color-deep-forest: #173B35;
-  --color-forest-dark: #112B27;
-  --color-network-green: #2F7D67;
-  --color-network-green-hover: #266956;
-  --color-soft-mint: #EAF4EC;
-  --color-soft-mint-border: #D2E7D7;
-  --color-warm-ivory: #FAF8F1;
+  --color-deep-forest: #2C221E;
+  --color-forest-dark: #1D1714;
+  --color-network-green: #1F6F43;
+  --color-network-green-hover: #175734;
+  --color-soft-mint: #E3F2E7;
+  --color-soft-mint-border: #C8E2D1;
+  --color-warm-ivory: #FAF4EB;
   --color-paper-white: #FFFFFF;
-  --color-muted-slate: #687872;
-  --color-dark-slate: #2A3834;
-  --color-soft-border: #DCE5DD;
-  --color-pale-neutral: #F2F6F1;
-  --color-harvest-coral: #E78665;
-  --color-coral-soft: #FFF1ED;
+  --color-muted-slate: #685B52;
+  --color-dark-slate: #2C221E;
+  --color-soft-border: #E5DBC5;
+  --color-pale-neutral: #F5EFE3;
+  --color-terracotta: #C44824;
+  --color-terracotta-dark: #9E3314;
+  --color-card-bg: #FFFDF9;
+  --color-card-bevel: #E5DBC5;
+  --color-mustard: #F2A33A;
+  --color-mustard-bg: #FFF3D6;
+  --color-harvest-coral: #C44824;
+  --color-coral-soft: #FDEEE9;
 
   /* Status Colors */
-  --status-available-bg: #EAF4EC;
-  --status-available-text: #226B57;
-  --status-reserved-bg: #EBF5FF;
-  --status-reserved-text: #1E40AF;
-  --status-accepted-bg: #F0FDFA;
-  --status-accepted-text: #0F766E;
-  --status-pickedup-bg: #F5F3FF;
-  --status-pickedup-text: #6D28D9;
+  --status-available-bg: #E3F2E7;
+  --status-available-text: #1F6F43;
+  --status-reserved-bg: #FFF3D6;
+  --status-reserved-text: #92400E;
+  --status-accepted-bg: #E3F2E7;
+  --status-accepted-text: #1F6F43;
+  --status-pickedup-bg: #F3E8FF;
+  --status-pickedup-text: #6B21A8;
   --status-delivered-bg: #DCFCE7;
   --status-delivered-text: #15803D;
-  --status-urgent-bg: #FFF1ED;
-  --status-urgent-text: #C2410C;
+  --status-urgent-bg: #FEECEB;
+  --status-urgent-text: #B91C1C;
   --status-cancelled-bg: #FEF2F2;
   --status-cancelled-text: #991B1B;
 
   /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: 'DM Sans', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'DM Sans', -apple-system, sans-serif;
+  --font-editorial: 'Fraunces', Georgia, serif;
   
-  /* Radii & Shadows */
-  --radius-xs: 4px;
-  --radius-btn-sm: 5px;
-  --radius-btn: 6px;
+  /* Radii (Strict Max 2 Radii for clean aesthetic) */
   --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-card: 16px;
+  --radius-btn: 14px;
   --radius-pill: 9999px;
 
-  --shadow-subtle: 0 1px 3px rgba(23, 59, 53, 0.05), 0 1px 2px rgba(23, 59, 53, 0.03);
-  --shadow-card: 0 4px 12px rgba(23, 59, 53, 0.06), 0 1px 2px rgba(23, 59, 53, 0.04);
-  --shadow-elevated: 0 10px 25px -3px rgba(23, 59, 53, 0.08), 0 4px 6px -2px rgba(23, 59, 53, 0.03);
-  --shadow-modal: 0 20px 35px -5px rgba(23, 59, 53, 0.15), 0 10px 10px -5px rgba(23, 59, 53, 0.04);
+  /* Tactile Shadows & Borders */
+  --shadow-subtle: 0 1px 3px rgba(44, 34, 30, 0.05);
+  --shadow-card: 4px 6px 0px var(--color-card-bevel);
+  --shadow-elevated: 6px 8px 0px var(--color-card-bevel);
+  --shadow-modal: 0 20px 35px -5px rgba(44, 34, 30, 0.18), 0 10px 10px -5px rgba(44, 34, 30, 0.06);
 }
 
 * {
@@ -1191,5 +1196,282 @@ input::-ms-clear {
     margin-bottom: 0.75rem;
     display: inline-flex;
     animation: none;
+  }
+}
+
+/* ==========================================================================
+   Bhojan Bandhu Handcrafted UI Classes
+   ========================================================================== */
+
+.btn-terracotta {
+  background-color: var(--color-terracotta);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border-radius: var(--radius-btn);
+  padding: 0.85rem 1.65rem;
+  box-shadow: 0px 4px 0px var(--color-terracotta-dark);
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+.btn-terracotta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 5px 0px var(--color-terracotta-dark);
+}
+.btn-terracotta:active {
+  transform: translateY(2px);
+  box-shadow: 0px 2px 0px var(--color-terracotta-dark);
+}
+
+.btn-tactile-secondary {
+  background-color: #FFFDF9;
+  color: var(--color-deep-forest);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border: 1px solid var(--color-soft-border);
+  border-radius: var(--radius-btn);
+  padding: 0.85rem 1.65rem;
+  box-shadow: 0px 3px 0px var(--color-card-bevel);
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+.btn-tactile-secondary:hover {
+  border-color: #D2C5AB;
+  transform: translateY(-1px);
+  box-shadow: 0px 4px 0px var(--color-card-bevel);
+}
+.btn-tactile-secondary:active {
+  transform: translateY(2px);
+  box-shadow: 0px 1px 0px var(--color-card-bevel);
+}
+
+/* Bhojan Bandhu Hero Layout */
+.hero-bhojan-section {
+  padding: 3.5rem 1.5rem 3.5rem 1.5rem;
+  position: relative;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--color-soft-border);
+}
+
+.hero-bhojan-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 3.5rem;
+  align-items: center;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.hero-bhojan-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 4.6vw, 3.85rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--color-deep-forest);
+  margin-bottom: 1.25rem;
+}
+
+.hero-bhojan-accent {
+  color: var(--color-network-green);
+}
+
+.hero-bhojan-sub {
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  color: var(--color-muted-slate);
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  max-width: 520px;
+}
+
+.hero-bhojan-ctas {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Tactile Dual Cards & Center Circle Connector */
+.hero-cards-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.hero-card-donor {
+  width: 100%;
+  max-width: 440px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-soft-border);
+  border-radius: var(--radius-card);
+  padding: 1.5rem 1.75rem;
+  box-shadow: 4px 6px 0px var(--color-card-bevel);
+  align-self: flex-start;
+  transition: transform 0.2s ease;
+}
+
+.hero-card-donor:hover,
+.hero-card-shelter:hover {
+  transform: translateY(-2px);
+}
+
+.hero-circle-connector {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-network-green);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  border: 4px solid var(--color-warm-ivory);
+  box-shadow: 0 4px 10px rgba(31, 111, 67, 0.22);
+  margin: -14px 0 -14px 2rem;
+  z-index: 5;
+  position: relative;
+}
+
+.hero-circle-connector span.num {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.hero-circle-connector span.unit {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.hero-card-shelter {
+  width: 100%;
+  max-width: 440px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-soft-border);
+  border-radius: var(--radius-card);
+  padding: 1.5rem 1.75rem;
+  box-shadow: 4px 6px 0px var(--color-card-bevel);
+  align-self: flex-end;
+  transition: transform 0.2s ease;
+}
+
+.hero-card-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+
+.hero-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--color-deep-forest);
+  margin-bottom: 0.25rem;
+  line-height: 1.25;
+}
+
+.hero-card-desc {
+  font-size: 0.88rem;
+  color: var(--color-muted-slate);
+  margin-bottom: 0.85rem;
+  line-height: 1.45;
+}
+
+.hero-card-pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+/* Sample data ribbon below hero */
+.hero-sample-ticker {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-top: 2.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-soft-border);
+}
+
+.sample-stat-val {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--color-deep-forest);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.sample-stat-label {
+  font-size: 0.76rem;
+  color: var(--color-muted-slate);
+  margin-top: 0.2rem;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 960px) {
+  .hero-bhojan-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .hero-card-donor,
+  .hero-card-shelter {
+    max-width: 100%;
+    align-self: center;
+  }
+  .hero-circle-connector {
+    margin: -14px 0 -14px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-bhojan-section {
+    padding: 2.5rem 1rem;
+  }
+  .hero-bhojan-headline {
+    font-size: 2.35rem;
+  }
+  .hero-bhojan-ctas {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-bhojan-ctas button {
+    width: 100%;
+  }
+  .hero-card-donor,
+  .hero-card-shelter {
+    padding: 1.2rem 1.25rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .desktop-plain-nav {
+    display: none !important;
+  }
+  .mobile-hamburger-btn {
+    display: flex !important;
   }
 }
