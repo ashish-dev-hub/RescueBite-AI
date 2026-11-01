@@ -65,16 +65,9 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
   const rolePortalLabel = user?.role === 'coordinator' ? 'Allocation Desk' : user?.role === 'ngo' ? 'NGO Demands Portal' : 'Donor Operations Portal';
 
   return (
-    <header style={{
-      backgroundColor: '#FAF4EB',
-      borderBottom: '1px solid #E5DBC5',
-      position: 'sticky',
-      top: 0,
-      zIndex: 50,
-      width: '100%',
-    }}>
+    <header className="navbar-header">
       <div className="navbar-container">
-        {/* Brand Typographic Logo */}
+        {/* Brand Typographic Logo (Left) */}
         <div
           onClick={() => handleNavClick('landing')}
           className="navbar-brand"
@@ -84,7 +77,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
           </span>
         </div>
 
-        {/* Desktop Plain Text Links Navigation */}
+        {/* Desktop Plain Text Links Navigation (Center) */}
         <nav className="desktop-plain-nav">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
@@ -92,24 +85,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: '0.35rem 0',
-                  fontSize: '0.9rem',
-                  fontWeight: isActive ? 700 : 500,
-                  color: isActive ? '#2C221E' : '#685B52',
-                  borderBottom: isActive ? '2px solid #C44824' : '2px solid transparent',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  whiteSpace: 'nowrap',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) e.currentTarget.style.color = '#2C221E';
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) e.currentTarget.style.color = '#685B52';
-                }}
+                className={`desktop-nav-link ${isActive ? 'active' : ''}`}
               >
                 {item.label}
               </button>
@@ -117,9 +93,9 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
           })}
         </nav>
 
-        {/* Right Section: Desktop Auth & Mobile Hamburger */}
+        {/* Right Section: Desktop Auth & Mobile Controls (Far Right) */}
         <div className="navbar-right-cluster">
-          {/* Desktop Auth Controls */}
+          {/* Desktop Auth Section */}
           <div className="desktop-auth-cluster">
             {isAuthenticated ? (
               <div ref={dropdownRef} style={{ position: 'relative' }}>
@@ -333,7 +309,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
             )}
           </div>
 
-          {/* Quick Mobile User Badge (Only shown on mobile when logged in) */}
+          {/* Quick Mobile User Badge (Only shown on mobile <=860px when logged in) */}
           {isAuthenticated && (
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -345,7 +321,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
             </button>
           )}
 
-          {/* Mobile Menu Hamburger (Always neatly positioned on the far right) */}
+          {/* Mobile Menu Hamburger (Only shown on mobile <=860px) */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="mobile-hamburger-btn"
@@ -357,7 +333,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer (Only visible on small screens when hamburger is clicked) */}
       {mobileMenuOpen && (
         <div className="mobile-drawer-container">
           <div className="mobile-drawer-links">
@@ -378,7 +354,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
           <div className="mobile-drawer-divider" />
 
-          {/* Mobile Auth Action in Drawer */}
+          {/* Mobile Auth in Drawer */}
           {isAuthenticated ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <div style={{
