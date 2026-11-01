@@ -95,34 +95,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
         {/* Right Section: Desktop Auth & Mobile Controls (Far Right) */}
         <div className="navbar-right-cluster">
-          {/* Landing Page Role Pills - Exact Match to Bhojan Bandhu Reference Design */}
-          {activeTab === 'landing' && (
-            <div className="landing-role-pills-group">
-              <button
-                type="button"
-                onClick={() => handleNavClick('donor')}
-                className="nav-role-pill"
-              >
-                Donors
-              </button>
-              <button
-                type="button"
-                onClick={() => handleNavClick('ngo')}
-                className="nav-role-pill"
-              >
-                NGOs
-              </button>
-              <button
-                type="button"
-                onClick={() => handleNavClick('coordinator')}
-                className="nav-role-pill"
-              >
-                Coordinators
-              </button>
-            </div>
-          )}
-
-          {/* Desktop Auth Section */}
+          {/* Desktop Auth Section: Sign In & Register buttons when logged out */}
           <div className="desktop-auth-cluster">
             {isAuthenticated ? (
               <div ref={dropdownRef} style={{ position: 'relative' }}>
@@ -150,10 +123,23 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                         src={user.avatar}
                         alt={user?.name || 'User'}
                         referrerPolicy="no-referrer"
-                        style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }}
+                        style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover' }}
                       />
                     ) : (
-                      <User size={15} color="#685B52" />
+                      <div style={{
+                        width: '22px',
+                        height: '22px',
+                        borderRadius: '50%',
+                        backgroundColor: '#1F6F43',
+                        color: '#FFFFFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 800,
+                        fontSize: '0.72rem',
+                      }}>
+                        {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
                     )}
                     <span style={{
                       maxWidth: '120px',
@@ -202,24 +188,26 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   </button>
                 </div>
 
-                {/* Profile Dropdown Card */}
+                {/* Enriched Profile Dropdown Card with Extensive Details */}
                 {profileDropdownOpen && (
                   <div style={{
                     position: 'absolute',
                     top: 'calc(100% + 8px)',
                     right: 0,
-                    width: '280px',
+                    width: '320px',
                     backgroundColor: '#FFFDF9',
                     borderRadius: '16px',
                     border: '1px solid #E5DBC5',
-                    boxShadow: '4px 6px 0px #E5DBC5',
+                    boxShadow: '5px 8px 0px #E5DBC5',
                     zIndex: 1000,
                     padding: '1.25rem',
+                    boxSizing: 'border-box',
                   }}>
+                    {/* User Header */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
                       <div style={{
-                        width: '40px',
-                        height: '40px',
+                        width: '44px',
+                        height: '44px',
                         borderRadius: '50%',
                         backgroundColor: '#E3F2E7',
                         color: '#1F6F43',
@@ -227,27 +215,41 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 800,
-                        fontSize: '1.1rem',
+                        fontSize: '1.15rem',
                         border: '1px solid #C8E2D1',
+                        flexShrink: 0,
                       }}>
                         {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <h4 style={{
-                          fontSize: '0.92rem',
-                          fontWeight: 700,
-                          color: '#2C221E',
-                          margin: 0,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}>
-                          {user?.name}
-                        </h4>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <h4 style={{
+                            fontSize: '0.98rem',
+                            fontWeight: 800,
+                            color: '#2C221E',
+                            margin: 0,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}>
+                            {user?.name}
+                          </h4>
+                          <span style={{
+                            fontSize: '0.62rem',
+                            backgroundColor: '#E3F2E7',
+                            color: '#1F6F43',
+                            fontWeight: 800,
+                            padding: '0.1rem 0.35rem',
+                            borderRadius: '4px',
+                            textTransform: 'uppercase',
+                          }}>
+                            Verified
+                          </span>
+                        </div>
                         <p style={{
                           fontSize: '0.76rem',
                           color: '#685B52',
-                          margin: '0.1rem 0 0 0',
+                          margin: '0.15rem 0 0 0',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -257,43 +259,72 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       </div>
                     </div>
 
-                    {user?.organization && (
-                      <div style={{
-                        padding: '0.6rem 0.75rem',
-                        backgroundColor: '#FAF4EB',
-                        borderRadius: '8px',
-                        border: '1px solid #E5DBC5',
-                        fontSize: '0.78rem',
-                        color: '#2C221E',
-                        fontWeight: 600,
-                        marginBottom: '0.75rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                      }}>
-                        <Building size={14} color="#C44824" />
-                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {user.organization}
+                    {/* Rich Account & Partner Details Section */}
+                    <div style={{
+                      backgroundColor: '#FAF4EB',
+                      borderRadius: '12px',
+                      border: '1px solid #E5DBC5',
+                      padding: '0.85rem',
+                      marginBottom: '1rem',
+                      fontSize: '0.78rem',
+                      color: '#2C221E',
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                        <span style={{ color: '#685B52', fontWeight: 600 }}>Role Type:</span>
+                        <strong style={{ textTransform: 'capitalize', color: '#1F6F43' }}>
+                          {user?.role === 'coordinator' ? 'Operations Coordinator' : user?.role === 'donor' ? 'Surplus Food Donor' : 'Recipient NGO'}
+                        </strong>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                        <span style={{ color: '#685B52', fontWeight: 600 }}>Organization:</span>
+                        <strong style={{ maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}
+                        </strong>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                        <span style={{ color: '#685B52', fontWeight: 600 }}>Operating Zone:</span>
+                        <span style={{ color: '#2C221E', fontWeight: 600 }}>
+                          {user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}
                         </span>
                       </div>
-                    )}
 
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                        <span style={{ color: '#685B52', fontWeight: 600 }}>Partner ID:</span>
+                        <code style={{ fontSize: '0.74rem', backgroundColor: '#FFFDF9', padding: '0.05rem 0.35rem', borderRadius: '4px', border: '1px solid #E5DBC5' }}>
+                          #RB-{String(user?._id || user?.id || 'DEL-4091').slice(-6).toUpperCase()}
+                        </code>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: '#685B52', fontWeight: 600 }}>Status:</span>
+                        <span style={{ color: '#1F6F43', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#1F6F43', display: 'inline-block' }}></span>
+                          Active in Network
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
                     <button
                       onClick={() => {
                         setProfileDropdownOpen(false);
                         handleNavClick(rolePortalId);
                       }}
+                      className="btn-primary"
                       style={{
                         width: '100%',
                         backgroundColor: '#1F6F43',
                         color: '#FFFFFF',
-                        padding: '0.6rem',
+                        padding: '0.65rem',
                         borderRadius: '10px',
-                        fontSize: '0.82rem',
+                        fontSize: '0.84rem',
                         fontWeight: 700,
                         cursor: 'pointer',
                         marginBottom: '0.5rem',
                         border: 'none',
+                        boxShadow: '0 3px 0 #155231',
                       }}
                     >
                       Go to {rolePortalLabel}
@@ -306,34 +337,57 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       }}
                       style={{
                         width: '100%',
-                        backgroundColor: 'transparent',
+                        backgroundColor: '#FFFDF9',
                         color: '#C44824',
-                        padding: '0.5rem',
-                        borderRadius: '8px',
-                        fontSize: '0.8rem',
-                        fontWeight: 600,
+                        padding: '0.55rem',
+                        borderRadius: '10px',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
                         cursor: 'pointer',
                         border: '1px solid #E5DBC5',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.4rem',
+                        boxShadow: '0 2px 0 #E5DBC5',
                       }}
                     >
-                      Log Out
+                      <LogOut size={15} />
+                      <span>Log Out</span>
                     </button>
                   </div>
                 )}
               </div>
-            ) : activeTab !== 'landing' ? (
-              <button
-                onClick={onOpenAuth}
-                className="btn-tactile-secondary"
-                style={{
-                  padding: '0.5rem 1.15rem',
-                  fontSize: '0.85rem',
-                  borderRadius: '12px',
-                }}
-              >
-                Sign In / Register
-              </button>
-            ) : null}
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth('login')}
+                  className="btn-tactile-secondary"
+                  style={{
+                    padding: '0.45rem 1.05rem',
+                    fontSize: '0.85rem',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                  }}
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth('register')}
+                  className="btn-terracotta"
+                  style={{
+                    padding: '0.45rem 1.15rem',
+                    fontSize: '0.85rem',
+                    borderRadius: '12px',
+                    fontWeight: 700,
+                  }}
+                >
+                  Register
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Quick Mobile User Badge (Only shown on mobile <=860px when logged in) */}

@@ -14,6 +14,12 @@ function AppContent() {
   const { user, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState('landing');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authInitialMode, setAuthInitialMode] = useState('login');
+
+  const handleOpenAuth = (mode = 'login') => {
+    setAuthInitialMode(typeof mode === 'string' ? mode : 'login');
+    setAuthModalOpen(true);
+  };
 
   // Guard navigation to protected services
   const handleNavigate = (tabId) => {
@@ -46,7 +52,7 @@ function AppContent() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onNavigate={handleNavigate}
-        onOpenAuth={() => setAuthModalOpen(true)}
+        onOpenAuth={handleOpenAuth}
       />
 
       {/* Main Page Area */}
@@ -54,7 +60,7 @@ function AppContent() {
         {activeTab === 'landing' && (
           <LandingPage
             onSelectRole={handleSelectRole}
-            onOpenAuth={() => setAuthModalOpen(true)}
+            onOpenAuth={handleOpenAuth}
           />
         )}
 
@@ -62,7 +68,7 @@ function AppContent() {
           <ProtectedRoute
             requiredRole="coordinator"
             portalName="Operations Allocation Desk"
-            onOpenAuth={() => setAuthModalOpen(true)}
+            onOpenAuth={handleOpenAuth}
             onNavigate={handleNavigate}
           >
             <CoordinatorDesk />
@@ -73,7 +79,7 @@ function AppContent() {
           <ProtectedRoute
             requiredRole="donor"
             portalName="Donor Operations Portal"
-            onOpenAuth={() => setAuthModalOpen(true)}
+            onOpenAuth={handleOpenAuth}
             onNavigate={handleNavigate}
           >
             <DonorDashboard />
@@ -84,7 +90,7 @@ function AppContent() {
           <ProtectedRoute
             requiredRole="ngo"
             portalName="Recipient NGO Portal"
-            onOpenAuth={() => setAuthModalOpen(true)}
+            onOpenAuth={handleOpenAuth}
             onNavigate={handleNavigate}
           >
             <NgoDashboard />
@@ -175,6 +181,7 @@ function AppContent() {
       {/* Auth Modal */}
       <AuthModal
         isOpen={authModalOpen}
+        initialMode={authInitialMode}
         onClose={() => setAuthModalOpen(false)}
         onSuccess={handleAuthSuccess}
       />
