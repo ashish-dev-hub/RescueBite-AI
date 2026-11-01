@@ -268,64 +268,65 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         </div>
       </section>
 
-      {/* REAL LISTING LIFECYCLE TIMELINE (Replaces 01/02/03 cards) */}
-      <section style={{ marginBottom: '4.5rem' }}>
+      {/* REAL LISTING LIFECYCLE TIMELINE */}
+      <section className="section-bhojan-wrapper">
         <div className="section-bhojan-header">
-          <div style={{
-            fontSize: '0.74rem',
-            fontWeight: 800,
-            textTransform: 'uppercase',
-            letterSpacing: '0.06em',
-            color: 'var(--color-network-green)',
-            marginBottom: '0.45rem',
-          }}>
-            Case Audit &bull; Grounded Operations
+          <div className="section-bhojan-tag">
+            Lifecycle Audit &bull; Grounded Operations
           </div>
           <h2 className="section-bhojan-title">
             The Path of One Listing
           </h2>
           <p className="section-bhojan-sub">
-            Follow an actual evening surplus consignment from a banquet kitchen to a community dining hall through verified decision checkpoints.
+            How surplus meals move from commercial kitchens to community plates in under 45 minutes through verified checkpoints.
           </p>
         </div>
 
-        {/* Real Single Listing Timeline */}
+        {/* Real Single Listing Timeline Card */}
         <div className="timeline-bhojan-container">
           <div className="timeline-meta-bar">
-            <span>CASE AUDIT #RB-DEL-4091 &bull; CONNAUGHT PLACE TO PAHAR GANJ CORRIDOR</span>
-            <span style={{ color: 'var(--color-network-green)' }}>Status: Verified Delivered (Sample data)</span>
+            <span className="meta-corridor">CASE AUDIT #RB-DEL-4091 &bull; CONNAUGHT PLACE TO PAHAR GANJ</span>
+            <span className="meta-status">Status: Verified Delivered (Sample data)</span>
           </div>
 
           <div className="timeline-step-grid">
             <div className="timeline-step-node">
-              <div className="t-node-time">19:10 IST &bull; LOGGED</div>
+              <div className="t-node-time">
+                <span>01</span> &bull; 19:10 IST
+              </div>
               <h3 className="t-node-title">Surplus Declared</h3>
               <p className="t-node-body">
-                Hotel Imperial declares <strong>45 Fresh Hot Meals</strong> (Dal Makhani, Jeera Rice, Subz Korma). Safe storage requirement: Hot holding (&gt;60&deg;C).
+                Hotel Imperial logs <strong>45 Fresh Hot Meals</strong> with safe holding temperature requirements (&gt;60&deg;C).
               </p>
             </div>
 
             <div className="timeline-step-node">
-              <div className="t-node-time">19:14 IST &bull; SCORING</div>
+              <div className="t-node-time">
+                <span>02</span> &bull; 19:14 IST
+              </div>
               <h3 className="t-node-title">Constraint Scoring</h3>
               <p className="t-node-body">
-                Engine evaluates nearby shelters. Hope Shelter selected with <strong>94/100 match score</strong> (50 meals needed, 2.1 km transit distance).
+                Engine selects Hope Shelter with <strong>94/100 score</strong> based on urgency, volume, and 2.1 km transit.
               </p>
             </div>
 
             <div className="timeline-step-node">
-              <div className="t-node-time">19:18 IST &bull; DISPATCHED</div>
+              <div className="t-node-time">
+                <span>03</span> &bull; 19:18 IST
+              </div>
               <h3 className="t-node-title">Coordinator Approval</h3>
               <p className="t-node-body">
-                Operations desk verifies safe holding temperature window, approves digital dispatch, and assigns courier volunteer.
+                Desk validates holding window, approves digital dispatch, and assigns courier volunteer.
               </p>
             </div>
 
             <div className="timeline-step-node">
-              <div className="t-node-time">19:42 IST &bull; DELIVERED</div>
+              <div className="t-node-time">
+                <span>04</span> &bull; 19:42 IST
+              </div>
               <h3 className="t-node-title">Intake Verified</h3>
               <p className="t-node-body">
-                Shelter supervisor verifies food temperature integrity and distributes dinner to 45 residents. Audit trail closed.
+                Shelter verifies temperature integrity on arrival and serves 45 diners. Audit trail sealed.
               </p>
             </div>
           </div>
@@ -333,44 +334,65 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
         {/* Visual 4-Part Segmented Score Breakdown Bar */}
         <div className="score-visual-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <h3 style={{
-              fontFamily: 'var(--font-heading)',
-              fontSize: '1.25rem',
-              fontWeight: 800,
-              color: 'var(--color-deep-forest)',
-              margin: 0,
-            }}>
-              Explainable Matching Breakdown
-            </h3>
-            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-muted-slate)' }}>
-              Deterministic Formula &bull; 94 / 100 Overall Score
-            </span>
+          <div className="score-card-header">
+            <div>
+              <h3 className="score-card-title">
+                Explainable Matching Breakdown
+              </h3>
+              <p className="score-card-sub">
+                Transparent multi-factor algorithm prioritizing food safety and quick delivery.
+              </p>
+            </div>
+            <div className="score-pill-overall">
+              Overall Score: <strong>94 / 100</strong>
+            </div>
           </div>
 
+          {/* Visual Segmented Progress Bar */}
           <div className="score-bar-segmented">
-            <div className="seg-demand" title="Demand Fit: 35/35"></div>
-            <div className="seg-urgency" title="Urgency Window: 24/25"></div>
-            <div className="seg-proximity" title="Proximity (2.1 km): 18/20"></div>
-            <div className="seg-storage" title="Safe Hot Chain: 17/20"></div>
+            <div className="seg-demand" style={{ width: '35%' }} title="Demand Fit: 35%">
+              <span className="seg-label">35% Demand</span>
+            </div>
+            <div className="seg-urgency" style={{ width: '25%' }} title="Urgency Window: 25%">
+              <span className="seg-label">25% Urgency</span>
+            </div>
+            <div className="seg-proximity" style={{ width: '20%' }} title="Proximity: 20%">
+              <span className="seg-label">20% Proximity</span>
+            </div>
+            <div className="seg-storage" style={{ width: '20%' }} title="Storage Protocol: 20%">
+              <span className="seg-label">20% Storage</span>
+            </div>
           </div>
 
+          {/* Clean 4-Column Legend */}
           <div className="score-breakdown-legend">
             <div className="legend-col">
-              <strong>35% Demand Fit</strong>
-              <p>Direct volume and meal type alignment with shelter evening quota.</p>
+              <div className="legend-indicator dot-demand"></div>
+              <div>
+                <strong>35% Demand Fit</strong>
+                <p>Exact meal type &amp; portion match with evening quota.</p>
+              </div>
             </div>
             <div className="legend-col">
-              <strong>25% Deadline Urgency</strong>
-              <p>Safe food holding window before risk of spoilage.</p>
+              <div className="legend-indicator dot-urgency"></div>
+              <div>
+                <strong>25% Deadline Urgency</strong>
+                <p>Priority dispatch before hot holding threshold degrades.</p>
+              </div>
             </div>
             <div className="legend-col">
-              <strong>20% Road Proximity</strong>
-              <p>Under 15 minutes expected travel time (2.1 km transit distance).</p>
+              <div className="legend-indicator dot-proximity"></div>
+              <div>
+                <strong>20% Road Proximity</strong>
+                <p>2.1 km transit corridor (&lt;15 min delivery window).</p>
+              </div>
             </div>
             <div className="legend-col">
-              <strong>20% Storage Protocol</strong>
-              <p>Thermal insulated carrier verification (&gt;60&deg;C hot holding).</p>
+              <div className="legend-indicator dot-storage"></div>
+              <div>
+                <strong>20% Storage Protocol</strong>
+                <p>Thermal insulated carrier verification (&gt;60&deg;C verified).</p>
+              </div>
             </div>
           </div>
         </div>
