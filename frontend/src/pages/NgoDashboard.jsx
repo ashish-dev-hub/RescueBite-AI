@@ -18,7 +18,6 @@ import {
   Users,
   ShieldCheck,
   Calendar,
-  Sparkles,
   Eye,
   Trash2,
 } from 'lucide-react';
@@ -286,8 +285,9 @@ export default function NgoDashboard() {
       {aiForecast && (
         <div className="fresh-card" style={{
           padding: '1.15rem 1.35rem',
-          background: 'linear-gradient(135deg, #F0FDF4 0%, #EFF6FF 100%)',
-          border: '1px solid #BBF7D0',
+          backgroundColor: '#FFFDF9',
+          border: '1px solid var(--color-soft-border)',
+          borderLeft: '4px solid var(--color-terracotta)',
           marginBottom: '1.5rem',
           display: 'flex',
           alignItems: 'center',
@@ -300,33 +300,34 @@ export default function NgoDashboard() {
               width: '42px',
               height: '42px',
               borderRadius: '50%',
-              backgroundColor: '#DCFCE7',
-              color: '#15803D',
+              backgroundColor: 'var(--color-warm-bg)',
+              color: 'var(--color-terracotta)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
             }}>
-              <Sparkles size={20} />
+              <Users size={20} />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
-                  RescueBite Tomorrow's Demand Forecast
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+                <strong style={{ fontSize: '0.95rem', color: 'var(--color-coffee-dark)', fontFamily: 'var(--font-heading)' }}>
+                  RescueBite Demand Forecast
                 </strong>
                 <span style={{
-                  fontSize: '0.7rem',
-                  backgroundColor: '#DCFCE7',
-                  color: '#15803D',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: 'var(--color-terracotta)',
+                  backgroundColor: '#FFF4ED',
                   padding: '0.1rem 0.45rem',
                   borderRadius: '4px',
-                  fontWeight: 700,
+                  border: '1px solid #FAD5C5',
                 }}>
-                  AI PREDICTION
+                  Sample data
                 </span>
               </div>
-              <p style={{ fontSize: '0.82rem', color: '#374151', marginTop: '0.2rem' }}>
-                Forecast Date: <strong>{aiForecast.forecast_date}</strong> • Predicted Demand: <strong style={{ color: '#15803D', fontSize: '0.95rem' }}>{Math.round(aiForecast.predicted_meals)} meals</strong> (80% Confidence Range: {Math.round(aiForecast.confidence_lower)} – {Math.round(aiForecast.confidence_upper)} meals)
+              <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', marginTop: '0.2rem' }}>
+                Forecast Date: <strong>{aiForecast.forecast_date}</strong> • Predicted Demand: <strong style={{ color: 'var(--color-terracotta)', fontSize: '0.95rem' }}>{Math.round(aiForecast.predicted_meals)} meals</strong> (80% Bound: {Math.round(aiForecast.confidence_lower)} – {Math.round(aiForecast.confidence_upper)} meals)
               </p>
             </div>
           </div>

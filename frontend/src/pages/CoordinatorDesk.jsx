@@ -7,21 +7,12 @@ import {
   RefreshCw,
   AlertTriangle,
   CheckCircle2,
-  Clock,
   MapPin,
-  TrendingUp,
-  Sliders,
-  ArrowRight,
   PackageCheck,
   Truck,
   Check,
-  X,
-  Layers,
-  ChevronRight,
-  Calendar,
   Building,
   Soup,
-  Sparkles,
 } from 'lucide-react';
 
 export default function CoordinatorDesk() {
@@ -216,7 +207,7 @@ export default function CoordinatorDesk() {
             <div className="allocation-queue-list">
               {recommendations.length === 0 ? (
                 <div className="allocation-queue-empty">
-                  <Sparkles size={28} color="var(--color-network-green)" style={{ margin: '0 auto 0.5rem auto' }} />
+                  <ShieldCheck size={28} color="var(--color-forest-green)" style={{ margin: "0 auto 0.5rem auto" }} />
                   <p style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>All matched food allocated!</p>
                   <p style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem', lineHeight: 1.5 }}>
                     No pending unassigned surplus currently exceeds constraints. Real-time engine listens for new donations.
@@ -234,8 +225,8 @@ export default function CoordinatorDesk() {
                       style={{
                         padding: '1rem 1.15rem',
                         borderBottom: '1px solid var(--color-soft-border)',
-                        backgroundColor: isSelected ? 'var(--color-soft-mint)' : '#FFFFFF',
-                        borderLeft: isSelected ? '4px solid var(--color-network-green)' : '4px solid transparent',
+                        backgroundColor: isSelected ? 'var(--color-warm-bg)' : '#FFFDF9',
+                        borderLeft: isSelected ? '4px solid var(--color-forest-green)' : '4px solid transparent',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease',
                       }}
@@ -401,50 +392,110 @@ export default function CoordinatorDesk() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.4rem',
-                        backgroundColor: '#EFF6FF',
-                        border: '1px solid #BFDBFE',
-                        borderRadius: 'var(--radius-sm)',
-                        padding: '0.4rem 0.75rem',
+                        backgroundColor: 'var(--color-soft-mint)',
+                        border: '1px solid var(--color-soft-mint-border)',
+                        borderRadius: 'var(--radius-btn-sm)',
+                        padding: '0.45rem 0.75rem',
                         marginBottom: '0.85rem',
                         fontSize: '0.8rem',
-                        color: '#1E40AF',
+                        color: 'var(--color-forest-green)',
                       }}>
-                        <Sparkles size={14} color="#2563EB" />
-                        <span><strong>RescueBite Model B ML:</strong> {Math.round(selectedMatch.successProbability * 100)}% predicted delivery success</span>
+                        <ShieldCheck size={14} color="var(--color-forest-green)" />
+                        <span><strong>RescueBite Model B ML (Sample data):</strong> {Math.round(selectedMatch.successProbability * 100)}% predicted delivery success</span>
                       </div>
                     )}
 
-                    {/* Transparent Score Breakdown */}
-                    <div className="desk-score-breakdown" style={{
-                      textAlign: 'center',
-                      backgroundColor: '#FFFFFF',
-                      padding: '0.75rem',
-                      borderRadius: 'var(--radius-md)',
+                    {/* Transparent Segmented Score Breakdown Bar */}
+                    <div style={{
+                      backgroundColor: '#FFFDF9',
+                      padding: '1rem',
+                      borderRadius: 'var(--radius-card)',
                       border: '1px solid var(--color-soft-border)',
+                      boxShadow: '0 2px 0 var(--color-card-bevel)',
+                      marginBottom: '1.25rem',
                     }}>
-                      <div>
-                        <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>Demand Fit (35%)</p>
-                        <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                          {selectedMatch.scoreBreakdown?.demandFit || 90}%
-                        </p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-coffee-dark)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                          Segmented Matching Breakdown
+                        </span>
+                        <span style={{ fontSize: '0.74rem', color: 'var(--color-muted-slate)' }}>
+                          Weight: Demand 35% • Urgency 25% • Proximity 20% • Storage 20%
+                        </span>
                       </div>
-                      <div>
-                        <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>Urgency (25%)</p>
-                        <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                          {selectedMatch.scoreBreakdown?.urgency || 85}%
-                        </p>
+
+                      {/* 4-part segmented bar */}
+                      <div style={{
+                        height: '10px',
+                        borderRadius: '5px',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        backgroundColor: 'var(--color-pale-neutral)',
+                        marginBottom: '0.85rem',
+                      }}>
+                        <div
+                          title={`Demand Fit: ${selectedMatch.scoreBreakdown?.demandFit || 90}% (35% weight)`}
+                          style={{
+                            width: '35%',
+                            backgroundColor: 'var(--color-forest-green)',
+                            borderRight: '1.5px solid #FFFDF9',
+                          }}
+                        />
+                        <div
+                          title={`Urgency: ${selectedMatch.scoreBreakdown?.urgency || 85}% (25% weight)`}
+                          style={{
+                            width: '25%',
+                            backgroundColor: 'var(--color-terracotta)',
+                            borderRight: '1.5px solid #FFFDF9',
+                          }}
+                        />
+                        <div
+                          title={`Proximity: ${selectedMatch.scoreBreakdown?.proximity || 95}% (20% weight)`}
+                          style={{
+                            width: '20%',
+                            backgroundColor: '#D97706',
+                            borderRight: '1.5px solid #FFFDF9',
+                          }}
+                        />
+                        <div
+                          title={`Storage Capacity: ${selectedMatch.scoreBreakdown?.capacity || 90}% (20% weight)`}
+                          style={{
+                            width: '20%',
+                            backgroundColor: '#6E5D53',
+                          }}
+                        />
                       </div>
-                      <div>
-                        <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>Proximity (20%)</p>
-                        <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                          {selectedMatch.scoreBreakdown?.proximity || 95}%
-                        </p>
-                      </div>
-                      <div>
-                        <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>Capacity (20%)</p>
-                        <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>
-                          {selectedMatch.scoreBreakdown?.capacity || 90}%
-                        </p>
+
+                      {/* Legend with subscores */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '0.5rem',
+                        textAlign: 'center',
+                      }}>
+                        <div style={{ padding: '0.45rem 0.25rem', backgroundColor: 'var(--color-warm-bg)', borderRadius: '6px' }}>
+                          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)', margin: 0 }}>Demand (35%)</p>
+                          <p style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-forest-green)', margin: '0.1rem 0 0 0' }}>
+                            {selectedMatch.scoreBreakdown?.demandFit || 90}%
+                          </p>
+                        </div>
+                        <div style={{ padding: '0.45rem 0.25rem', backgroundColor: 'var(--color-warm-bg)', borderRadius: '6px' }}>
+                          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)', margin: 0 }}>Urgency (25%)</p>
+                          <p style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-terracotta)', margin: '0.1rem 0 0 0' }}>
+                            {selectedMatch.scoreBreakdown?.urgency || 85}%
+                          </p>
+                        </div>
+                        <div style={{ padding: '0.45rem 0.25rem', backgroundColor: 'var(--color-warm-bg)', borderRadius: '6px' }}>
+                          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)', margin: 0 }}>Proximity (20%)</p>
+                          <p style={{ fontSize: '0.95rem', fontWeight: 800, color: '#D97706', margin: '0.1rem 0 0 0' }}>
+                            {selectedMatch.scoreBreakdown?.proximity || 95}%
+                          </p>
+                        </div>
+                        <div style={{ padding: '0.45rem 0.25rem', backgroundColor: 'var(--color-warm-bg)', borderRadius: '6px' }}>
+                          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)', margin: 0 }}>Storage (20%)</p>
+                          <p style={{ fontSize: '0.95rem', fontWeight: 800, color: '#6E5D53', margin: '0.1rem 0 0 0' }}>
+                            {selectedMatch.scoreBreakdown?.capacity || 90}%
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -452,9 +503,10 @@ export default function CoordinatorDesk() {
                   {/* Quantity Decision Slider */}
                   <div style={{
                     padding: '1.15rem',
-                    backgroundColor: 'var(--color-soft-mint)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--color-soft-mint-border)',
+                    backgroundColor: '#FFFDF9',
+                    borderRadius: 'var(--radius-card)',
+                    border: '1px solid var(--color-soft-border)',
+                    boxShadow: '0 2px 0 var(--color-card-bevel)',
                     marginBottom: '1rem',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
@@ -541,8 +593,7 @@ export default function CoordinatorDesk() {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    backgroundColor: '#DCFCE7',
-                    color: '#15803D',
+                    backgroundColor: 'var(--color-soft-mint)', color: 'var(--color-forest-green)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -560,8 +611,7 @@ export default function CoordinatorDesk() {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    backgroundColor: '#DCFCE7',
-                    color: '#15803D',
+                    backgroundColor: 'var(--color-soft-mint)', color: 'var(--color-forest-green)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -579,8 +629,7 @@ export default function CoordinatorDesk() {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    backgroundColor: '#DCFCE7',
-                    color: '#15803D',
+                    backgroundColor: 'var(--color-soft-mint)', color: 'var(--color-forest-green)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -598,8 +647,7 @@ export default function CoordinatorDesk() {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    backgroundColor: '#DCFCE7',
-                    color: '#15803D',
+                    backgroundColor: 'var(--color-soft-mint)', color: 'var(--color-forest-green)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

@@ -96,9 +96,9 @@ function AppContent() {
 
       {/* Clean Professional Footer */}
       <footer style={{
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid var(--color-soft-border)',
-        padding: '2.5rem 1.5rem 2rem 1.5rem',
+        backgroundColor: '#FAF4EB',
+        borderTop: '1px solid #E5DBC5',
+        padding: '3rem 1.5rem 2rem 1.5rem',
         marginTop: 'auto',
       }}>
         <div style={{
@@ -110,40 +110,45 @@ function AppContent() {
           flexWrap: 'wrap',
           gap: '2rem',
         }}>
-          <div style={{ maxWidth: '420px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Sprout size={22} color="var(--color-network-green)" />
-              <span style={{ fontWeight: 800, color: 'var(--color-deep-forest)', fontSize: '1.15rem', letterSpacing: '-0.02em' }}>
-                RescueBite AI
-              </span>
-            </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--color-muted-slate)', marginTop: '0.5rem', lineHeight: 1.6 }}>
-              An intelligent, explainable food redistribution ecosystem connecting commercial food donors with community kitchens and NGOs to eliminate food waste and fight hunger.
+          <div style={{ maxWidth: '440px' }}>
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '1.45rem',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              color: '#C44824',
+              display: 'block',
+              marginBottom: '0.4rem',
+            }}>
+              RescueBite
+            </span>
+            <p style={{ fontSize: '0.86rem', color: '#685B52', lineHeight: 1.6, margin: 0 }}>
+              An intelligent, explainable food redistribution commons connecting commercial kitchens with local shelters across India to prevent food waste and nourish communities.
             </p>
           </div>
 
           <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
             <div>
-              <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-deep-forest)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.65rem' }}>
-                Portals
+              <p style={{ fontSize: '0.76rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
+                Operational Portals
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.85rem' }}>
-                <a href="#coordinator" onClick={(e) => { e.preventDefault(); handleNavigate('coordinator'); }} style={{ color: 'var(--color-muted-slate)' }}>Allocation Desk</a>
-                <a href="#donor" onClick={(e) => { e.preventDefault(); handleNavigate('donor'); }} style={{ color: 'var(--color-muted-slate)' }}>Donor Portal</a>
-                <a href="#ngo" onClick={(e) => { e.preventDefault(); handleNavigate('ngo'); }} style={{ color: 'var(--color-muted-slate)' }}>NGO Demands</a>
-                <a href="#impact" onClick={(e) => { e.preventDefault(); handleNavigate('impact'); }} style={{ color: 'var(--color-muted-slate)' }}>Impact Analytics</a>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.86rem' }}>
+                <a href="#coordinator" onClick={(e) => { e.preventDefault(); handleNavigate('coordinator'); }} style={{ color: '#685B52' }}>Allocation Desk</a>
+                <a href="#donor" onClick={(e) => { e.preventDefault(); handleNavigate('donor'); }} style={{ color: '#685B52' }}>Donor Portal</a>
+                <a href="#ngo" onClick={(e) => { e.preventDefault(); handleNavigate('ngo'); }} style={{ color: '#685B52' }}>NGO Demands</a>
+                <a href="#impact" onClick={(e) => { e.preventDefault(); handleNavigate('impact'); }} style={{ color: '#685B52' }}>Impact Analytics</a>
               </div>
             </div>
 
             <div>
-              <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-deep-forest)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.65rem' }}>
-                Standards
+              <p style={{ fontSize: '0.76rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
+                Food Safety Standards
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--color-muted-slate)' }}>
-                <span>Safe Storage Compliance</span>
-                <span>Cold Chain Verification</span>
-                <span>Transparent Environmental Metrics</span>
-                <span>Zero Waste Initiative</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.86rem', color: '#685B52' }}>
+                <span>Thermal Holding Compliance</span>
+                <span>Storage Protocol Verification</span>
+                <span>Transparent Environmental Ledger</span>
+                <span>Human-Approved Dispatches</span>
               </div>
             </div>
           </div>
@@ -153,17 +158,17 @@ function AppContent() {
           maxWidth: '1240px',
           margin: '2rem auto 0 auto',
           paddingTop: '1.25rem',
-          borderTop: '1px solid var(--color-soft-border)',
+          borderTop: '1px solid #E5DBC5',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '1rem',
-          fontSize: '0.8rem',
-          color: 'var(--color-muted-slate)',
+          fontSize: '0.78rem',
+          color: '#685B52',
         }}>
-          <span>© 2026 RescueBite AI • The Fresh Network. All rights reserved.</span>
-          <span>Food rescue coordinates edible surplus with recipient safety inspection.</span>
+          <span>&copy; 2026 RescueBite AI &bull; Civic Food Redistribution Network</span>
+          <span>Verified edible surplus coordination with human coordinator oversight.</span>
         </div>
       </footer>
 
