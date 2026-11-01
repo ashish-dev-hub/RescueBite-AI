@@ -572,36 +572,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               </div>
             </div>
 
-            {/* Forgot Password Link */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.1rem' }}>
-              <button
-                type="button"
-                onClick={() => {
-                  setForgotEmail(loginEmail || '');
-                  setMode('forgot');
-                  setError('');
-                  setSuccessMsg('');
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-network-green, #2F7D67)',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  padding: '0.2rem 0',
-                  textDecoration: 'underline',
-                }}
-              >
-                Forgot Password?
-              </button>
-            </div>
+            
 
             <button
               type="submit"
               disabled={loading}
               className="btn btn-primary"
-              style={{ width: '100%' }}
+              style={{ width: '100%', marginTop: '1.25rem' }}
             >
               {loading ? 'Authenticating...' : 'Sign In'}
             </button>
