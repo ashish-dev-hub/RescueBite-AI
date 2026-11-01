@@ -10,14 +10,14 @@ import {
   AlertTriangle,
   Trash2,
   CheckCircle2,
-  Building,
+  TrendingUp,
+Building,
   Thermometer,
   Calendar,
   Layers,
   MapPin,
   RefreshCw,
-  Sparkles,
-} from 'lucide-react';
+  } from 'lucide-react';
 
 const getFutureDateTime = (hoursFromNow = 4) => {
   const d = new Date(Date.now() + hoursFromNow * 3600 * 1000);
@@ -244,8 +244,9 @@ export default function DonorDashboard() {
       {aiSupplyForecast && (
         <div className="fresh-card" style={{
           padding: '1.15rem 1.35rem',
-          background: 'linear-gradient(135deg, #F0FDF4 0%, #FFFBEB 100%)',
-          border: '1px solid #BBF7D0',
+          backgroundColor: '#FFFDF9',
+          border: '1px solid var(--color-soft-border)',
+          borderLeft: '4px solid var(--color-forest-green)',
           marginBottom: '1.5rem',
           display: 'flex',
           alignItems: 'center',
@@ -258,23 +259,34 @@ export default function DonorDashboard() {
               width: '42px',
               height: '42px',
               borderRadius: '50%',
-              backgroundColor: '#DCFCE7',
-              color: '#15803D',
+              backgroundColor: 'var(--color-soft-mint)',
+              color: 'var(--color-forest-green)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
             }}>
-              <Sparkles size={20} />
+              <TrendingUp size={20} />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-                <strong style={{ fontSize: '0.95rem', color: '#166534' }}>
-                  RescueBite
+                <strong style={{ fontSize: '0.95rem', color: 'var(--color-coffee-dark)', fontFamily: 'var(--font-heading)' }}>
+                  RescueBite Supply Forecast
                 </strong>
+                <span style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: 'var(--color-forest-green)',
+                  backgroundColor: 'var(--color-soft-mint)',
+                  padding: '0.1rem 0.45rem',
+                  borderRadius: '4px',
+                  border: '1px solid var(--color-soft-mint-border)',
+                }}>
+                  Sample data
+                </span>
               </div>
-              <p style={{ fontSize: '0.82rem', color: '#374151', marginTop: '0.2rem' }}>
-                Forecast Date: <strong>{aiSupplyForecast.forecast_date}</strong> • Expected Surplus: <strong style={{ color: '#15803D', fontSize: '0.95rem' }}>{Math.round(aiSupplyForecast.predicted_surplus_meals)} meals</strong> (Uncertainty Bounds: {Math.round(aiSupplyForecast.surplus_p10)} – {Math.round(aiSupplyForecast.surplus_p90)} meals)
+              <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', marginTop: '0.2rem' }}>
+                Forecast Date: <strong>{aiSupplyForecast.forecast_date}</strong> • Expected Surplus: <strong style={{ color: 'var(--color-forest-green)', fontSize: '0.95rem' }}>{Math.round(aiSupplyForecast.predicted_surplus_meals)} meals</strong> (Bounds: {Math.round(aiSupplyForecast.surplus_p10)} – {Math.round(aiSupplyForecast.surplus_p90)} meals)
               </p>
               {Array.isArray(aiSupplyForecast.reason_codes) &&
                 aiSupplyForecast.reason_codes.filter(
@@ -294,10 +306,12 @@ export default function DonorDashboard() {
                     .map((code, idx) => (
                       <span key={idx} style={{
                         fontSize: '0.72rem',
-                        backgroundColor: '#F3F4F6',
-                        color: '#4B5563',
-                        padding: '0.1rem 0.4rem',
-                        borderRadius: '3px',
+                        backgroundColor: 'var(--color-pale-neutral)',
+                        color: 'var(--color-coffee-dark)',
+                        padding: '0.15rem 0.45rem',
+                        borderRadius: '4px',
+                        border: '1px solid var(--color-soft-border)',
+                        fontWeight: 600,
                       }}>
                         {code}
                       </span>
@@ -308,10 +322,10 @@ export default function DonorDashboard() {
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
-              Confidence Score: <strong>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
+              Confidence Score: <strong style={{ color: 'var(--color-coffee-dark)' }}>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
             </div>
             <div style={{ fontSize: '0.68rem', color: 'var(--color-muted-slate)', marginTop: '0.15rem' }}>
-              Category: <strong>{aiSupplyForecast.donor_type || 'Commercial Donor'}</strong>
+              Category: <strong style={{ color: 'var(--color-coffee-dark)' }}>{aiSupplyForecast.donor_type || 'Commercial Donor'}</strong>
             </div>
           </div>
         </div>
@@ -499,7 +513,7 @@ export default function DonorDashboard() {
               type="text"
               required
               className="form-input"
-              placeholder="e.g. Vegetable Curry & Basmati Rice, Baked Bread Crates"
+              placeholder="e.g. 45 Fresh Hot Meals: Dal Makhani, Steamed Rice, Tandoori Roti"
               value={foodName}
               onChange={(e) => setFoodName(e.target.value)}
             />
@@ -599,8 +613,7 @@ export default function DonorDashboard() {
                       padding: '0.2rem 0.5rem',
                       borderRadius: '4px',
                       border: '1px solid var(--color-soft-border)',
-                      backgroundColor: '#F3F4F6',
-                      color: '#374151',
+                      backgroundColor: 'var(--color-warm-bg)', color: 'var(--color-coffee-dark)',
                       cursor: 'pointer',
                       fontWeight: 500,
                     }}

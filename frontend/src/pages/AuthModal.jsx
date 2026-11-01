@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
-import { Building, Soup, Compass, AlertCircle, Info, Eye, EyeOff, CheckCircle2, ArrowLeft, KeyRound, Mail, RefreshCw } from 'lucide-react';
+import { Building, Soup, Compass, AlertCircle, Eye, EyeOff, CheckCircle2, ArrowLeft, KeyRound, Mail, RefreshCw } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 
 function GoogleIcon({ size = 18 }) {
@@ -285,7 +285,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const getModalTitle = () => {
     if (mode === 'forgot') return 'Reset Password';
     if (mode === 'reset') return 'Enter Verification Code';
-    return mode === 'login' ? 'Sign In to RescueBite AI' : 'Join The Fresh Network';
+    return mode === 'login' ? 'Sign in to RescueBite' : 'Join the RescueBite Network';
   };
 
   const getModalSubtitle = () => {
@@ -308,8 +308,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       {mode === 'login' || mode === 'register' ? (
         <div style={{
           display: 'flex',
-          backgroundColor: 'var(--color-pale-neutral)',
+          backgroundColor: 'var(--color-warm-bg)',
           borderRadius: 'var(--radius-btn)',
+          border: '1px solid var(--color-soft-border)',
           padding: '0.25rem',
           marginBottom: '1.25rem',
         }}>
@@ -321,9 +322,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               borderRadius: 'var(--radius-btn-sm)',
               fontSize: '0.85rem',
               fontWeight: 600,
-              backgroundColor: mode === 'login' ? '#FFFFFF' : 'transparent',
+              backgroundColor: mode === 'login' ? '#FFFDF9' : 'transparent',
               color: mode === 'login' ? 'var(--color-deep-forest)' : 'var(--color-muted-slate)',
-              boxShadow: mode === 'login' ? 'var(--shadow-subtle)' : 'none',
+              boxShadow: mode === 'login' ? '0 2px 0 var(--color-card-bevel)' : 'none',
             }}
           >
             Sign In
@@ -336,9 +337,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               borderRadius: 'var(--radius-btn-sm)',
               fontSize: '0.85rem',
               fontWeight: 600,
-              backgroundColor: mode === 'register' ? '#FFFFFF' : 'transparent',
+              backgroundColor: mode === 'register' ? '#FFFDF9' : 'transparent',
               color: mode === 'register' ? 'var(--color-deep-forest)' : 'var(--color-muted-slate)',
-              boxShadow: mode === 'register' ? 'var(--shadow-subtle)' : 'none',
+              boxShadow: mode === 'register' ? '0 2px 0 var(--color-card-bevel)' : 'none',
             }}
           >
             Register (All Roles)
@@ -459,9 +460,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '0.65rem',
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: '#FFFDF9',
                     borderColor: 'var(--color-soft-border)',
-                    color: 'var(--color-deep-forest)',
+                    boxShadow: '0 2px 0 var(--color-card-bevel)',
+                    color: 'var(--color-coffee-dark)',
                     fontWeight: 600,
                     fontSize: '0.9rem',
                   }}
@@ -842,8 +844,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 style={{
                   padding: '0.75rem 0.35rem',
                   borderRadius: 'var(--radius-btn)',
-                  border: `2px solid ${registerRole === 'donor' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
-                  backgroundColor: registerRole === 'donor' ? 'var(--color-soft-mint)' : '#FFFFFF',
+                  border: `2px solid ${registerRole === 'donor' ? 'var(--color-terracotta)' : 'var(--color-soft-border)'}`,
+                  backgroundColor: registerRole === 'donor' ? '#FFF4ED' : '#FFFDF9',
+                  boxShadow: registerRole === 'donor' ? '0 2px 0 var(--color-terracotta-bevel)' : 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -854,7 +857,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   color: 'var(--color-deep-forest)',
                 }}
               >
-                <Building size={18} color={registerRole === 'donor' ? '#2F7D67' : '#687872'} />
+                <Building size={18} color={registerRole === 'donor' ? '#C44824' : '#6E5D53'} />
                 <span>Food Donor</span>
               </button>
 
@@ -864,8 +867,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 style={{
                   padding: '0.75rem 0.35rem',
                   borderRadius: 'var(--radius-btn)',
-                  border: `2px solid ${registerRole === 'ngo' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
-                  backgroundColor: registerRole === 'ngo' ? 'var(--color-soft-mint)' : '#FFFFFF',
+                  border: `2px solid ${registerRole === 'ngo' ? 'var(--color-terracotta)' : 'var(--color-soft-border)'}`,
+                  backgroundColor: registerRole === 'ngo' ? '#FFF4ED' : '#FFFDF9',
+                  boxShadow: registerRole === 'ngo' ? '0 2px 0 var(--color-terracotta-bevel)' : 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -876,7 +880,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   color: 'var(--color-deep-forest)',
                 }}
               >
-                <Soup size={18} color={registerRole === 'ngo' ? '#2F7D67' : '#687872'} />
+                <Soup size={18} color={registerRole === 'ngo' ? '#C44824' : '#6E5D53'} />
                 <span>Recipient NGO</span>
               </button>
 
@@ -886,8 +890,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 style={{
                   padding: '0.75rem 0.35rem',
                   borderRadius: 'var(--radius-btn)',
-                  border: `2px solid ${registerRole === 'coordinator' ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
-                  backgroundColor: registerRole === 'coordinator' ? 'var(--color-soft-mint)' : '#FFFFFF',
+                  border: `2px solid ${registerRole === 'coordinator' ? 'var(--color-terracotta)' : 'var(--color-soft-border)'}`,
+                  backgroundColor: registerRole === 'coordinator' ? '#FFF4ED' : '#FFFDF9',
+                  boxShadow: registerRole === 'coordinator' ? '0 2px 0 var(--color-terracotta-bevel)' : 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -898,7 +903,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   color: 'var(--color-deep-forest)',
                 }}
               >
-                <Compass size={18} color={registerRole === 'coordinator' ? '#2F7D67' : '#687872'} />
+                <Compass size={18} color={registerRole === 'coordinator' ? '#C44824' : '#6E5D53'} />
                 <span>Coordinator</span>
               </button>
             </div>
@@ -947,9 +952,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '0.65rem',
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: '#FFFDF9',
                     borderColor: 'var(--color-soft-border)',
-                    color: 'var(--color-deep-forest)',
+                    boxShadow: '0 2px 0 var(--color-card-bevel)',
+                    color: 'var(--color-coffee-dark)',
                     fontWeight: 600,
                     fontSize: '0.9rem',
                   }}

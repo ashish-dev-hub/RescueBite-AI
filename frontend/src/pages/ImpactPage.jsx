@@ -2,19 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import StatusBadge from '../components/StatusBadge';
 import {
-  BarChart3,
   TrendingUp,
-  Award,
   Leaf,
   Clock,
   CheckCircle2,
-  HelpCircle,
-  Truck,
-  Sparkles,
   Info,
   RefreshCw,
-  Building,
-  Soup,
 } from 'lucide-react';
 
 export default function ImpactPage() {
@@ -101,12 +94,12 @@ export default function ImpactPage() {
       {/* Primary 4 Metric Cards */}
       <div className="impact-metrics-grid">
         {/* Metric 1 */}
-        <div className="fresh-card" style={{ borderLeft: '4px solid var(--color-network-green)' }}>
+        <div className="fresh-card" style={{ borderLeft: '4px solid var(--color-forest-green)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
               Confirmed Meals Delivered
             </span>
-            <CheckCircle2 size={18} color="var(--color-network-green)" />
+            <CheckCircle2 size={18} color="var(--color-forest-green)" />
           </div>
           <p style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--color-deep-forest)', lineHeight: 1 }}>
             {metrics.totalDeliveredMeals}
@@ -117,14 +110,14 @@ export default function ImpactPage() {
         </div>
 
         {/* Metric 2 */}
-        <div className="fresh-card" style={{ borderLeft: '4px solid #0D9488' }}>
+        <div className="fresh-card" style={{ borderLeft: '4px solid var(--color-terracotta)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
               Dispatch Fulfilment Rate
             </span>
-            <TrendingUp size={18} color="#0D9488" />
+            <TrendingUp size={18} color="var(--color-terracotta)" />
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0D9488', lineHeight: 1 }}>
+          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--color-terracotta)', lineHeight: 1 }}>
             {metrics.totalApprovedMeals > 0 ? `${metrics.fulfilmentRate}%` : '0%'}
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.5rem' }}>
@@ -133,14 +126,14 @@ export default function ImpactPage() {
         </div>
 
         {/* Metric 3 */}
-        <div className="fresh-card" style={{ borderLeft: '4px solid #3B82F6' }}>
+        <div className="fresh-card" style={{ borderLeft: '4px solid #D97706' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
               On-Time Delivery Rate
             </span>
-            <Clock size={18} color="#3B82F6" />
+            <Clock size={18} color="#D97706" />
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#3B82F6', lineHeight: 1 }}>
+          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#D97706', lineHeight: 1 }}>
             {metrics.totalDeliveredMeals > 0 ? `${metrics.onTimeDeliveryRate}%` : '0%'}
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.5rem' }}>
@@ -149,14 +142,14 @@ export default function ImpactPage() {
         </div>
 
         {/* Metric 4 */}
-        <div className="fresh-card" style={{ borderLeft: '4px solid #15803D' }}>
+        <div className="fresh-card" style={{ borderLeft: '4px solid var(--color-forest-green)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
               Food Waste Avoided (Est.)
             </span>
-            <Leaf size={18} color="#15803D" />
+            <Leaf size={18} color="var(--color-forest-green)" />
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#15803D', lineHeight: 1 }}>
+          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--color-forest-green)', lineHeight: 1 }}>
             {metrics.environmentalEstimates?.kgFoodSaved ?? 0} <span style={{ fontSize: '1rem', fontWeight: 600 }}>kg</span>
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.5rem' }}>
@@ -169,14 +162,14 @@ export default function ImpactPage() {
       <div style={{
         padding: '1.25rem 1.5rem',
         borderRadius: 'var(--radius-lg)',
-        backgroundColor: 'var(--color-pale-neutral)',
+        backgroundColor: 'var(--color-warm-bg)',
         border: '1px solid var(--color-soft-border)',
         marginBottom: '2rem',
         display: 'flex',
         alignItems: 'flex-start',
         gap: '0.85rem',
       }}>
-        <Info size={20} color="var(--color-network-green)" style={{ flexShrink: 0, marginTop: '0.15rem' }} />
+        <Info size={20} color="var(--color-forest-green)" style={{ flexShrink: 0, marginTop: '0.15rem' }} />
         <div>
           <h4 style={{ fontSize: '0.92rem', color: 'var(--color-deep-forest)', marginBottom: '0.25rem' }}>
             Calculation Methodology & Data Standards
