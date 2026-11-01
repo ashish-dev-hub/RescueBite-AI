@@ -1,6 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-
-const Hero3DCanvas = lazy(() => import('../components/Hero3DCanvas'));
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import {
@@ -8,19 +6,9 @@ import {
   ShieldCheck,
   Building,
   Soup,
-  MapPin,
-  Clock,
-  Heart,
-  ChevronRight,
   CheckCircle2,
-  RefreshCw,
-  Users,
-  Award,
   ThermometerSnowflake,
   Flame,
-  Check,
-  Sliders,
-  Droplet,
 } from 'lucide-react';
 
 const SIMULATION_SCENARIOS = [
@@ -92,7 +80,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
   const [activeScenarioIdx, setActiveScenarioIdx] = useState(0);
   const [activeRoleTab, setActiveRoleTab] = useState('donor');
-  const [heroVisualMode, setHeroVisualMode] = useState('3d');
   const [calculatorMeals, setCalculatorMeals] = useState(50);
 
   useEffect(() => {
@@ -185,141 +172,56 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             </div>
           </div>
 
-          {/* RIGHT: 3D City Grid with Arcs & Segmented Score OR Dual Tactile Cards */}
-          <div style={{ width: '100%', position: 'relative' }}>
-            {/* View Switcher Toggle */}
-            <div
-              className="hero-view-toggle"
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                gap: '0.35rem',
-                marginBottom: '0.65rem',
-              }}
-            >
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginRight: '0.35rem' }}>
-                Hero View:
+          {/* RIGHT: Direction 3 Tactile Dual Cards with Center 12-min Connector Badge */}
+          <div className="hero-cards-stack">
+            {/* Donor Card */}
+            <div className="hero-card-donor">
+              <div className="hero-card-label" style={{ color: '#1F6F43' }}>
+                DONOR &bull; SAMPLE DATA
+              </div>
+              <h3 className="hero-card-title">
+                Metro Bistro &amp; Bakery
+              </h3>
+              <p className="hero-card-desc">
+                45 fresh hot meals: rice, dal, veggies
+              </p>
+              <span
+                className="hero-card-pill"
+                style={{
+                  backgroundColor: 'var(--color-mustard)',
+                  color: 'var(--color-deep-forest)',
+                }}
+              >
+                Hot holding
               </span>
-              <button
-                type="button"
-                onClick={() => setHeroVisualMode('3d')}
-                style={{
-                  padding: '0.25rem 0.65rem',
-                  borderRadius: '6px',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  border: '1px solid var(--color-soft-border)',
-                  backgroundColor: heroVisualMode === '3d' ? 'var(--color-terracotta)' : '#FFFDF9',
-                  color: heroVisualMode === '3d' ? '#FFFFFF' : 'var(--color-coffee-dark)',
-                  boxShadow: heroVisualMode === '3d' ? 'none' : '0 1px 0 var(--color-card-bevel)',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                3D City Grid
-              </button>
-              <button
-                type="button"
-                onClick={() => setHeroVisualMode('cards')}
-                style={{
-                  padding: '0.25rem 0.65rem',
-                  borderRadius: '6px',
-                  fontSize: '0.74rem',
-                  fontWeight: 700,
-                  border: '1px solid var(--color-soft-border)',
-                  backgroundColor: heroVisualMode === 'cards' ? 'var(--color-terracotta)' : '#FFFDF9',
-                  color: heroVisualMode === 'cards' ? '#FFFFFF' : 'var(--color-coffee-dark)',
-                  boxShadow: heroVisualMode === 'cards' ? 'none' : '0 1px 0 var(--color-card-bevel)',
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                Dual Cards
-              </button>
             </div>
 
-            {/* 3D Canvas View with Suspense (Desktop/Tablet) */}
-            {heroVisualMode === '3d' ? (
-              <div className="hero-3d-wrapper">
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        height: '420px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: '#FFFDF9',
-                        borderRadius: 'var(--radius-card)',
-                        border: '1px solid var(--color-soft-border)',
-                        color: 'var(--color-muted-slate)',
-                        fontSize: '0.85rem',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Loading 3D City Grid...
-                    </div>
-                  }
-                >
-                  <Hero3DCanvas />
-                </Suspense>
-              </div>
-            ) : null}
+            {/* 12-min Circle Connector */}
+            <div className="hero-circle-connector" title="Average transit interval">
+              <span className="num">12</span>
+              <span className="unit">mins</span>
+            </div>
 
-            {/* Fallback Static Tactile Dual Cards (Shown when selected OR on mobile <480px) */}
-            <div
-              className={`hero-cards-stack ${heroVisualMode === 'cards' ? 'active-cards' : 'fallback-cards'}`}
-            >
-              {/* Donor Card */}
-              <div className="hero-card-donor">
-                <div className="hero-card-label" style={{ color: '#1F6F43' }}>
-                  DONOR &bull; SAMPLE DATA
-                </div>
-                <h3 className="hero-card-title">
-                  Metro Bistro &amp; Bakery
-                </h3>
-                <p className="hero-card-desc">
-                  45 fresh hot meals: rice, dal, veggies
-                </p>
-                <span
-                  className="hero-card-pill"
-                  style={{
-                    backgroundColor: 'var(--color-mustard)',
-                    color: 'var(--color-deep-forest)',
-                  }}
-                >
-                  Hot holding
-                </span>
+            {/* Shelter Card */}
+            <div className="hero-card-shelter">
+              <div className="hero-card-label" style={{ color: '#C44824' }}>
+                SHELTER &bull; 2.4 KM
               </div>
-
-              {/* 12-min Circle Connector */}
-              <div className="hero-circle-connector" title="Average transit interval">
-                <span className="num">12</span>
-                <span className="unit">mins</span>
-              </div>
-
-              {/* Shelter Card */}
-              <div className="hero-card-shelter">
-                <div className="hero-card-label" style={{ color: '#C44824' }}>
-                  SHELTER &bull; 2.4 KM
-                </div>
-                <h3 className="hero-card-title">
-                  Hope Shelter Community Kitchen
-                </h3>
-                <p className="hero-card-desc">
-                  Needs 50 meals for evening dinner intake
-                </p>
-                <span
-                  className="hero-card-pill"
-                  style={{
-                    backgroundColor: 'var(--color-soft-mint)',
-                    color: 'var(--color-network-green)',
-                  }}
-                >
-                  Approved by coordinator
-                </span>
-              </div>
+              <h3 className="hero-card-title">
+                Hope Shelter Community Kitchen
+              </h3>
+              <p className="hero-card-desc">
+                Needs 50 meals for evening dinner intake
+              </p>
+              <span
+                className="hero-card-pill"
+                style={{
+                  backgroundColor: 'var(--color-soft-mint)',
+                  color: 'var(--color-network-green)',
+                }}
+              >
+                Approved by coordinator
+              </span>
             </div>
           </div>
         </div>
