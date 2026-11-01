@@ -141,7 +141,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                         ? 'Open Donor Portal'
                         : 'Open NGO Demands'}
                     </span>
-                    <ArrowRight size={18} />
                   </button>
 
                   <button
@@ -158,7 +157,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     className="btn-terracotta"
                   >
                     <span>Open Allocation Desk</span>
-                    <ArrowRight size={18} />
                   </button>
 
                   <button
@@ -172,11 +170,11 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             </div>
           </div>
 
-          {/* RIGHT: Direction 3 Tactile Dual Cards with Center 12-min Connector Badge */}
+          {/* RIGHT: Direction 3 Tactile Dual Cards with Iconic Green Dome Arch */}
           <div className="hero-cards-stack">
-            {/* Donor Card */}
+            {/* Donor Card (Tilted slightly counter-clockwise) */}
             <div className="hero-card-donor">
-              <div className="hero-card-label" style={{ color: '#1F6F43' }}>
+              <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
                 DONOR &bull; SAMPLE DATA
               </div>
               <h3 className="hero-card-title">
@@ -188,40 +186,44 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               <span
                 className="hero-card-pill"
                 style={{
-                  backgroundColor: 'var(--color-mustard)',
-                  color: 'var(--color-deep-forest)',
+                  backgroundColor: 'var(--color-mustard, #F2A33A)',
+                  color: 'var(--color-coffee-dark, #2C221E)',
+                  fontWeight: 700,
                 }}
               >
                 Hot holding
               </span>
             </div>
 
-            {/* 12-min Circle Connector */}
-            <div className="hero-circle-connector" title="Average transit interval">
-              <span className="num">12</span>
-              <span className="unit">mins</span>
-            </div>
-
-            {/* Shelter Card */}
-            <div className="hero-card-shelter">
-              <div className="hero-card-label" style={{ color: '#C44824' }}>
-                SHELTER &bull; 2.4 KM
+            {/* Shelter Card Wrapper with Peeking Green Arch */}
+            <div className="hero-shelter-wrapper">
+              {/* Semi-circular Green Dome Archway with 12 */}
+              <div className="hero-arch-connector" title="Average transit interval">
+                <span className="hero-arch-num">12</span>
               </div>
-              <h3 className="hero-card-title">
-                Hope Shelter Community Kitchen
-              </h3>
-              <p className="hero-card-desc">
-                Needs 50 meals for evening dinner intake
-              </p>
-              <span
-                className="hero-card-pill"
-                style={{
-                  backgroundColor: 'var(--color-soft-mint)',
-                  color: 'var(--color-network-green)',
-                }}
-              >
-                Approved by coordinator
-              </span>
+
+              {/* Shelter Card (Tilted slightly clockwise, sits in front of arch) */}
+              <div className="hero-card-shelter">
+                <div className="hero-card-label" style={{ color: '#C44824', letterSpacing: '0.08em' }}>
+                  SHELTER &bull; 2.4 KM
+                </div>
+                <h3 className="hero-card-title">
+                  Hope Shelter Community Kitchen
+                </h3>
+                <p className="hero-card-desc">
+                  Needs 50 meals for evening dinner intake
+                </p>
+                <span
+                  className="hero-card-pill"
+                  style={{
+                    backgroundColor: 'var(--color-soft-mint, #E3F2E7)',
+                    color: 'var(--color-network-green, #1F6F43)',
+                    fontWeight: 700,
+                  }}
+                >
+                  Approved by coordinator
+                </span>
+              </div>
             </div>
           </div>
         </div>

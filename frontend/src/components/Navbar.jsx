@@ -95,6 +95,33 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
         {/* Right Section: Desktop Auth & Mobile Controls (Far Right) */}
         <div className="navbar-right-cluster">
+          {/* Landing Page Role Pills - Exact Match to Bhojan Bandhu Reference Design */}
+          {activeTab === 'landing' && (
+            <div className="landing-role-pills-group">
+              <button
+                type="button"
+                onClick={() => handleNavClick('donor')}
+                className="nav-role-pill"
+              >
+                Donors
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavClick('ngo')}
+                className="nav-role-pill"
+              >
+                NGOs
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavClick('coordinator')}
+                className="nav-role-pill"
+              >
+                Coordinators
+              </button>
+            </div>
+          )}
+
           {/* Desktop Auth Section */}
           <div className="desktop-auth-cluster">
             {isAuthenticated ? (
@@ -294,7 +321,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   </div>
                 )}
               </div>
-            ) : (
+            ) : activeTab !== 'landing' ? (
               <button
                 onClick={onOpenAuth}
                 className="btn-tactile-secondary"
@@ -306,7 +333,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
               >
                 Sign In / Register
               </button>
-            )}
+            ) : null}
           </div>
 
           {/* Quick Mobile User Badge (Only shown on mobile <=860px when logged in) */}
