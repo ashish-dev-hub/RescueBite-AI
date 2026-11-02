@@ -284,10 +284,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
         {/* Real Single Listing Timeline Card */}
         <div className="timeline-bhojan-container">
-          <div className="timeline-meta-bar">
-            <span className="meta-corridor">CASE AUDIT #RB-DEL-4091 &bull; CONNAUGHT PLACE TO PAHAR GANJ</span>
-            <span className="meta-status">Status: Verified Delivered (Sample data)</span>
-          </div>
 
           <div className="timeline-step-grid">
             <div className="timeline-step-node">

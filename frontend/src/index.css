@@ -1752,7 +1752,7 @@ input::-ms-clear {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
-  padding-top: 1.5rem;
+  padding-top: 0;
 }
 
 .timeline-step-node {
