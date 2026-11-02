@@ -271,9 +271,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
       {/* REAL LISTING LIFECYCLE TIMELINE */}
       <section className="section-bhojan-wrapper">
         <div className="section-bhojan-header">
-          <div className="section-bhojan-tag">
-            Lifecycle Audit &bull; Grounded Operations
-          </div>
           <h2 className="section-bhojan-title">
             The Path of One Listing
           </h2>
