@@ -714,7 +714,7 @@ export default function CoordinatorDesk() {
           </div>
 
           <div className="data-table-wrapper">
-            <table className="data-table">
+            <table className="data-table data-table-stacked-mobile">
               <thead>
                 <tr>
                   <th>Food Item & Donor</th>
@@ -735,13 +735,13 @@ export default function CoordinatorDesk() {
                 ) : (
                   allocations.map((alloc) => (
                     <tr key={alloc._id}>
-                      <td>
+                      <td data-label="Food & Donor">
                         <strong>{alloc.donationId?.foodName || 'Donation Item'}</strong>
                         <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
                           {alloc.donationId?.donorOrg || alloc.donationId?.donorName}
                         </p>
                       </td>
-                      <td>
+                      <td data-label="Recipient NGO">
                         <strong>{alloc.ngoId?.name || 'NGO'}</strong>
                         <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
                           {alloc.ngoId?.organization}
@@ -752,7 +752,7 @@ export default function CoordinatorDesk() {
                           {alloc.approvedMeals} meals
                         </strong>
                       </td>
-                      <td>
+                      <td data-label="Status">
                         <StatusBadge status={alloc.status} />
                       </td>
                       <td style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
