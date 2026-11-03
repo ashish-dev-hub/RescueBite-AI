@@ -116,9 +116,14 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         <div className="hero-bhojan-grid">
           {/* LEFT: Engaging Value Story & CTAs (Faithful to Reference Design) */}
           <div className="hero-text-content">
+            <div className="hero-category-kicker">
+              <span className="kicker-pulse-dot"></span>
+              Civic Food Redistribution Network
+            </div>
+
             <h1 className="hero-bhojan-headline">
-              Good food.<br />
-              Better routes.<br />
+              <span className="headline-lead-line">Good food.</span>
+              <span className="headline-lead-line">Better routes.</span>
               <span className="hero-bhojan-accent">Stronger communities.</span>
             </h1>
 
@@ -160,10 +165,10 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </button>
 
                   <button
-                    onClick={onOpenAuth}
+                    onClick={() => onOpenAuth('register')}
                     className="btn-tactile-secondary"
                   >
-                    <span>Sign in</span>
+                    <span>Register as Partner</span>
                   </button>
                 </>
               )}
@@ -196,14 +201,15 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             {/* Shelter Card Wrapper with Peeking Green Arch */}
             <div className="hero-shelter-wrapper">
               {/* Semi-circular Green Dome Archway with 12 */}
-              <div className="hero-arch-connector" title="Average transit interval">
+              <div className="hero-arch-connector" title="Average 12-minute transit between donor and recipient shelter">
                 <span className="hero-arch-num">12</span>
+                <span className="hero-arch-unit">MINS</span>
               </div>
 
               {/* Shelter Card (Tilted slightly clockwise, sits in front of arch) */}
               <div className="hero-card-shelter">
-                <div className="hero-card-label" style={{ color: '#C44824', letterSpacing: '0.08em' }}>
-                  SHELTER &bull; 2.4 KM
+                <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
+                  RECIPIENT SHELTER &bull; 2.4 KM
                 </div>
                 <h2 className="hero-card-title">Hope Shelter Community Kitchen</h2>
                 <p className="hero-card-desc">
