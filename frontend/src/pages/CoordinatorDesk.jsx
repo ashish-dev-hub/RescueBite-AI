@@ -18,6 +18,8 @@ import {
 export default function CoordinatorDesk() {
   const [recommendations, setRecommendations] = useState([]);
   const [allocations, setAllocations] = useState([]);
+  const [donations, setDonations] = useState([]);
+  const [demands, setDemands] = useState([]);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [approvedQty, setApprovedQty] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -28,14 +30,18 @@ export default function CoordinatorDesk() {
   const fetchDeskData = async () => {
     setLoading(true);
     try {
-      const [recData, allocData] = await Promise.all([
+      const [recData, allocData, donData, demData] = await Promise.all([
         api.getRecommendations(),
         api.getAllocations(),
+        api.getDonations(),
+        api.getDemands(),
       ]);
 
       const recs = recData.recommendations || [];
       setRecommendations(recs);
       setAllocations(allocData.allocations || []);
+      setDonations(donData.donations || []);
+      setDemands(demData.demands || []);
 
       if (recs.length > 0) {
         setSelectedMatch(recs[0]);
@@ -143,6 +149,18 @@ export default function CoordinatorDesk() {
               className={`desk-tab-btn ${activeTab === 'lifecycle' ? 'active' : ''}`}
             >
               Active Allocations ({allocations.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('donations')}
+              className={`desk-tab-btn ${activeTab === 'donations' ? 'active' : ''}`}
+            >
+              All Donor Listings ({donations.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('demands')}
+              className={`desk-tab-btn ${activeTab === 'demands' ? 'active' : ''}`}
+            >
+              All NGO Demands ({demands.length})
             </button>
           </div>
 
@@ -794,6 +812,171 @@ export default function CoordinatorDesk() {
                             </span>
                           )}
                         </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* All Donor Surplus Listings Table View */}
+      {activeTab === 'donations' && (
+        <div className="fresh-card">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '1rem',
+          }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>Master Surplus Food Listings ({donations.length})</h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+                Inspect all declared food surplus from commercial kitchens, hotels, and bakeries across the city.
+              </p>
+            </div>
+          </div>
+
+          <div className="data-table-wrapper">
+            <table className="data-table data-table-stacked-mobile">
+              <thead>
+                <tr>
+                  <th>Food Item & Category</th>
+                  <th>Donor Organization</th>
+                  <th>Quantity & Remaining</th>
+                  <th>Storage Protocol</th>
+                  <th>Pickup Deadline</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {donations.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>
+                      No donor listings declared yet.
+                    </td>
+                  </tr>
+                ) : (
+                  donations.map((don) => (
+                    <tr key={don._id}>
+                      <td data-label="Food Item">
+                        <strong>{don.foodName}</strong>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+                          {don.category}
+                        </p>
+                      </td>
+                      <td data-label="Donor">
+                        <strong>{don.donorOrg || don.donorName}</strong>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+                          {don.location?.address || don.location?.city || 'City Center'}
+                        </p>
+                      </td>
+                      <td data-label="Quantity">
+                        <strong style={{ color: 'var(--color-network-green)' }}>
+                          {don.remainingQuantity} / {don.quantityMeals} meals
+                        </strong>
+                      </td>
+                      <td data-label="Storage">
+                        <span style={{ fontSize: '0.8rem', color: 'var(--color-deep-forest)' }}>
+                          {don.storageInfo}
+                        </span>
+                      </td>
+                      <td data-label="Deadline" style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+                        {new Date(don.pickupDeadline).toLocaleDateString()} {new Date(don.pickupDeadline).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </td>
+                      <td data-label="Status">
+                        <StatusBadge status={don.status} />
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* All NGO Demands Table View */}
+      {activeTab === 'demands' && (
+        <div className="fresh-card">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '1rem',
+          }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>Master NGO Meal Demands ({demands.length})</h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+                Inspect all verified meal intake requests from shelters, community kitchens, and relief groups.
+              </p>
+            </div>
+          </div>
+
+          <div className="data-table-wrapper">
+            <table className="data-table data-table-stacked-mobile">
+              <thead>
+                <tr>
+                  <th>Recipient NGO</th>
+                  <th>Location</th>
+                  <th>Meals Needed & Fulfilled</th>
+                  <th>Beneficiaries</th>
+                  <th>Needed By</th>
+                  <th>Urgency</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {demands.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>
+                      No NGO meal demands logged yet.
+                    </td>
+                  </tr>
+                ) : (
+                  demands.map((dem) => (
+                    <tr key={dem._id}>
+                      <td data-label="Recipient NGO">
+                        <strong>{dem.ngoName || dem.ngoId?.name || 'Community Shelter'}</strong>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+                          {dem.notes || 'Evening intake quota'}
+                        </p>
+                      </td>
+                      <td data-label="Location">
+                        <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+                          {dem.location?.address || dem.location?.city || 'East Ward'}
+                        </span>
+                      </td>
+                      <td data-label="Meals">
+                        <strong style={{ color: 'var(--color-network-green)' }}>
+                          {dem.fulfilledMeals || 0} / {dem.requestedMeals} meals
+                        </strong>
+                      </td>
+                      <td data-label="Beneficiaries">
+                        <span style={{ fontSize: '0.82rem' }}>
+                          {dem.beneficiaryCount || dem.requestedMeals} people
+                        </span>
+                      </td>
+                      <td data-label="Needed By" style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+                        {new Date(dem.neededBy).toLocaleDateString()} {new Date(dem.neededBy).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </td>
+                      <td data-label="Urgency">
+                        <span style={{
+                          fontSize: '0.74rem',
+                          fontWeight: 700,
+                          padding: '0.15rem 0.5rem',
+                          borderRadius: '4px',
+                          textTransform: 'uppercase',
+                          backgroundColor: dem.urgency === 'critical' ? '#FEE2E2' : dem.urgency === 'urgent' ? '#FEF3C7' : '#EAF5F0',
+                          color: dem.urgency === 'critical' ? '#991B1B' : dem.urgency === 'urgent' ? '#92400E' : '#1F6F43',
+                        }}>
+                          {dem.urgency || 'standard'}
+                        </span>
+                      </td>
+                      <td data-label="Status">
+                        <StatusBadge status={dem.status} />
                       </td>
                     </tr>
                   ))

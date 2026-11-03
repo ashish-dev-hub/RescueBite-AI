@@ -48,7 +48,7 @@ export default function DonorDashboard() {
   const fetchMyDonations = async () => {
     setLoading(true);
     try {
-      const data = await api.getDonations({ ownOnly: 'true' });
+      const data = await api.getDonations(user?.role === 'coordinator' ? {} : { ownOnly: 'true' });
       setDonations(data.donations || []);
 
       // Fetch Model C AI Supply Forecast for tomorrow
