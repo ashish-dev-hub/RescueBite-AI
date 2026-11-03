@@ -13,7 +13,7 @@
   --color-soft-mint-border: #C8E2D1;
   --color-warm-ivory: #FAF4EB;
   --color-paper-white: #FFFFFF;
-  --color-muted-slate: #685B52;
+  --color-muted-slate: #42342B;
   --color-dark-slate: #2C221E;
   --color-soft-border: #E5DBC5;
   --color-pale-neutral: #F5EFE3;
@@ -1653,7 +1653,8 @@ input::-ms-clear {
 
 .hero-card-desc {
   font-size: 0.92rem;
-  color: var(--color-muted-slate, #685B52);
+  color: #2C221E;
+  font-weight: 500;
   margin-bottom: 0.95rem;
   line-height: 1.45;
 }
@@ -1815,7 +1816,8 @@ input::-ms-clear {
 
 .section-bhojan-sub {
   font-size: clamp(0.95rem, 1.2vw, 1.05rem);
-  color: var(--color-muted-slate, #685B52);
+  color: #2C221E;
+  font-weight: 500;
   line-height: 1.6;
   margin: 0;
   max-width: 680px;
@@ -1865,12 +1867,13 @@ input::-ms-clear {
 }
 
 .timeline-step-node {
-  background-color: #FAF4EB;
-  border: 1px solid #E5DBC5;
+  background-color: #FFFDF9;
+  border: 1px solid #DFD3BC;
   border-radius: 16px;
-  padding: 1.25rem 1.1rem;
+  padding: 1.25rem 1.15rem;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 0 #E3D7C1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
@@ -1911,10 +1914,16 @@ input::-ms-clear {
 }
 
 .t-node-body {
-  font-size: 0.85rem;
-  color: #685B52;
-  line-height: 1.5;
+  font-size: 0.92rem;
+  color: #2C221E;
+  font-weight: 500;
+  line-height: 1.55;
   margin: 0;
+}
+
+.t-node-body strong {
+  color: #175433;
+  font-weight: 700;
 }
 
 /* Explainable Matching Breakdown Card */
@@ -1945,8 +1954,9 @@ input::-ms-clear {
 }
 
 .score-card-sub {
-  font-size: 0.86rem;
-  color: #685B52;
+  font-size: 0.92rem;
+  color: #2C221E;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -2015,13 +2025,14 @@ input::-ms-clear {
 }
 
 .legend-col {
-  background-color: #FAF4EB;
-  border: 1px solid #E5DBC5;
+  background-color: #FFFDF9;
+  border: 1px solid #DFD3BC;
   border-radius: 14px;
   padding: 1rem 1.1rem;
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
+  box-shadow: 0 2px 0 #E3D7C1;
   box-sizing: border-box;
 }
 
@@ -2046,10 +2057,11 @@ input::-ms-clear {
 }
 
 .legend-col p {
-  font-size: 0.8rem;
-  color: #685B52;
-  line-height: 1.45;
+  font-size: 0.86rem;
+  color: #2C221E;
+  font-weight: 500;
   margin: 0;
+  line-height: 1.5;
 }
 
 /* Role Segmented Navigation Buttons */
@@ -2199,7 +2211,7 @@ input::-ms-clear {
 .table-scroll-hint {
   display: none;
   background-color: var(--color-warm-bg, #FAF4EB);
-  color: var(--color-muted-slate, #685B52);
+  color: #2C221E;
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.5rem 0.75rem;
@@ -2254,7 +2266,7 @@ input::-ms-clear {
     content: attr(data-label);
     font-weight: 700;
     font-size: 0.78rem;
-    color: var(--color-muted-slate, #685B52);
+    color: #2C221E;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-right: 0.75rem;
