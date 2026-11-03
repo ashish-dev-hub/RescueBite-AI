@@ -116,10 +116,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         <div className="hero-bhojan-grid">
           {/* LEFT: Engaging Value Story & CTAs (Faithful to Reference Design) */}
           <div className="hero-text-content">
-            <div className="hero-category-kicker">
-              <span className="kicker-pulse-dot"></span>
-              Civic Food Redistribution Network
-            </div>
 
             <h1 className="hero-bhojan-headline">
               <span className="headline-lead-line">Good food.</span>
