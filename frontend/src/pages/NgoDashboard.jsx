@@ -56,8 +56,9 @@ export default function NgoDashboard() {
   const fetchNgoData = async () => {
     setLoading(true);
     try {
+      const demandsPromise = user?.role === 'coordinator' ? api.getDemands() : api.getMyDemands();
       const [demandData, allocData] = await Promise.all([
-        api.getMyDemands(),
+        demandsPromise,
         api.getAllocations(),
       ]);
       setDemands(demandData.demands || []);
