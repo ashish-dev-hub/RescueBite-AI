@@ -195,7 +195,8 @@ export default function CoordinatorDesk() {
         </div>
       )}
 
-      {activeTab === 'desk' ? (
+      {/* 1. MATCH DESK 3-COLUMN VIEW */}
+      {activeTab === 'desk' && (
         /* The 3-Column Allocation Desk Layout */
         <div className="allocation-desk-grid">
           {/* Column 1: Prioritized Recommendation Queue */}
@@ -714,8 +715,10 @@ export default function CoordinatorDesk() {
             )}
           </div>
         </div>
-      ) : (
-        /* Allocation Lifecycle Table View */
+      )}
+
+      {/* 2. ALLOCATION LIFECYCLE TABLE VIEW */}
+      {activeTab === 'lifecycle' && (
         <div className="fresh-card">
           <div style={{
             display: 'flex',
