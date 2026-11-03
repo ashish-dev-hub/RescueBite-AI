@@ -28,6 +28,17 @@ const getFutureDateTime = (hoursFromNow = 4) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
+const DIETARY_OPTIONS = [
+  'Vegetarian',
+  'Vegan',
+  'Halal',
+  'Jain',
+  'Gluten-Free',
+  'Nut-Free',
+  'Dairy-Free',
+  'No Restrictions',
+];
+
 export default function NgoDashboard() {
   const { user } = useAuth();
   const [demands, setDemands] = useState([]);
@@ -41,6 +52,8 @@ export default function NgoDashboard() {
   // Demand form state
   const [requestedMeals, setRequestedMeals] = useState('');
   const [beneficiaryCount, setBeneficiaryCount] = useState('');
+  const [receivingCapacity, setReceivingCapacity] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
   const [neededBy, setNeededBy] = useState(() => getFutureDateTime(4));
   const [urgency, setUrgency] = useState('standard');
   const [notes, setNotes] = useState('');
@@ -52,6 +65,18 @@ export default function NgoDashboard() {
 
   // Demand detail modal state
   const [selectedDemand, setSelectedDemand] = useState(null);
+
+  const toggleDietaryPref = (pref) => {
+    setDietaryPrefs((prev) => {
+      if (pref === 'No Restrictions') {
+        return prev.includes('No Restrictions') ? [] : ['No Restrictions'];
+      }
+      const filtered = prev.filter((p) => p !== 'No Restrictions');
+      return filtered.includes(pref)
+        ? filtered.filter((p) => p !== pref)
+        : [...filtered, pref];
+    });
+  };
 
   const fetchNgoData = async () => {
     setLoading(true);
@@ -89,6 +114,12 @@ export default function NgoDashboard() {
     if (!neededBy) {
       setNeededBy(getFutureDateTime(4));
     }
+    if (!deliveryAddress && user?.location?.address) {
+      setDeliveryAddress(user.location.address);
+    }
+    if (!receivingCapacity && user?.receivingCapacity) {
+      setReceivingCapacity(String(user.receivingCapacity));
+    }
     setIsModalOpen(true);
   };
 
@@ -109,15 +140,27 @@ export default function NgoDashboard() {
         ? new Date(Date.now() + 4 * 3600 * 1000).toISOString()
         : parsedDate.toISOString();
 
+      const meals = parseInt(requestedMeals, 10);
+      const beneficiaries = parseInt(beneficiaryCount, 10);
+      const capInput = parseInt(receivingCapacity, 10);
+      const safeCapacity = (!isNaN(capInput) && capInput > 0)
+        ? capInput
+        : (user?.receivingCapacity || meals || 1);
+
       await api.createDemand({
-        requestedMeals: parseInt(requestedMeals, 10),
-        beneficiaryCount: parseInt(beneficiaryCount, 10),
+        requestedMeals: meals,
+        beneficiaryCount: beneficiaries,
         neededBy: safeNeededByIso,
-        receivingCapacity: user?.receivingCapacity || parseInt(requestedMeals, 10) || 0,
+        receivingCapacity: safeCapacity,
         urgency,
         notes,
         dietaryPreferences: dietaryPrefs,
-        location: user?.location || { address: 'NGO Shelter Location' },
+        location: {
+          address: (deliveryAddress && deliveryAddress.trim()) || user?.location?.address || 'NGO Shelter Kitchen',
+          city: user?.location?.city || '',
+          zip: user?.location?.zip || '',
+          coordinates: user?.location?.coordinates || { lat: 0, lng: 0 },
+        },
       });
 
       setNotification({
@@ -128,6 +171,9 @@ export default function NgoDashboard() {
       setIsModalOpen(false);
       setRequestedMeals('');
       setBeneficiaryCount('');
+      setReceivingCapacity(user?.receivingCapacity ? String(user.receivingCapacity) : '');
+      setDeliveryAddress(user?.location?.address || '');
+      setDietaryPrefs([]);
       setNeededBy(getFutureDateTime(4));
       setNotes('');
 
@@ -334,7 +380,18 @@ export default function NgoDashboard() {
           </div>
           <button
             onClick={() => {
-              setRequestedMeals(String(Math.round(aiForecast.predicted_meals)));
+              const predicted = Math.round(aiForecast.predicted_meals);
+              setRequestedMeals(String(predicted));
+              setBeneficiaryCount(String(predicted));
+              if (user?.receivingCapacity) {
+                setReceivingCapacity(String(user.receivingCapacity));
+              }
+              if (user?.location?.address) {
+                setDeliveryAddress(user.location.address);
+              }
+              if (!neededBy) {
+                setNeededBy(getFutureDateTime(4));
+              }
               setIsModalOpen(true);
             }}
             className="btn btn-primary btn-sm"
@@ -662,11 +719,12 @@ export default function NgoDashboard() {
         onClose={() => setIsModalOpen(false)}
         title="Submit Meal Demand Request"
         subtitle="Let coordinators and the matching engine find surplus food for your kitchen"
-        maxWidth="540px"
+        maxWidth="580px"
       >
-        <form onSubmit={handleCreateDemand}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+        <form onSubmit={handleCreateDemand} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {/* Row 1: Meals Needed & Beneficiary Count */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '0.85rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Meals Needed *</label>
               <input
                 type="number"
@@ -679,7 +737,7 @@ export default function NgoDashboard() {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Beneficiary Headcount *</label>
               <input
                 type="number"
@@ -693,68 +751,27 @@ export default function NgoDashboard() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+          {/* Row 2: Receiving Capacity & Urgency */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '0.85rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                <label className="form-label" style={{ marginBottom: 0 }}>Needed By (Deadline) *</label>
-                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Date & Time</span>
+                <label className="form-label" style={{ marginBottom: 0 }}>Intake / Storage Capacity</label>
+                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Max meals</span>
               </div>
               <input
-                type="datetime-local"
-                required
+                type="number"
+                min="1"
                 className="form-input"
-                value={neededBy}
-                onChange={(e) => setNeededBy(e.target.value)}
-                onBlur={(e) => {
-                  const val = e.target.value;
-                  if (!val) {
-                    setNeededBy(getFutureDateTime(4));
-                  } else if (val.length === 10) {
-                    setNeededBy(`${val}T18:00`);
-                  }
-                }}
+                placeholder={user?.receivingCapacity ? `Shelter limit: ${user.receivingCapacity}` : 'e.g. 100'}
+                value={receivingCapacity}
+                onChange={(e) => setReceivingCapacity(e.target.value)}
               />
-              <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
-                {[
-                  { label: '+4 Hours', hours: 4 },
-                  { label: '+8 Hours', hours: 8 },
-                  { label: 'Tomorrow 12 PM', target: 'noon' },
-                  { label: 'Tomorrow 6 PM', target: 'evening' },
-                ].map((preset, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      if (preset.hours) {
-                        setNeededBy(getFutureDateTime(preset.hours));
-                      } else if (preset.target === 'noon') {
-                        const d = new Date(Date.now() + 86400000);
-                        const pad = (n) => String(n).padStart(2, '0');
-                        setNeededBy(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T12:00`);
-                      } else if (preset.target === 'evening') {
-                        const d = new Date(Date.now() + 86400000);
-                        const pad = (n) => String(n).padStart(2, '0');
-                        setNeededBy(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T18:00`);
-                      }
-                    }}
-                    style={{
-                      fontSize: '0.72rem',
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '4px',
-                      border: '1px solid var(--color-soft-border)',
-                      backgroundColor: '#F3F4F6',
-                      color: '#374151',
-                      cursor: 'pointer',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {preset.label}
-                  </button>
-                ))}
-              </div>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', display: 'block' }}>
+                Limits single batch size for coordinator dispatch checks
+              </span>
             </div>
 
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Urgency Level</label>
               <select
                 className="form-select"
@@ -765,21 +782,132 @@ export default function NgoDashboard() {
                 <option value="urgent">Urgent (Within 6 hours)</option>
                 <option value="critical">Critical Deficit</option>
               </select>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', display: 'block' }}>
+                Urgent requests are boosted in matching priority queue
+              </span>
             </div>
           </div>
 
-          <div className="form-group">
+          {/* Row 3: Needed By (Deadline) */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+              <label className="form-label" style={{ marginBottom: 0 }}>Needed By (Deadline) *</label>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Date & Time</span>
+            </div>
+            <input
+              type="datetime-local"
+              required
+              className="form-input"
+              value={neededBy}
+              onChange={(e) => setNeededBy(e.target.value)}
+              onBlur={(e) => {
+                const val = e.target.value;
+                if (!val) {
+                  setNeededBy(getFutureDateTime(4));
+                } else if (val.length === 10) {
+                  setNeededBy(`${val}T18:00`);
+                }
+              }}
+            />
+            <div style={{ display: 'flex', gap: '0.35rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
+              {[
+                { label: '+4 Hours', hours: 4 },
+                { label: '+8 Hours', hours: 8 },
+                { label: 'Tomorrow 12 PM', target: 'noon' },
+                { label: 'Tomorrow 6 PM', target: 'evening' },
+              ].map((preset, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    if (preset.hours) {
+                      setNeededBy(getFutureDateTime(preset.hours));
+                    } else if (preset.target === 'noon') {
+                      const d = new Date(Date.now() + 86400000);
+                      const pad = (n) => String(n).padStart(2, '0');
+                      setNeededBy(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T12:00`);
+                    } else if (preset.target === 'evening') {
+                      const d = new Date(Date.now() + 86400000);
+                      const pad = (n) => String(n).padStart(2, '0');
+                      setNeededBy(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T18:00`);
+                    }
+                  }}
+                  style={{
+                    fontSize: '0.72rem',
+                    padding: '0.25rem 0.55rem',
+                    borderRadius: '4px',
+                    border: '1px solid var(--color-soft-border)',
+                    backgroundColor: '#F3F4F6',
+                    color: '#374151',
+                    cursor: 'pointer',
+                    fontWeight: 500,
+                  }}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Row 4: Dietary Preferences */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+              <label className="form-label" style={{ marginBottom: 0 }}>Dietary Preferences & Restrictions</label>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Optional Filter</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+              {DIETARY_OPTIONS.map((tag) => {
+                const isSelected = dietaryPrefs.includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleDietaryPref(tag)}
+                    style={{
+                      padding: '0.3rem 0.65rem',
+                      borderRadius: 'var(--radius-btn-sm)',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      backgroundColor: isSelected ? 'var(--color-network-green)' : 'var(--color-pale-neutral)',
+                      color: isSelected ? '#FFFFFF' : 'var(--color-deep-forest)',
+                      border: `1px solid ${isSelected ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Row 5: Delivery / Drop-off Location */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label">Delivery / Drop-off Address</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder={user?.location?.address ? `Default: ${user.location.address}` : 'Enter destination shelter or drop-off address'}
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
+            />
+          </div>
+
+          {/* Row 6: Special Needs or Delivery Notes */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Special Needs or Delivery Notes</label>
             <textarea
               className="form-textarea"
               rows={2}
-              placeholder="e.g. Halal or vegetarian preferred; rear kitchen loading dock"
+              placeholder="e.g. Rear loading dock on 5th Ave, cold storage ready, phone kitchen supervisor on dispatch"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+          {/* Actions */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
@@ -928,6 +1056,15 @@ export default function NgoDashboard() {
                   })}
                 </strong>
               </div>
+
+              {selectedDemand.location?.address && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>Delivery Location</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-deep-forest)', textAlign: 'right', maxWidth: '65%' }}>
+                    {selectedDemand.location.address}
+                  </span>
+                </div>
+              )}
 
               {selectedDemand.receivingCapacity && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
