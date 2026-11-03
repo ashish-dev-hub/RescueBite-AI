@@ -17,6 +17,22 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
   const dropdownRef = useRef(null);
 
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setProfileDropdownOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setProfileDropdownOpen(false);
+  }, [activeTab]);
+
+  useEffect(() => {
     if (!profileDropdownOpen) return;
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -95,7 +111,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
         {/* Right Section: Desktop Auth & Mobile Controls (Far Right) */}
         <div className="navbar-right-cluster">
-          {/* Desktop Auth Section: Sign In & Register buttons when logged out */}
+          {/* Desktop Auth Section (Visible on screens >= 768px) */}
           <div className="desktop-auth-cluster">
             {isAuthenticated ? (
               <div ref={dropdownRef} style={{ position: 'relative' }}>
@@ -115,8 +131,10 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       fontWeight: 600,
                       cursor: 'pointer',
                       boxShadow: '0 2px 0 #E5DBC5',
+                      minHeight: '44px',
                     }}
                     aria-expanded={profileDropdownOpen}
+                    aria-label="Open profile menu"
                   >
                     {user?.avatar ? (
                       <img
@@ -173,6 +191,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   <button
                     onClick={handleLogout}
                     title="Log out"
+                    aria-label="Log out"
                     style={{
                       color: '#685B52',
                       padding: '0.45rem',
@@ -182,6 +201,9 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       border: '1px solid #E5DBC5',
                       backgroundColor: '#FFFDF9',
                       cursor: 'pointer',
+                      minWidth: '44px',
+                      minHeight: '44px',
+                      justifyContent: 'center',
                     }}
                   >
                     <LogOut size={16} />
@@ -325,6 +347,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                         marginBottom: '0.5rem',
                         border: 'none',
                         boxShadow: '0 3px 0 #155231',
+                        minHeight: '44px',
                       }}
                     >
                       Go to {rolePortalLabel}
@@ -350,6 +373,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                         justifyContent: 'center',
                         gap: '0.4rem',
                         boxShadow: '0 2px 0 #E5DBC5',
+                        minHeight: '44px',
                       }}
                     >
                       <LogOut size={15} />
@@ -369,6 +393,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                     fontSize: '0.85rem',
                     borderRadius: '12px',
                     fontWeight: 700,
+                    minHeight: '44px',
                   }}
                 >
                   Sign In
@@ -382,6 +407,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                     fontSize: '0.85rem',
                     borderRadius: '12px',
                     fontWeight: 700,
+                    minHeight: '44px',
                   }}
                 >
                   Register
@@ -390,39 +416,58 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
             )}
           </div>
 
-          {/* Quick Mobile User Badge (Only shown on mobile <=860px when logged in) */}
-          {isAuthenticated && (
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="mobile-profile-quick-btn"
-              title={user?.name || 'My Account'}
-              aria-label="Account menu"
-            >
-              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
-            </button>
-          )}
+          {/* Mobile Topbar Controls (< 768px): One primary action + Hamburger menu */}
+          <div className="mobile-topbar-action-cluster">
+            {!isAuthenticated ? (
+              <button
+                type="button"
+                onClick={() => onOpenAuth('login')}
+                className="btn-tactile-secondary mobile-topbar-signin-btn"
+                aria-label="Sign in"
+              >
+                Sign In
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="mobile-profile-quick-btn"
+                title={user?.name || 'My Account'}
+                aria-label="Account menu"
+              >
+                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+              </button>
+            )}
 
-          {/* Mobile Menu Hamburger (Only shown on mobile <=860px) */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="mobile-hamburger-btn"
-            aria-label="Toggle navigation menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="mobile-hamburger-btn"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Drawer (Only visible on small screens when hamburger is clicked) */}
+      {/* Mobile Drawer (Only visible on small screens < 768px when menu is open) */}
       {mobileMenuOpen && (
-        <div className="mobile-drawer-container">
+        <div
+          id="mobile-nav-drawer"
+          className="mobile-drawer-container"
+          role="region"
+          aria-label="Mobile Navigation Drawer"
+        >
           <div className="mobile-drawer-links">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
                 <button
                   key={item.id}
+                  type="button"
                   onClick={() => handleNavClick(item.id)}
                   className={`mobile-drawer-link ${isActive ? 'active' : ''}`}
                 >
@@ -437,7 +482,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
           {/* Mobile Auth in Drawer */}
           {isAuthenticated ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -448,8 +493,8 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                 border: '1px solid #E5DBC5',
               }}>
                 <div style={{
-                  width: '34px',
-                  height: '34px',
+                  width: '36px',
+                  height: '36px',
                   borderRadius: '50%',
                   backgroundColor: '#E3F2E7',
                   color: '#1F6F43',
@@ -458,14 +503,15 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                   justifyContent: 'center',
                   fontWeight: 800,
                   fontSize: '0.95rem',
+                  flexShrink: 0,
                 }}>
                   {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ margin: 0, fontWeight: 700, fontSize: '0.85rem', color: '#2C221E' }}>
+                  <p style={{ margin: 0, fontWeight: 700, fontSize: '0.85rem', color: '#2C221E', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {user?.name}
                   </p>
-                  <p style={{ margin: 0, fontSize: '0.72rem', color: '#685B52' }}>
+                  <p style={{ margin: 0, fontSize: '0.72rem', color: '#685B52', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {user?.email}
                   </p>
                 </div>
@@ -483,38 +529,43 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
               </div>
 
               <button
+                type="button"
                 onClick={() => handleNavClick(rolePortalId)}
-                className="btn btn-secondary btn-sm"
-                style={{ width: '100%', justifyContent: 'center' }}
+                className="btn btn-secondary mobile-drawer-btn"
               >
                 Go to {rolePortalLabel}
               </button>
 
               <button
+                type="button"
                 onClick={handleLogout}
-                className="btn btn-outline btn-sm"
-                style={{ width: '100%', justifyContent: 'center' }}
+                className="btn btn-outline mobile-drawer-btn"
               >
-                <LogOut size={14} />
+                <LogOut size={16} />
                 <span>Log Out</span>
               </button>
             </div>
           ) : (
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               <button
+                type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenAuth();
+                  onOpenAuth('login');
                 }}
-                className="btn btn-primary"
-                style={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  padding: '0.75rem 1rem',
-                  fontSize: '0.92rem',
-                }}
+                className="btn-tactile-secondary mobile-drawer-btn"
               >
-                <span>Sign In / Register</span>
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAuth('register');
+                }}
+                className="btn-terracotta mobile-drawer-btn"
+              >
+                <span>Register as Partner</span>
                 <ArrowRight size={16} />
               </button>
             </div>

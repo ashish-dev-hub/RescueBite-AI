@@ -85,6 +85,7 @@ export default function ImpactPage() {
           disabled={loading}
           className="btn btn-outline btn-sm"
           title="Refresh Metrics"
+          style={{ minHeight: '44px', padding: '0.55rem 1.15rem' }}
         >
           <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           <span>Refresh Data</span>
@@ -190,6 +191,9 @@ export default function ImpactPage() {
         </h3>
 
         <div className="data-table-wrapper">
+          <div className="table-scroll-hint">
+            <span>&larr; Swipe horizontally to view full audit ledger &rarr;</span>
+          </div>
           <table className="data-table">
             <thead>
               <tr>

@@ -53,8 +53,10 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, maxW
             className="btn-outline btn-sm"
             style={{
               borderRadius: '8px',
-              width: '32px',
-              height: '32px',
+              minWidth: '44px',
+              minHeight: '44px',
+              width: '44px',
+              height: '44px',
               padding: 0,
               display: 'flex',
               alignItems: 'center',

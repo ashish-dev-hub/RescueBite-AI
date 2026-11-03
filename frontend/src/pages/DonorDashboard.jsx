@@ -404,7 +404,7 @@ export default function DonorDashboard() {
           </div>
         ) : (
           <div className="data-table-wrapper">
-            <table className="data-table">
+            <table className="data-table data-table-stacked-mobile">
               <thead>
                 <tr>
                   <th>Food Item</th>
@@ -457,7 +457,7 @@ export default function DonorDashboard() {
                           {item.storageInfo}
                         </span>
                       </td>
-                      <td>
+                      <td data-label="Pickup Deadline">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                           {isExpiringSoon && <AlertTriangle size={14} color="var(--color-harvest-coral)" />}
                           <span style={{
@@ -469,10 +469,10 @@ export default function DonorDashboard() {
                           </span>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Status">
                         <StatusBadge status={item.status} />
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         {['available', 'reserved'].includes(item.status) ? (
                           <button
                             onClick={() => handleCancelDonation(item._id)}
@@ -519,7 +519,7 @@ export default function DonorDashboard() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-row-2col">
             <div className="form-group">
               <label className="form-label">Food Category *</label>
               <select
@@ -550,7 +550,7 @@ export default function DonorDashboard() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-row-2col">
             <div className="form-group">
               <label className="form-label">Storage Requirement *</label>
               <select

@@ -177,9 +177,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
                 DONOR &bull; SAMPLE DATA
               </div>
-              <h3 className="hero-card-title">
-                Metro Bistro &amp; Bakery
-              </h3>
+              <h2 className="hero-card-title">Metro Bistro &amp; Bakery</h2>
               <p className="hero-card-desc">
                 45 fresh hot meals: rice, dal, veggies
               </p>
@@ -207,9 +205,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                 <div className="hero-card-label" style={{ color: '#C44824', letterSpacing: '0.08em' }}>
                   SHELTER &bull; 2.4 KM
                 </div>
-                <h3 className="hero-card-title">
-                  Hope Shelter Community Kitchen
-                </h3>
+                <h2 className="hero-card-title">Hope Shelter Community Kitchen</h2>
                 <p className="hero-card-desc">
                   Needs 50 meals for evening dinner intake
                 </p>
@@ -350,7 +346,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               <span className="seg-label">25% Urgency</span>
             </div>
             <div className="seg-proximity" style={{ width: '20%' }} title="Proximity: 20%">
-              <span className="seg-label">20% Proximity</span>
+              <span className="seg-label" style={{ color: "#2C221E" }}>20% Proximity</span>
             </div>
             <div className="seg-storage" style={{ width: '20%' }} title="Storage Protocol: 20%">
               <span className="seg-label">20% Storage</span>
@@ -795,7 +791,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         </div>
 
         {/* Volume Selectors */}
-        <div style={{ display: 'flex', gap: '0.65rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+        <div className="estimator-presets-grid">
           {[25, 50, 100, 250, 500].map((meals) => (
             <button
               key={meals}
@@ -928,7 +924,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
       </section>
 
       {/* GROUNDED INDIAN COMMUNITY TESTIMONIAL BANNER */}
-      <section style={{
+      <section className="testimonial-bhojan-banner" style={{
         backgroundColor: '#193C30',
         color: '#FFFFFF',
         borderRadius: 'var(--radius-card)',

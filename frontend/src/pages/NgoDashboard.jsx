@@ -574,7 +574,7 @@ export default function NgoDashboard() {
           </div>
         ) : (
           <div className="data-table-wrapper">
-            <table className="data-table">
+            <table className="data-table data-table-stacked-mobile">
               <thead>
                 <tr>
                   <th>Needed By</th>
@@ -589,17 +589,17 @@ export default function NgoDashboard() {
               <tbody>
                 {demands.map((demand) => (
                   <tr key={demand._id}>
-                    <td>
+                    <td data-label="Needed By">
                       <strong style={{ fontSize: '0.88rem' }}>
                         {new Date(demand.neededBy).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </strong>
                     </td>
-                    <td>
+                    <td data-label="Requested">
                       <strong style={{ color: 'var(--color-deep-forest)' }}>
                         {demand.requestedMeals} meals
                       </strong>
                     </td>
-                    <td>
+                    <td data-label="Fulfilled">
                       <span style={{
                         color: demand.fulfilledMeals > 0 ? 'var(--color-network-green)' : 'var(--color-muted-slate)',
                         fontWeight: 700,
@@ -607,29 +607,20 @@ export default function NgoDashboard() {
                         {demand.fulfilledMeals} meals
                       </span>
                     </td>
-                    <td>{demand.beneficiaryCount} people</td>
-                    <td>
-                      <span
-                        onClick={() => setSelectedDemand(demand)}
-                        style={{ cursor: 'pointer', display: 'inline-block' }}
-                        title="Click to view details"
-                      >
+                    <td data-label="Beneficiaries">{demand.beneficiaryCount} people</td>
+                    <td data-label="Urgency">
+                      <span onClick={() => setSelectedDemand(demand)} style={{ cursor: 'pointer', display: 'inline-block' }} title="Click to view details">
                         <StatusBadge status={demand.urgency} />
                       </span>
                     </td>
-                    <td>
-                      <span
-                        onClick={() => setSelectedDemand(demand)}
-                        style={{ cursor: 'pointer', display: 'inline-block' }}
-                        title="Click to view details"
-                      >
+                    <td data-label="Status">
+                      <span onClick={() => setSelectedDemand(demand)} style={{ cursor: 'pointer', display: 'inline-block' }} title="Click to view details">
                         <StatusBadge status={demand.status} />
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <button
-                          onClick={() => setSelectedDemand(demand)}
+                        <button onClick={() => setSelectedDemand(demand)}
                           className="btn btn-outline btn-sm"
                           style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
                           title="View demand details"
