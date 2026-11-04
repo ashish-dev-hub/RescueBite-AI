@@ -330,10 +330,9 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       </div>
 
                       <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Status</span>
-                      <span style={{ color: '#1F6F43', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#1F6F43', display: 'inline-block' }}></span>
+                      <strong style={{ color: '#1F6F43', fontWeight: 700 }}>
                         Active in Network
-                      </span>
+                      </strong>
                     </div>
 
                     {/* Actions */}
