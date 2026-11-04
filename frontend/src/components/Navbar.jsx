@@ -216,7 +216,8 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                     position: 'absolute',
                     top: 'calc(100% + 8px)',
                     right: 0,
-                    width: '320px',
+                    width: '345px',
+                    maxWidth: 'calc(100vw - 2rem)',
                     backgroundColor: '#FFFDF9',
                     borderRadius: '16px',
                     border: '1px solid #E5DBC5',
@@ -286,46 +287,53 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       backgroundColor: '#FAF4EB',
                       borderRadius: '12px',
                       border: '1px solid #E5DBC5',
-                      padding: '0.85rem',
+                      padding: '0.85rem 0.95rem',
                       marginBottom: '1rem',
                       fontSize: '0.78rem',
                       color: '#2C221E',
+                      display: 'grid',
+                      gridTemplateColumns: '105px 1fr',
+                      rowGap: '0.55rem',
+                      columnGap: '0.75rem',
+                      alignItems: 'baseline',
                     }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                        <span style={{ color: '#685B52', fontWeight: 600 }}>Role Type:</span>
-                        <strong style={{ textTransform: 'capitalize', color: '#1F6F43' }}>
-                          {user?.role === 'coordinator' ? 'Operations Coordinator' : user?.role === 'donor' ? 'Surplus Food Donor' : 'Recipient NGO'}
-                        </strong>
-                      </div>
+                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Role Type</span>
+                      <strong style={{ color: '#1F6F43', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {user?.role === 'coordinator' ? 'Operations Coordinator' : user?.role === 'donor' ? 'Surplus Food Donor' : 'Recipient NGO'}
+                      </strong>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                        <span style={{ color: '#685B52', fontWeight: 600 }}>Organization:</span>
-                        <strong style={{ maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}
-                        </strong>
-                      </div>
+                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Organization</span>
+                      <strong style={{ color: '#2C221E', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}>
+                        {user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}
+                      </strong>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                        <span style={{ color: '#685B52', fontWeight: 600 }}>Operating Zone:</span>
-                        <span style={{ color: '#2C221E', fontWeight: 600 }}>
-                          {user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}
-                        </span>
-                      </div>
+                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Operating Zone</span>
+                      <span style={{ color: '#2C221E', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}>
+                        {user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}
+                      </span>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                        <span style={{ color: '#685B52', fontWeight: 600 }}>Partner ID:</span>
-                        <code style={{ fontSize: '0.74rem', backgroundColor: '#FFFDF9', padding: '0.05rem 0.35rem', borderRadius: '4px', border: '1px solid #E5DBC5' }}>
+                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Partner ID</span>
+                      <div>
+                        <code style={{
+                          fontSize: '0.74rem',
+                          backgroundColor: '#FFFDF9',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '4px',
+                          border: '1px solid #E5DBC5',
+                          fontFamily: 'monospace',
+                          fontWeight: 700,
+                          color: '#4A3E38',
+                          letterSpacing: '0.02em',
+                        }}>
                           #RB-{String(user?._id || user?.id || 'DEL-4091').slice(-6).toUpperCase()}
                         </code>
                       </div>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ color: '#685B52', fontWeight: 600 }}>Status:</span>
-                        <span style={{ color: '#1F6F43', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#1F6F43', display: 'inline-block' }}></span>
-                          Active in Network
-                        </span>
-                      </div>
+                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Status</span>
+                      <span style={{ color: '#1F6F43', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#1F6F43', display: 'inline-block' }}></span>
+                        Active in Network
+                      </span>
                     </div>
 
                     {/* Actions */}
