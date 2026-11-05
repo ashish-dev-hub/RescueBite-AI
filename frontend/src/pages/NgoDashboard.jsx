@@ -864,15 +864,16 @@ export default function NgoDashboard() {
                     type="button"
                     onClick={() => toggleDietaryPref(tag)}
                     style={{
-                      padding: '0.3rem 0.65rem',
-                      borderRadius: 'var(--radius-btn-sm)',
-                      fontSize: '0.78rem',
+                      padding: '0.35rem 0.85rem',
+                      borderRadius: '9999px',
+                      fontSize: '0.8rem',
                       fontWeight: 600,
                       backgroundColor: isSelected ? 'var(--color-network-green)' : 'var(--color-pale-neutral)',
                       color: isSelected ? '#FFFFFF' : 'var(--color-deep-forest)',
-                      border: `1px solid ${isSelected ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
+                      border: `1.5px solid ${isSelected ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
+                      boxShadow: isSelected ? '0 2px 4px rgba(31, 111, 67, 0.25)' : 'none',
                     }}
                   >
                     {tag}

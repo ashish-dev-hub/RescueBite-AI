@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Modal from './Modal';
 import { useAuth } from '../context/AuthContext';
 import {
   User,
@@ -10,10 +11,11 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth }) {
+export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth, onToast }) {
   const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -579,6 +581,85 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
           )}
         </div>
       )}
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        title="Confirm Sign Out"
+        subtitle="Are you sure you want to end your active session?"
+        maxWidth="450px"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.85rem',
+            padding: '0.85rem 1rem',
+            backgroundColor: '#FAF4EB',
+            borderRadius: '12px',
+            border: '1px solid #E5DBC5',
+          }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '50%',
+              backgroundColor: '#E3F2E7',
+              color: '#1F6F43',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '1.1rem',
+              flexShrink: 0,
+              border: '1px solid #C8E2D1',
+            }}>
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ margin: 0, fontWeight: 700, fontSize: '0.92rem', color: '#2C221E' }}>
+                {user?.name}
+              </p>
+              <p style={{ margin: 0, fontSize: '0.76rem', color: '#685B52', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {user?.email} &bull; <strong style={{ color: '#1F6F43', textTransform: 'capitalize' }}>{user?.role}</strong>
+              </p>
+            </div>
+          </div>
+
+          <p style={{ fontSize: '0.86rem', color: '#42342B', lineHeight: 1.5, margin: 0 }}>
+            You will need to sign in again to access the dispatch desk, manage surplus listings, or register demands.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.65rem', marginTop: '0.5rem' }}>
+            <button
+              type="button"
+              onClick={() => setShowLogoutConfirm(false)}
+              className="btn btn-outline"
+              style={{ minHeight: '44px', padding: '0.55rem 1.15rem' }}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={confirmLogout}
+              className="btn-terracotta"
+              style={{
+                minHeight: '44px',
+                padding: '0.55rem 1.25rem',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              <LogOut size={16} />
+              <span>Yes, Sign Out</span>
+            </button>
+          </div>
+        </div>
+      </Modal>
     </header>
   );
 }

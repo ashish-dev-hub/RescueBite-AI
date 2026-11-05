@@ -25,6 +25,16 @@ const getFutureDateTime = (hoursFromNow = 4) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
+const DIETARY_OPTIONS = [
+  'Vegetarian',
+  'Vegan',
+  'Halal',
+  'Jain',
+  'Gluten-Free',
+  'Nut-Free',
+  'Dairy-Free',
+];
+
 export default function DonorDashboard() {
   const { user } = useAuth();
   const [donations, setDonations] = useState([]);
@@ -513,7 +523,7 @@ export default function DonorDashboard() {
               type="text"
               required
               className="form-input"
-              placeholder="e.g. 45 Fresh Hot Meals: Dal Makhani, Steamed Rice, Tandoori Roti"
+              placeholder="e.g. Fresh Hot Meals (Dal, Rice & Roti)"
               value={foodName}
               onChange={(e) => setFoodName(e.target.value)}
             />
@@ -626,9 +636,12 @@ export default function DonorDashboard() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Dietary Tags</label>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              {['Vegetarian', 'Vegan', 'Halal-friendly', 'Gluten-Free', 'Nut-Free', 'Dairy-Free'].map((tag) => {
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+              <label className="form-label" style={{ marginBottom: 0 }}>Dietary Tags</label>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Select all applicable</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
+              {DIETARY_OPTIONS.map((tag) => {
                 const isSelected = dietaryTags.includes(tag);
                 return (
                   <button
@@ -636,13 +649,16 @@ export default function DonorDashboard() {
                     type="button"
                     onClick={() => toggleDietaryTag(tag)}
                     style={{
-                      padding: '0.3rem 0.65rem',
-                      borderRadius: 'var(--radius-btn-sm)',
-                      fontSize: '0.78rem',
+                      padding: '0.35rem 0.85rem',
+                      borderRadius: '9999px',
+                      fontSize: '0.8rem',
                       fontWeight: 600,
                       backgroundColor: isSelected ? 'var(--color-network-green)' : 'var(--color-pale-neutral)',
                       color: isSelected ? '#FFFFFF' : 'var(--color-deep-forest)',
-                      border: `1px solid ${isSelected ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
+                      border: `1.5px solid ${isSelected ? 'var(--color-network-green)' : 'var(--color-soft-border)'}`,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                      boxShadow: isSelected ? '0 2px 4px rgba(31, 111, 67, 0.25)' : 'none',
                     }}
                   >
                     {tag}
@@ -657,7 +673,7 @@ export default function DonorDashboard() {
             <input
               type="text"
               className="form-input"
-              placeholder="Address where vehicle will collect food"
+              placeholder={user?.location?.address ? `Default: ${user.location.address}` : "e.g. Loading dock, Gate 2, 45 MG Road"}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
@@ -668,7 +684,7 @@ export default function DonorDashboard() {
             <textarea
               className="form-textarea"
               rows={2}
-              placeholder="e.g. Bring thermal insulated bags; back entrance access code 4821"
+              placeholder="e.g. Bring thermal bags, rear loading entrance"
               value={specialInstructions}
               onChange={(e) => setSpecialInstructions(e.target.value)}
             />

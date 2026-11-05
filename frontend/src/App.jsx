@@ -8,6 +8,7 @@ import NgoDashboard from './pages/NgoDashboard';
 import ImpactPage from './pages/ImpactPage';
 import AuthModal from './pages/AuthModal';
 import ProtectedRoute from './components/ProtectedRoute';
+import Toast from './components/Toast';
 import { Sprout, Heart, Shield, GitCommit } from 'lucide-react';
 
 function AppContent() {
@@ -15,6 +16,11 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState('landing');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authInitialMode, setAuthInitialMode] = useState('login');
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'success', title = '') => {
+    setToast({ message, type, title, id: Date.now() });
+  };
 
   const handleOpenAuth = (mode = 'login') => {
     setAuthInitialMode(typeof mode === 'string' ? mode : 'login');
@@ -43,6 +49,11 @@ function AppContent() {
     } else if (loggedUser?.role === 'ngo') {
       setActiveTab('ngo');
     }
+    showToast(
+      `Welcome back, ${loggedUser?.name || 'Partner'}! Successfully signed in.`,
+      'success',
+      'Signed In'
+    );
   };
 
   return (
@@ -53,6 +64,7 @@ function AppContent() {
         setActiveTab={setActiveTab}
         onNavigate={handleNavigate}
         onOpenAuth={handleOpenAuth}
+        onToast={showToast}
       />
 
       {/* Main Page Area */}
@@ -185,6 +197,9 @@ function AppContent() {
         onClose={() => setAuthModalOpen(false)}
         onSuccess={handleAuthSuccess}
       />
+
+      {/* Global Toast Notification */}
+      <Toast toast={toast} onClose={() => setToast(null)} />
     </div>
   );
 }
