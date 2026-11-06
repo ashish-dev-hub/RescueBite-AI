@@ -335,13 +335,33 @@ export default function DonorDashboard() {
               )}
             </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
-              Confidence Score: <strong style={{ color: 'var(--color-coffee-dark)' }}>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+                Confidence: <strong style={{ color: 'var(--color-deep-forest)' }}>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
+              </span>
+              <span style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>
+                {aiSupplyForecast.donor_type ? `Type: ${aiSupplyForecast.donor_type}` : 'Commercial Kitchen'}
+              </span>
             </div>
-            <div style={{ fontSize: '0.68rem', color: 'var(--color-muted-slate)', marginTop: '0.15rem' }}>
-              Category: <strong style={{ color: 'var(--color-coffee-dark)' }}>{aiSupplyForecast.donor_type || 'Commercial Donor'}</strong>
-            </div>
+            <button
+              onClick={() => {
+                const predicted = Math.round(aiSupplyForecast.predicted_surplus_meals);
+                setQuantityMeals(String(predicted));
+                if (user?.location?.address) {
+                  setAddress(user.location.address);
+                }
+                if (!pickupDeadline) {
+                  setPickupDeadline(getFutureDateTime(4));
+                }
+                setIsModalOpen(true);
+              }}
+              className="btn btn-primary btn-sm"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              <Plus size={14} />
+              <span>Prefill Surplus Listing</span>
+            </button>
           </div>
         </div>
       )}
