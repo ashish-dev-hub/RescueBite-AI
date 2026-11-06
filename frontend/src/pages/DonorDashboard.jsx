@@ -199,10 +199,15 @@ export default function DonorDashboard() {
               fontSize: '0.78rem',
               fontWeight: 700,
               padding: '0.2rem 0.6rem',
-              borderRadius: 'var(--radius-xs)',
+              borderRadius: 'var(--radius-xs, 6px)',
               border: '1px solid var(--color-soft-mint-border)',
+              whiteSpace: 'nowrap',
             }}>
-              {user?.organization || user?.name}
+              {user?.organization && user.organization !== user?.name
+                ? user.organization
+                : user?.name
+                ? `${user.name} • Verified Donor`
+                : 'Verified Donor'}
             </span>
           </div>
           <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', marginTop: '0.2rem' }}>
@@ -330,13 +335,33 @@ export default function DonorDashboard() {
               )}
             </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
-              Confidence Score: <strong style={{ color: 'var(--color-coffee-dark)' }}>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+                Confidence: <strong style={{ color: 'var(--color-deep-forest)' }}>{Math.round((aiSupplyForecast.confidence_score || 0.82) * 100)}%</strong>
+              </span>
+              <span style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)' }}>
+                {aiSupplyForecast.donor_type ? `Type: ${aiSupplyForecast.donor_type}` : 'Commercial Kitchen'}
+              </span>
             </div>
-            <div style={{ fontSize: '0.68rem', color: 'var(--color-muted-slate)', marginTop: '0.15rem' }}>
-              Category: <strong style={{ color: 'var(--color-coffee-dark)' }}>{aiSupplyForecast.donor_type || 'Commercial Donor'}</strong>
-            </div>
+            <button
+              onClick={() => {
+                const predicted = Math.round(aiSupplyForecast.predicted_surplus_meals);
+                setQuantityMeals(String(predicted));
+                if (user?.location?.address) {
+                  setAddress(user.location.address);
+                }
+                if (!pickupDeadline) {
+                  setPickupDeadline(getFutureDateTime(4));
+                }
+                setIsModalOpen(true);
+              }}
+              className="btn btn-primary btn-sm"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              <Plus size={14} />
+              <span>Prefill Surplus Listing</span>
+            </button>
           </div>
         </div>
       )}
@@ -348,7 +373,7 @@ export default function DonorDashboard() {
             Active Surplus Listings
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.2rem' }}>
-            {activeListings.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>open offers</span>
+            {activeListings.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>listings active</span>
           </p>
         </div>
 
@@ -357,7 +382,7 @@ export default function DonorDashboard() {
             Total Available Meals
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.2rem' }}>
-            {totalAvailableMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals awaiting</span>
+            {totalAvailableMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals available</span>
           </p>
         </div>
 
@@ -371,7 +396,7 @@ export default function DonorDashboard() {
             color: nearestDeadline ? 'var(--color-harvest-coral)' : 'var(--color-muted-slate)',
             marginTop: '0.45rem',
           }}>
-            {nearestDeadline ? nearestDeadline.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'No pending deadlines'}
+            {nearestDeadline ? nearestDeadline.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'No pending pickups'}
           </p>
         </div>
       </div>
@@ -401,7 +426,7 @@ export default function DonorDashboard() {
               No active surplus listings
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
-              Click "List Surplus Food" below to publish your first batch to local NGOs.
+              List fresh surplus edible food to connect with nearby verified NGOs and shelters.
             </p>
             <button
               onClick={handleOpenModal}
@@ -703,7 +728,7 @@ export default function DonorDashboard() {
               disabled={submitting}
               className="btn btn-primary"
             >
-              {submitting ? 'Publishing...' : 'Publish Surplus Food'}
+              {submitting ? 'Listing Surplus...' : 'List Surplus Food'}
             </button>
           </div>
         </form>

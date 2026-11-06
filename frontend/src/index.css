@@ -48,6 +48,7 @@
   --font-editorial: 'Fraunces', Georgia, serif;
   
   /* Radii (Strict Max 2 Radii for clean aesthetic) */
+  --radius-xs: 6px;
   --radius-sm: 6px;
   --radius-btn-sm: 8px;
   --radius-card: 16px;

@@ -277,10 +277,15 @@ export default function NgoDashboard() {
               fontSize: '0.78rem',
               fontWeight: 700,
               padding: '0.2rem 0.6rem',
-              borderRadius: 'var(--radius-xs)',
+              borderRadius: 'var(--radius-xs, 6px)',
               border: '1px solid var(--color-soft-mint-border)',
+              whiteSpace: 'nowrap',
             }}>
-              {user?.organization || user?.name}
+              {user?.organization && user.organization !== user?.name
+                ? user.organization
+                : user?.name
+                ? `${user.name} • Verified NGO`
+                : 'Verified NGO'}
             </span>
           </div>
           <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', marginTop: '0.2rem' }}>
@@ -419,7 +424,7 @@ export default function NgoDashboard() {
             Max Intake Capacity
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.2rem' }}>
-            {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals/intake</span>
+            {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals capacity</span>
           </p>
         </div>
 
@@ -428,7 +433,7 @@ export default function NgoDashboard() {
             Incoming Food Offers
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.2rem' }}>
-            {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>allocations active</span>
+            {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>incoming allocations</span>
           </p>
         </div>
       </div>
@@ -616,7 +621,7 @@ export default function NgoDashboard() {
           }}>
             <Soup size={40} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
             <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
-              No active meal demands registered
+              No active meal demands
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
               Register your kitchen's daily beneficiary meal requirements so coordinators can assign surplus food.
@@ -921,7 +926,7 @@ export default function NgoDashboard() {
               disabled={actionLoading}
               className="btn btn-primary"
             >
-              {actionLoading ? 'Submitting...' : 'Register Demand'}
+              {actionLoading ? 'Submitting...' : 'Submit Meal Demand'}
             </button>
           </div>
         </form>
