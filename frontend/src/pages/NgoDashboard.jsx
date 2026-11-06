@@ -277,10 +277,15 @@ export default function NgoDashboard() {
               fontSize: '0.78rem',
               fontWeight: 700,
               padding: '0.2rem 0.6rem',
-              borderRadius: 'var(--radius-xs)',
+              borderRadius: 'var(--radius-xs, 6px)',
               border: '1px solid var(--color-soft-mint-border)',
+              whiteSpace: 'nowrap',
             }}>
-              {user?.organization || user?.name}
+              {user?.organization && user.organization !== user?.name
+                ? user.organization
+                : user?.name
+                ? `${user.name} • Verified NGO`
+                : 'Verified NGO'}
             </span>
           </div>
           <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', marginTop: '0.2rem' }}>
