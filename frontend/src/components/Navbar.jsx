@@ -68,7 +68,13 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
     setProfileDropdownOpen(false);
   };
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setProfileDropdownOpen(false);
+    setMobileMenuOpen(false);
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
     logout();
     if (onNavigate) {
       onNavigate('landing');
@@ -77,7 +83,13 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
     }
     setMobileMenuOpen(false);
     setProfileDropdownOpen(false);
+    setShowLogoutConfirm(false);
+    if (onToast) {
+      onToast('You have been signed out safely.', 'info', 'Signed Out');
+    }
   };
+
+  const handleLogout = handleLogoutClick;
 
   const rolePortalId = user?.role === 'coordinator' ? 'coordinator' : user?.role === 'ngo' ? 'ngo' : 'donor';
   const rolePortalLabel = user?.role === 'coordinator' ? 'Allocation Desk' : user?.role === 'ngo' ? 'NGO Demands Portal' : 'Donor Operations Portal';
