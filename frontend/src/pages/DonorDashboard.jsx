@@ -426,7 +426,7 @@ export default function DonorDashboard() {
               No active surplus listings
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
-              Click "List Surplus Food" below to publish your first batch to local NGOs.
+              List fresh surplus edible food to connect with nearby verified NGOs and shelters.
             </p>
             <button
               onClick={handleOpenModal}
@@ -728,7 +728,7 @@ export default function DonorDashboard() {
               disabled={submitting}
               className="btn btn-primary"
             >
-              {submitting ? 'Publishing...' : 'Publish Surplus Food'}
+              {submitting ? 'Listing Surplus...' : 'List Surplus Food'}
             </button>
           </div>
         </form>

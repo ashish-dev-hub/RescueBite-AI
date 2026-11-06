@@ -621,7 +621,7 @@ export default function NgoDashboard() {
           }}>
             <Soup size={40} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
             <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
-              No active meal demands registered
+              No active meal demands
             </p>
             <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
               Register your kitchen's daily beneficiary meal requirements so coordinators can assign surplus food.
@@ -926,7 +926,7 @@ export default function NgoDashboard() {
               disabled={actionLoading}
               className="btn btn-primary"
             >
-              {actionLoading ? 'Submitting...' : 'Register Demand'}
+              {actionLoading ? 'Submitting...' : 'Submit Meal Demand'}
             </button>
           </div>
         </form>
