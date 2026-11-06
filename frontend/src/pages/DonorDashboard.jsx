@@ -373,7 +373,7 @@ export default function DonorDashboard() {
             Active Surplus Listings
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.2rem' }}>
-            {activeListings.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>open offers</span>
+            {activeListings.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>listings active</span>
           </p>
         </div>
 
@@ -382,7 +382,7 @@ export default function DonorDashboard() {
             Total Available Meals
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.2rem' }}>
-            {totalAvailableMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals awaiting</span>
+            {totalAvailableMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals available</span>
           </p>
         </div>
 
@@ -396,7 +396,7 @@ export default function DonorDashboard() {
             color: nearestDeadline ? 'var(--color-harvest-coral)' : 'var(--color-muted-slate)',
             marginTop: '0.45rem',
           }}>
-            {nearestDeadline ? nearestDeadline.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'No pending deadlines'}
+            {nearestDeadline ? nearestDeadline.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'No pending pickups'}
           </p>
         </div>
       </div>

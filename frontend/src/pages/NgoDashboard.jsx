@@ -424,7 +424,7 @@ export default function NgoDashboard() {
             Max Intake Capacity
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.2rem' }}>
-            {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals/intake</span>
+            {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals capacity</span>
           </p>
         </div>
 
@@ -433,7 +433,7 @@ export default function NgoDashboard() {
             Incoming Food Offers
           </p>
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.2rem' }}>
-            {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>allocations active</span>
+            {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>incoming allocations</span>
           </p>
         </div>
       </div>
