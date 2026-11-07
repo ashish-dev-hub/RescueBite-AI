@@ -565,11 +565,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--color-muted-slate, #687872)',
-                    zIndex: 20,
+                  color: 'var(--color-muted-slate, #382C25)',
+                  zIndex: 20,
                   }}
                   aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
                   title={showLoginPassword ? 'Hide password' : 'Show password'}
@@ -762,10 +759,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #687872)',
+                  color: 'var(--color-muted-slate, #382C25)',
                   zIndex: 20,
                 }}
                 aria-label={showResetPassword ? 'Hide password' : 'Show password'}
@@ -806,10 +800,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #687872)',
+                  color: 'var(--color-muted-slate, #382C25)',
                   zIndex: 20,
                 }}
                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
@@ -1051,10 +1042,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #687872)',
+                  color: 'var(--color-muted-slate, #382C25)',
                   zIndex: 20,
                 }}
                 aria-label={showRegisterPassword ? 'Hide password' : 'Show password'}

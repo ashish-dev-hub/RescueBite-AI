@@ -410,30 +410,75 @@ export default function NgoDashboard() {
 
       {/* Highlights */}
       <div className="dashboard-stats-grid">
-        <div className="fresh-card" style={{ padding: '1.15rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
-            Unfulfilled Meal Deficit
-          </p>
-          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-harvest-coral)', marginTop: '0.2rem' }}>
-            {totalNeededMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals needed</span>
+        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #C44824' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              Unfulfilled Meal Deficit
+            </span>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
+              backgroundColor: '#FDEEE9',
+              color: '#C44824',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <AlertTriangle size={16} />
+            </div>
+          </div>
+          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#C44824', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
+            {totalNeededMeals} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>meals needed</span>
           </p>
         </div>
 
-        <div className="fresh-card" style={{ padding: '1.15rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
-            Max Intake Capacity
-          </p>
-          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.2rem' }}>
-            {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals capacity</span>
+        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #1F6F43' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              Max Intake Capacity
+            </span>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
+              backgroundColor: '#E3F2E7',
+              color: '#1F6F43',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Users size={16} />
+            </div>
+          </div>
+          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C1613', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
+            {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>meals capacity</span>
           </p>
         </div>
 
-        <div className="fresh-card" style={{ padding: '1.15rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
-            Incoming Food Offers
-          </p>
-          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.2rem' }}>
-            {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>incoming allocations</span>
+        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #1F6F43' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              Incoming Food Offers
+            </span>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
+              backgroundColor: '#E3F2E7',
+              color: '#1F6F43',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Truck size={16} />
+            </div>
+          </div>
+          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F6F43', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
+            {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>incoming allocations</span>
           </p>
         </div>
       </div>
@@ -442,24 +487,24 @@ export default function NgoDashboard() {
       <div className="fresh-card" style={{ marginBottom: '1.5rem', padding: '1.25rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <div>
-            <h3 style={{ fontSize: '1.15rem', color: 'var(--color-deep-forest)' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1C1613' }}>
               Assigned Food Offers from Dispatch Desk
             </h3>
-            <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+            <p style={{ fontSize: '0.86rem', color: '#382C25', marginTop: '0.2rem', fontWeight: 500 }}>
               Surplus matched by coordinator for your community beneficiaries
             </p>
           </div>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)' }}>
+          <span style={{ fontSize: '0.84rem', color: '#382C25', fontWeight: 600 }}>
             {allocations.length} total assigned
           </span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {allocations.length === 0 ? (
-            <div style={{ padding: '2.5rem 1rem', textAlign: 'center', backgroundColor: 'var(--color-pale-neutral)', borderRadius: 'var(--radius-md)' }}>
-              <Soup size={32} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.5rem auto' }} />
-              <p style={{ fontSize: '0.92rem', fontWeight: 600 }}>No food offers currently waiting for response</p>
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem' }}>
+            <div style={{ padding: '2.5rem 1rem', textAlign: 'center', backgroundColor: '#F5EFE3', borderRadius: 'var(--radius-md)' }}>
+              <Soup size={32} color="#382C25" style={{ margin: '0 auto 0.5rem auto' }} />
+              <p style={{ fontSize: '0.98rem', fontWeight: 700, color: '#1C1613', margin: 0 }}>No food offers currently waiting for response</p>
+              <p style={{ fontSize: '0.84rem', color: '#382C25', marginTop: '0.25rem', lineHeight: 1.45 }}>
                 Ensure your meal demand is submitted below so the coordinator can assign surplus to you.
               </p>
             </div>
@@ -602,10 +647,10 @@ export default function NgoDashboard() {
       {/* NGO Demands Table */}
       <div className="fresh-card" style={{ padding: '1.25rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-          <h3 style={{ fontSize: '1.15rem', color: 'var(--color-deep-forest)' }}>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1C1613' }}>
             Your Active Meal Demands
           </h3>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)' }}>
+          <span style={{ fontSize: '0.84rem', color: '#382C25', fontWeight: 600 }}>
             {demands.length} requests
           </span>
         </div>
@@ -616,14 +661,14 @@ export default function NgoDashboard() {
             padding: '2.5rem 1rem',
             border: '1px dashed var(--color-soft-border)',
             borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--color-pale-neutral)',
+            backgroundColor: '#F5EFE3',
             width: '100%',
           }}>
-            <Soup size={40} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
-            <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
+            <Soup size={40} color="#382C25" style={{ margin: '0 auto 0.75rem auto' }} />
+            <p style={{ fontSize: '1rem', fontWeight: 700, color: '#1C1613' }}>
               No active meal demands
             </p>
-            <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
+            <p style={{ fontSize: '0.84rem', color: '#382C25', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto', lineHeight: 1.45 }}>
               Register your kitchen's daily beneficiary meal requirements so coordinators can assign surplus food.
             </p>
             <button
@@ -653,24 +698,24 @@ export default function NgoDashboard() {
                 {demands.map((demand) => (
                   <tr key={demand._id}>
                     <td data-label="Needed By">
-                      <strong style={{ fontSize: '0.88rem' }}>
+                      <strong style={{ fontSize: '0.9rem', color: '#1C1613' }}>
                         {new Date(demand.neededBy).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </strong>
                     </td>
                     <td data-label="Requested">
-                      <strong style={{ color: 'var(--color-deep-forest)' }}>
+                      <strong style={{ color: '#1C1613', fontWeight: 800 }}>
                         {demand.requestedMeals} meals
                       </strong>
                     </td>
                     <td data-label="Fulfilled">
                       <span style={{
-                        color: demand.fulfilledMeals > 0 ? 'var(--color-network-green)' : 'var(--color-muted-slate)',
+                        color: demand.fulfilledMeals > 0 ? '#1F6F43' : '#382C25',
                         fontWeight: 700,
                       }}>
                         {demand.fulfilledMeals} meals
                       </span>
                     </td>
-                    <td data-label="Beneficiaries">{demand.beneficiaryCount} people</td>
+                    <td data-label="Beneficiaries" style={{ color: '#2C221E', fontWeight: 600 }}>{demand.beneficiaryCount} people</td>
                     <td data-label="Urgency">
                       <span onClick={() => setSelectedDemand(demand)} style={{ cursor: 'pointer', display: 'inline-block' }} title="Click to view details">
                         <StatusBadge status={demand.urgency} />

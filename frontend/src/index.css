@@ -7,13 +7,16 @@
   /* Color Palette Tokens */
   --color-deep-forest: #2C221E;
   --color-forest-dark: #1D1714;
+  --color-forest-green: #1F6F43;
   --color-network-green: #1F6F43;
   --color-network-green-hover: #175734;
   --color-soft-mint: #E3F2E7;
   --color-soft-mint-border: #C8E2D1;
   --color-warm-ivory: #FAF4EB;
+  --color-warm-bg: #FAF4EB;
   --color-paper-white: #FFFFFF;
-  --color-muted-slate: #42342B;
+  --color-muted-slate: #382C25;
+  --color-coffee-dark: #231A16;
   --color-dark-slate: #2C221E;
   --color-soft-border: #E5DBC5;
   --color-pale-neutral: #F5EFE3;

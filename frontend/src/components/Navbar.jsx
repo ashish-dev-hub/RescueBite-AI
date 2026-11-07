@@ -284,8 +284,9 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                           </span>
                         </div>
                         <p style={{
-                          fontSize: '0.76rem',
-                          color: '#685B52',
+                          fontSize: '0.78rem',
+                          color: '#382C25',
+                          fontWeight: 500,
                           margin: '0.15rem 0 0 0',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -303,30 +304,30 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       border: '1px solid #E5DBC5',
                       padding: '0.85rem 0.95rem',
                       marginBottom: '1rem',
-                      fontSize: '0.78rem',
-                      color: '#2C221E',
+                      fontSize: '0.8rem',
+                      color: '#1C1613',
                       display: 'grid',
                       gridTemplateColumns: '105px 1fr',
                       rowGap: '0.55rem',
                       columnGap: '0.75rem',
                       alignItems: 'baseline',
                     }}>
-                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Role Type</span>
-                      <strong style={{ color: '#1F6F43', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Role Type</span>
+                      <strong style={{ color: '#1F6F43', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {user?.role === 'coordinator' ? 'Operations Coordinator' : user?.role === 'donor' ? 'Surplus Food Donor' : 'Recipient NGO'}
                       </strong>
 
-                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Organization</span>
-                      <strong style={{ color: '#2C221E', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}>
+                      <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Organization</span>
+                      <strong style={{ color: '#1C1613', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}>
                         {user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}
                       </strong>
 
-                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Operating Zone</span>
-                      <span style={{ color: '#2C221E', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}>
+                      <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Operating Zone</span>
+                      <span style={{ color: '#1C1613', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}>
                         {user?.location?.city || user?.location?.address || 'Connaught Place Corridor'}
                       </span>
 
-                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Partner ID</span>
+                      <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Partner ID</span>
                       <div>
                         <code style={{
                           fontSize: '0.74rem',
@@ -336,15 +337,15 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                           border: '1px solid #E5DBC5',
                           fontFamily: 'monospace',
                           fontWeight: 700,
-                          color: '#4A3E38',
+                          color: '#1C1613',
                           letterSpacing: '0.02em',
                         }}>
                           #RB-{String(user?._id || user?.id || 'DEL-4091').slice(-6).toUpperCase()}
                         </code>
                       </div>
 
-                      <span style={{ color: '#685B52', fontWeight: 600, whiteSpace: 'nowrap' }}>Status</span>
-                      <strong style={{ color: '#1F6F43', fontWeight: 700 }}>
+                      <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Status</span>
+                      <strong style={{ color: '#1F6F43', fontWeight: 800 }}>
                         Active in Network
                       </strong>
                     </div>
@@ -632,13 +633,13 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
               <p style={{ margin: 0, fontWeight: 700, fontSize: '0.92rem', color: '#2C221E' }}>
                 {user?.name}
               </p>
-              <p style={{ margin: 0, fontSize: '0.76rem', color: '#685B52', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <p style={{ margin: 0, fontSize: '0.78rem', color: '#382C25', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {user?.email} &bull; <strong style={{ color: '#1F6F43', textTransform: 'capitalize' }}>{user?.role}</strong>
               </p>
             </div>
           </div>
 
-          <p style={{ fontSize: '0.86rem', color: '#42342B', lineHeight: 1.5, margin: 0 }}>
+          <p style={{ fontSize: '0.88rem', color: '#2C221E', lineHeight: 1.5, margin: 0 }}>
             You will need to sign in again to access the dispatch desk, manage surplus listings, or register demands.
           </p>
 

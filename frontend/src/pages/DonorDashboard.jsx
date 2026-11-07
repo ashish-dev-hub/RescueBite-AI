@@ -11,13 +11,14 @@ import {
   Trash2,
   CheckCircle2,
   TrendingUp,
-Building,
+  Building,
   Thermometer,
   Calendar,
   Layers,
   MapPin,
   RefreshCw,
-  } from 'lucide-react';
+  Utensils,
+} from 'lucide-react';
 
 const getFutureDateTime = (hoursFromNow = 4) => {
   const d = new Date(Date.now() + hoursFromNow * 3600 * 1000);
@@ -368,33 +369,78 @@ export default function DonorDashboard() {
 
       {/* Operational Highlights Banner */}
       <div className="dashboard-stats-grid">
-        <div className="fresh-card" style={{ padding: '1.15rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
-            Active Surplus Listings
-          </p>
-          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-deep-forest)', marginTop: '0.2rem' }}>
-            {activeListings.length} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>listings active</span>
+        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #1F6F43' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              Active Surplus Listings
+            </span>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
+              backgroundColor: '#E3F2E7',
+              color: '#1F6F43',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Package size={16} />
+            </div>
+          </div>
+          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C1613', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
+            {activeListings.length} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>listings active</span>
           </p>
         </div>
 
-        <div className="fresh-card" style={{ padding: '1.15rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
-            Total Available Meals
-          </p>
-          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-network-green)', marginTop: '0.2rem' }}>
-            {totalAvailableMeals} <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>meals available</span>
+        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #1F6F43' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              Total Available Meals
+            </span>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
+              backgroundColor: '#E3F2E7',
+              color: '#1F6F43',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Utensils size={16} />
+            </div>
+          </div>
+          <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F6F43', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
+            {totalAvailableMeals} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>meals available</span>
           </p>
         </div>
 
-        <div className="fresh-card" style={{ padding: '1.15rem' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted-slate)', textTransform: 'uppercase' }}>
-            Next Pickup Deadline
-          </p>
+        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #C44824' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              Next Pickup Deadline
+            </span>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '8px',
+              backgroundColor: '#FDEEE9',
+              color: '#C44824',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Clock size={16} />
+            </div>
+          </div>
           <p style={{
             fontSize: '1.15rem',
             fontWeight: 700,
-            color: nearestDeadline ? 'var(--color-harvest-coral)' : 'var(--color-muted-slate)',
-            marginTop: '0.45rem',
+            color: nearestDeadline ? '#C44824' : '#382C25',
+            margin: '0.45rem 0 0 0',
           }}>
             {nearestDeadline ? nearestDeadline.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) : 'No pending pickups'}
           </p>
@@ -404,10 +450,10 @@ export default function DonorDashboard() {
       {/* Your Active Donations Table */}
       <div className="fresh-card" style={{ padding: '1.25rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-          <h3 style={{ fontSize: '1.15rem', color: 'var(--color-deep-forest)' }}>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1C1613' }}>
             Your Surplus Food Listings
           </h3>
-          <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)' }}>
+          <span style={{ fontSize: '0.84rem', color: '#382C25', fontWeight: 600 }}>
             Total listings: {donations.length}
           </span>
         </div>
@@ -421,11 +467,11 @@ export default function DonorDashboard() {
             backgroundColor: 'var(--color-pale-neutral)',
             width: '100%',
           }}>
-            <Package size={40} color="var(--color-muted-slate)" style={{ margin: '0 auto 0.75rem auto' }} />
-            <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-deep-forest)' }}>
+            <Package size={40} color="#382C25" style={{ margin: '0 auto 0.75rem auto' }} />
+            <p style={{ fontSize: '1rem', fontWeight: 700, color: '#1C1613' }}>
               No active surplus listings
             </p>
-            <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto' }}>
+            <p style={{ fontSize: '0.84rem', color: '#382C25', marginTop: '0.25rem', maxWidth: '380px', margin: '0.25rem auto 1rem auto', lineHeight: 1.45 }}>
               List fresh surplus edible food to connect with nearby verified NGOs and shelters.
             </p>
             <button
@@ -459,46 +505,48 @@ export default function DonorDashboard() {
                   return (
                     <tr key={item._id}>
                       <td>
-                        <strong style={{ fontSize: '0.92rem' }}>{item.foodName}</strong>
+                        <strong style={{ fontSize: '0.94rem', color: '#1C1613' }}>{item.foodName}</strong>
                         {item.specialInstructions && (
-                          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', marginTop: '0.15rem' }}>
+                          <p style={{ fontSize: '0.78rem', color: '#382C25', marginTop: '0.15rem', fontWeight: 500 }}>
                             {item.specialInstructions}
                           </p>
                         )}
                       </td>
-                      <td style={{ fontSize: '0.85rem' }}>{item.category}</td>
+                      <td style={{ fontSize: '0.86rem', color: '#2C221E', fontWeight: 600 }}>{item.category}</td>
                       <td>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                           <span style={{
                             fontSize: '0.95rem',
                             fontWeight: 800,
-                            color: item.remainingQuantity > 0 ? 'var(--color-network-green)' : 'var(--color-muted-slate)',
+                            color: item.remainingQuantity > 0 ? '#1F6F43' : '#382C25',
                           }}>
                             {item.remainingQuantity}
                           </span>
-                          <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)' }}>
+                          <span style={{ fontSize: '0.82rem', color: '#382C25', fontWeight: 600 }}>
                             / {item.quantityMeals} meals
                           </span>
                         </div>
                       </td>
                       <td>
                         <span style={{
-                          fontSize: '0.78rem',
-                          backgroundColor: 'var(--color-pale-neutral)',
-                          padding: '0.2rem 0.5rem',
-                          borderRadius: '4px',
-                          border: '1px solid var(--color-soft-border)',
+                          fontSize: '0.8rem',
+                          fontWeight: 600,
+                          color: '#2C221E',
+                          backgroundColor: '#F5EFE3',
+                          padding: '0.2rem 0.55rem',
+                          borderRadius: '6px',
+                          border: '1px solid #E5DBC5',
                         }}>
                           {item.storageInfo}
                         </span>
                       </td>
                       <td data-label="Pickup Deadline">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                          {isExpiringSoon && <AlertTriangle size={14} color="var(--color-harvest-coral)" />}
+                          {isExpiringSoon && <AlertTriangle size={14} color="#C44824" />}
                           <span style={{
-                            fontSize: '0.82rem',
-                            color: isExpiringSoon ? 'var(--color-harvest-coral)' : 'var(--color-dark-slate)',
-                            fontWeight: isExpiringSoon ? 700 : 500,
+                            fontSize: '0.84rem',
+                            color: isExpiringSoon ? '#C44824' : '#1C1613',
+                            fontWeight: isExpiringSoon ? 700 : 600,
                           }}>
                             {deadlineDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' })}
                           </span>
