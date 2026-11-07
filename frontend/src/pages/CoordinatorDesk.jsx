@@ -203,20 +203,21 @@ export default function CoordinatorDesk() {
           <div className="fresh-card allocation-queue-card">
             <div className="allocation-queue-header">
               <div>
-                <h3 style={{ fontSize: '0.92rem', color: 'var(--color-deep-forest)', fontWeight: 700 }}>
+                <h3 style={{ fontSize: '0.94rem', color: '#1C1613', fontWeight: 800, letterSpacing: '0.02em' }}>
                   PRIORITIZED MATCH QUEUE
                 </h3>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)' }}>
+                <p style={{ fontSize: '0.78rem', color: '#382C25', fontWeight: 500 }}>
                   Ranked by demand, deadline, & travel
                 </p>
               </div>
               <span style={{
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                color: 'var(--color-network-green)',
-                backgroundColor: 'var(--color-soft-mint)',
-                padding: '0.15rem 0.55rem',
-                borderRadius: 'var(--radius-xs)',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                color: '#1F6F43',
+                backgroundColor: '#E3F2E7',
+                padding: '0.2rem 0.6rem',
+                borderRadius: 'var(--radius-xs, 6px)',
+                border: '1px solid #C8E2D1',
                 whiteSpace: 'nowrap',
               }}>
                 {recommendations.length} Pending
@@ -226,9 +227,9 @@ export default function CoordinatorDesk() {
             <div className="allocation-queue-list">
               {recommendations.length === 0 ? (
                 <div className="allocation-queue-empty">
-                  <ShieldCheck size={28} color="var(--color-forest-green)" style={{ margin: "0 auto 0.5rem auto" }} />
-                  <p style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--color-deep-forest)' }}>All matched food allocated!</p>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)', marginTop: '0.35rem', lineHeight: 1.5 }}>
+                  <ShieldCheck size={32} color="#1F6F43" style={{ margin: "0 auto 0.5rem auto" }} />
+                  <p style={{ fontSize: '0.98rem', fontWeight: 800, color: '#1C1613' }}>All matched food allocated!</p>
+                  <p style={{ fontSize: '0.84rem', color: '#382C25', marginTop: '0.35rem', lineHeight: 1.5, fontWeight: 500 }}>
                     No pending unassigned surplus currently exceeds constraints. Real-time engine listens for new donations.
                   </p>
                 </div>
@@ -583,9 +584,9 @@ export default function CoordinatorDesk() {
               </div>
             ) : (
               <div className="fresh-card desk-empty-card">
-                <ShieldCheck size={40} color="var(--color-network-green)" style={{ margin: '0 auto 1rem auto' }} />
-                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Select a Match from Queue</h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--color-muted-slate)', maxWidth: '420px', margin: '0 auto' }}>
+                <ShieldCheck size={44} color="#1F6F43" style={{ margin: '0 auto 1rem auto' }} />
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C1613', marginBottom: '0.5rem' }}>Select a Match from Queue</h3>
+                <p style={{ fontSize: '0.9rem', color: '#382C25', maxWidth: '420px', margin: '0 auto', lineHeight: 1.5, fontWeight: 500 }}>
                   Choose any pending candidate on the left to verify constraint checklists, route feasibility, and approve the meal quantity.
                 </p>
               </div>
