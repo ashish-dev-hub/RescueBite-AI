@@ -1067,15 +1067,19 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
 
           {registerRole === 'ngo' && (
             <div className="form-group">
-              <label className="form-label">Receiving Meal Capacity (Max meals/intake)</label>
+              <label className="form-label">Receiving Meal Capacity (Max meals/intake) *</label>
               <input
                 type="number"
                 min="1"
                 required
                 className="form-input"
+                placeholder="e.g. 100 (Please enter number of meals)"
                 value={receivingCapacity}
                 onChange={(e) => setReceivingCapacity(e.target.value)}
               />
+              <span style={{ fontSize: '0.74rem', color: '#382C25', marginTop: '0.3rem', display: 'block', fontWeight: 500 }}>
+                Maximum meal portions your shelter or kitchen can accept and safely store per delivery.
+              </span>
             </div>
           )}
 

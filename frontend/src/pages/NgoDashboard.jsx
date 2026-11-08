@@ -781,7 +781,7 @@ export default function NgoDashboard() {
                 min="1"
                 required
                 className="form-input"
-                placeholder="e.g. 80"
+                placeholder="e.g. 80 (Please enter number of meals)"
                 value={requestedMeals}
                 onChange={(e) => setRequestedMeals(e.target.value)}
               />
@@ -794,7 +794,7 @@ export default function NgoDashboard() {
                 min="1"
                 required
                 className="form-input"
-                placeholder="e.g. 75"
+                placeholder="e.g. 75 (Please enter headcount)"
                 value={beneficiaryCount}
                 onChange={(e) => setBeneficiaryCount(e.target.value)}
               />
@@ -806,17 +806,17 @@ export default function NgoDashboard() {
             <div className="form-group" style={{ marginBottom: 0 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                 <label className="form-label" style={{ marginBottom: 0 }}>Intake / Storage Capacity</label>
-                <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>Max meals</span>
+                <span style={{ fontSize: '0.74rem', color: '#382C25', fontWeight: 600 }}>Max meals</span>
               </div>
               <input
                 type="number"
                 min="1"
                 className="form-input"
-                placeholder={user?.receivingCapacity ? `Shelter limit: ${user.receivingCapacity}` : 'e.g. 100'}
+                placeholder={user?.receivingCapacity ? `Shelter limit: ${user.receivingCapacity} meals` : 'e.g. 100 (Please enter max meals)'}
                 value={receivingCapacity}
                 onChange={(e) => setReceivingCapacity(e.target.value)}
               />
-              <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)', marginTop: '0.25rem', display: 'block' }}>
+              <span style={{ fontSize: '0.74rem', color: '#382C25', marginTop: '0.25rem', display: 'block', fontWeight: 500 }}>
                 Limits single batch size for coordinator dispatch checks
               </span>
             </div>

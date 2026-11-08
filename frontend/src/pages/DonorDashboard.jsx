@@ -626,10 +626,13 @@ export default function DonorDashboard() {
                 min="1"
                 required
                 className="form-input"
-                placeholder="e.g. 50"
+                placeholder="e.g. 50 (Please enter number of meals)"
                 value={quantityMeals}
                 onChange={(e) => setQuantityMeals(e.target.value)}
               />
+              <span style={{ fontSize: '0.74rem', color: '#382C25', marginTop: '0.25rem', display: 'block', fontWeight: 500 }}>
+                Total meal portions ready for redistribution
+              </span>
             </div>
           </div>
 
