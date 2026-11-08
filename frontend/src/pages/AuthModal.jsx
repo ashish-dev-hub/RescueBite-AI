@@ -1073,6 +1073,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 min="1"
                 required
                 className="form-input"
+                placeholder="e.g. 100 (Please enter number of meals)"
                 value={receivingCapacity}
                 onChange={(e) => setReceivingCapacity(e.target.value)}
               />
