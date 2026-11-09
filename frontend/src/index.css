@@ -578,6 +578,37 @@ input, select, textarea {
   opacity: 0.55;
 }
 
+/* Password visibility toggle button ergonomics */
+.password-toggle-btn {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #FFFDF9;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted-slate, #382C25);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  z-index: 20;
+}
+
+.password-toggle-btn:hover {
+  background-color: #F5EFE3;
+  color: var(--color-deep-forest, #2C221E);
+}
+
+.password-toggle-btn:focus-visible {
+  outline: 2px solid var(--color-network-green);
+  outline-offset: 1px;
+}
+
 /* Remove default browser reveal button so custom eye icon works seamlessly */
 input::-ms-reveal,
 input::-ms-clear {

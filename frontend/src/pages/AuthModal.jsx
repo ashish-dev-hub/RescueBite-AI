@@ -63,6 +63,15 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [address, setAddress] = useState('');
   const [receivingCapacity, setReceivingCapacity] = useState('');
 
+  const sanitizeEmailInput = (val) => {
+    // Strip emojis, non-ASCII characters, and whitespace in real-time
+    return val.replace(/[^\x21-\x7E]/g, '');
+  };
+
+  const isValidEmail = (val) => {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val.trim());
+  };
+
   // Reset mode to initialMode when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -168,6 +177,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+
+    if (!isValidEmail(loginEmail)) {
+      setError('Please enter a valid email address (e.g. name@organization.com).');
+      return;
+    }
+
     setLoading(true);
     try {
       const loggedUser = await login(loginEmail.trim(), loginPassword);
@@ -184,6 +199,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+
+    if (!isValidEmail(email)) {
+      setError('Please enter a valid email address (e.g. name@domain.com).');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
     setLoading(true);
     try {
       const registeredUser = await register({
@@ -208,6 +233,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+
+    if (!isValidEmail(forgotEmail)) {
+      setError('Please enter a valid registered email address.');
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await forgotPassword(forgotEmail.trim());
@@ -531,7 +562,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 className="form-input"
                 placeholder="name@organization.com"
                 value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
+                onChange={(e) => setLoginEmail(sanitizeEmailInput(e.target.value))}
               />
             </div>
             <div className="form-group" style={{ marginBottom: '0.4rem' }}>
@@ -544,30 +575,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                  style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowLoginPassword((prev) => !prev)}
-                  style={{
-                  position: 'absolute',
-                  right: '0.25rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #382C25)',
-                  zIndex: 20,
-                  }}
+                  className="password-toggle-btn"
                   aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
                   title={showLoginPassword ? 'Hide password' : 'Show password'}
                 >
@@ -576,13 +589,36 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               </div>
             </div>
 
-            
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.45rem', marginBottom: '0.2rem' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setForgotEmail(loginEmail);
+                  setMode('forgot');
+                  setError('');
+                  setSuccessMsg('');
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-network-green, #1F6F43)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '0.2rem 0',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px',
+                }}
+              >
+                Forgot password?
+              </button>
+            </div>
 
             <button
               type="submit"
               disabled={loading}
               className="btn btn-primary"
-              style={{ width: '100%', marginTop: '1.25rem' }}
+              style={{ width: '100%', marginTop: '0.85rem' }}
             >
               {loading ? 'Authenticating...' : 'Sign In'}
             </button>
@@ -627,7 +663,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 className="form-input"
                 placeholder="name@organization.com"
                 value={forgotEmail}
-                onChange={(e) => setForgotEmail(e.target.value)}
+                onChange={(e) => setForgotEmail(sanitizeEmailInput(e.target.value))}
                 style={{ width: '100%', paddingLeft: '2.4rem', boxSizing: 'border-box' }}
               />
               <Mail
@@ -738,31 +774,14 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="At least 6 characters"
                 value={resetNewPassword}
                 onChange={(e) => setResetNewPassword(e.target.value)}
-                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowResetPassword((prev) => !prev)}
-                style={{
-                  position: 'absolute',
-                  right: '0.25rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #382C25)',
-                  zIndex: 20,
-                }}
+                className="password-toggle-btn"
                 aria-label={showResetPassword ? 'Hide password' : 'Show password'}
+                title={showResetPassword ? 'Hide password' : 'Show password'}
               >
                 {showResetPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -779,31 +798,14 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="Re-type new password"
                 value={resetConfirmPassword}
                 onChange={(e) => setResetConfirmPassword(e.target.value)}
-                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
-                style={{
-                  position: 'absolute',
-                  right: '0.25rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #382C25)',
-                  zIndex: 20,
-                }}
+                className="password-toggle-btn"
                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                title={showConfirmPassword ? 'Hide password' : 'Show password'}
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -1007,7 +1009,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               className="form-input"
               placeholder="name@domain.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(sanitizeEmailInput(e.target.value))}
             />
           </div>
 
@@ -1021,30 +1023,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowRegisterPassword((prev) => !prev)}
-                style={{
-                  position: 'absolute',
-                  right: '0.25rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #382C25)',
-                  zIndex: 20,
-                }}
+                className="password-toggle-btn"
                 aria-label={showRegisterPassword ? 'Hide password' : 'Show password'}
                 title={showRegisterPassword ? 'Hide password' : 'Show password'}
               >
