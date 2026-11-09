@@ -63,6 +63,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [address, setAddress] = useState('');
   const [receivingCapacity, setReceivingCapacity] = useState('');
 
+  const sanitizeEmailInput = (val) => {
+    // Strip emojis, non-ASCII characters, and whitespace in real-time
+    return val.replace(/[^\x21-\x7E]/g, '');
+  };
+
   // Reset mode to initialMode when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -531,7 +536,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 className="form-input"
                 placeholder="name@organization.com"
                 value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
+                onChange={(e) => setLoginEmail(sanitizeEmailInput(e.target.value))}
               />
             </div>
             <div className="form-group" style={{ marginBottom: '0.4rem' }}>
@@ -626,7 +631,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 className="form-input"
                 placeholder="name@organization.com"
                 value={forgotEmail}
-                onChange={(e) => setForgotEmail(e.target.value)}
+                onChange={(e) => setForgotEmail(sanitizeEmailInput(e.target.value))}
                 style={{ width: '100%', paddingLeft: '2.4rem', boxSizing: 'border-box' }}
               />
               <Mail
@@ -1006,7 +1011,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               className="form-input"
               placeholder="name@domain.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(sanitizeEmailInput(e.target.value))}
             />
           </div>
 
