@@ -544,29 +544,28 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                  style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowLoginPassword((prev) => !prev)}
                   style={{
-                  position: 'absolute',
-                  right: '0.25rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--color-muted-slate, #382C25)',
-                  zIndex: 20,
+                    position: 'absolute',
+                    right: '0.4rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    backgroundColor: '#FFFDF9',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    padding: 0,
+                    width: '36px',
+                    height: '36px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--color-muted-slate, #382C25)',
+                    zIndex: 20,
                   }}
                   aria-label={showLoginPassword ? 'Hide password' : 'Show password'}
                   title={showLoginPassword ? 'Hide password' : 'Show password'}
