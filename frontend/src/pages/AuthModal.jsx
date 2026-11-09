@@ -791,24 +791,23 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="At least 6 characters"
                 value={resetNewPassword}
                 onChange={(e) => setResetNewPassword(e.target.value)}
-                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowResetPassword((prev) => !prev)}
                 style={{
                   position: 'absolute',
-                  right: '0.25rem',
+                  right: '0.4rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  background: 'none',
+                  backgroundColor: '#FFFDF9',
                   border: 'none',
+                  borderRadius: '8px',
                   cursor: 'pointer',
                   padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
+                  width: '36px',
+                  height: '36px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -832,24 +831,23 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="Re-type new password"
                 value={resetConfirmPassword}
                 onChange={(e) => setResetConfirmPassword(e.target.value)}
-                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                 style={{
                   position: 'absolute',
-                  right: '0.25rem',
+                  right: '0.4rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  background: 'none',
+                  backgroundColor: '#FFFDF9',
                   border: 'none',
+                  borderRadius: '8px',
                   cursor: 'pointer',
                   padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
+                  width: '36px',
+                  height: '36px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1074,24 +1072,23 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
                 placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                style={{ width: '100%', paddingRight: '2.6rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', paddingRight: '3.25rem', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowRegisterPassword((prev) => !prev)}
                 style={{
                   position: 'absolute',
-                  right: '0.25rem',
+                  right: '0.4rem',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  background: 'none',
+                  backgroundColor: '#FFFDF9',
                   border: 'none',
+                  borderRadius: '8px',
                   cursor: 'pointer',
                   padding: 0,
-                  width: '44px',
-                  height: '44px',
-                  minWidth: '44px',
-                  minHeight: '44px',
+                  width: '36px',
+                  height: '36px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
