@@ -68,6 +68,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     return val.replace(/[^\x21-\x7E]/g, '');
   };
 
+  const isValidEmail = (val) => {
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val.trim());
+  };
+
   // Reset mode to initialMode when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -173,6 +177,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+
+    if (!isValidEmail(loginEmail)) {
+      setError('Please enter a valid email address (e.g. name@organization.com).');
+      return;
+    }
+
     setLoading(true);
     try {
       const loggedUser = await login(loginEmail.trim(), loginPassword);
@@ -189,6 +199,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+
+    if (!isValidEmail(email)) {
+      setError('Please enter a valid email address (e.g. name@domain.com).');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
     setLoading(true);
     try {
       const registeredUser = await register({
@@ -213,6 +233,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
     e.preventDefault();
     setError('');
     setSuccessMsg('');
+
+    if (!isValidEmail(forgotEmail)) {
+      setError('Please enter a valid registered email address.');
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await forgotPassword(forgotEmail.trim());
