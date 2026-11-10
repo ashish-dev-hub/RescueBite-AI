@@ -17,7 +17,7 @@ async function safeFetch(url, options = {}) {
     const msg = err?.message || '';
     if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Load failed')) {
       throw new Error(
-        'Backend connection failed: Your Render backend service is currently suspended or starting up. Please check your Render dashboard to resume it.'
+        'Backend connection failed: Please verify that your backend API is deployed and running, and check that VITE_API_BASE_URL is properly configured in your Vercel project environment variables.'
       );
     }
     throw err;
