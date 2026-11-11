@@ -528,13 +528,17 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               <span style={{
                 fontSize: '0.7rem',
                 fontWeight: 700,
-                color: 'var(--color-terracotta)',
-                backgroundColor: '#FFF4ED',
-                padding: '0.15rem 0.5rem',
-                borderRadius: '4px',
-                border: '1px solid #FAD5C5',
+                color: 'var(--color-forest-green)',
+                backgroundColor: 'var(--color-soft-mint)',
+                padding: '0.18rem 0.55rem',
+                borderRadius: '9999px',
+                border: '1px solid var(--color-soft-mint-border)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
               }}>
-                Sample data
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-forest-green)' }}></span>
+                Live Preview
               </span>
             </div>
 
