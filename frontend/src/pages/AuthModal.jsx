@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Modal from '../components/Modal';
+import LiveLocationPicker from '../components/LiveLocationPicker';
 import { useAuth } from '../context/AuthContext';
 import { Building, Soup, Compass, AlertCircle, Eye, EyeOff, CheckCircle2, ArrowLeft, KeyRound, Mail, RefreshCw } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
@@ -61,6 +62,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
+  const [coordinates, setCoordinates] = useState(null);
   const [receivingCapacity, setReceivingCapacity] = useState('');
 
   const sanitizeEmailInput = (val) => {
@@ -82,10 +84,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
   }, [isOpen, initialMode]);
 
   // Keep latest registration context in a ref so GoogleLogin callbacks never need to re-create
-  const regContextRef = useRef({ mode, registerRole, organization, address, receivingCapacity });
+  const regContextRef = useRef({ mode, registerRole, organization, address, receivingCapacity, coordinates });
   useEffect(() => {
-    regContextRef.current = { mode, registerRole, organization, address, receivingCapacity };
-  }, [mode, registerRole, organization, address, receivingCapacity]);
+    regContextRef.current = { mode, registerRole, organization, address, receivingCapacity, coordinates };
+  }, [mode, registerRole, organization, address, receivingCapacity, coordinates]);
 
   // Stable Google Auth success handler
   const handleGoogleSuccessCallback = useCallback(
@@ -94,11 +96,14 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       setError('');
       setLoading(true);
       try {
-        const { mode: currentMode, registerRole: currentRole, organization: currentOrg, address: currentAddr, receivingCapacity: currentCap } = regContextRef.current;
+        const { mode: currentMode, registerRole: currentRole, organization: currentOrg, address: currentAddr, receivingCapacity: currentCap, coordinates: currentCoords } = regContextRef.current;
         const extraData = currentMode === 'register' ? {
           role: currentRole,
           organization: currentOrg,
-          location: { address: currentAddr },
+          location: {
+            address: currentAddr,
+            coordinates: currentCoords || { lat: 0, lng: 0 },
+          },
           receivingCapacity: currentRole === 'ngo' ? (parseInt(currentCap, 10) || 0) : 0,
         } : {};
 
@@ -217,7 +222,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
         password,
         role: registerRole,
         organization: organization.trim(),
-        location: { address: address.trim() },
+        location: {
+          address: address.trim(),
+          coordinates: coordinates || { lat: 0, lng: 0 },
+        },
         receivingCapacity: registerRole === 'ngo' ? parseInt(receivingCapacity, 10) : 0,
       });
       if (onSuccess) onSuccess(registeredUser);
@@ -1046,6 +1054,14 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               placeholder="Street, City, Postal Code"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+            />
+            <LiveLocationPicker
+              compact
+              currentCoordinates={coordinates}
+              onLocationDetected={({ address: detectedAddr, coordinates: detectedCoords }) => {
+                if (detectedAddr) setAddress(detectedAddr);
+                if (detectedCoords) setCoordinates(detectedCoords);
+              }}
             />
           </div>
 

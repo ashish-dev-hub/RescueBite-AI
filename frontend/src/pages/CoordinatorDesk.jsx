@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
+import locationService from '../services/locationService';
 import StatusBadge from '../components/StatusBadge';
 import ReasonCodeBadge from '../components/ReasonCodeBadge';
 import {
@@ -22,6 +23,8 @@ export default function CoordinatorDesk() {
   const [demands, setDemands] = useState([]);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [approvedQty, setApprovedQty] = useState(0);
+  const [osrmRoute, setOsrmRoute] = useState(null);
+  const [loadingRoute, setLoadingRoute] = useState(false);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('desk'); // 'desk' | 'lifecycle'
@@ -117,6 +120,34 @@ export default function CoordinatorDesk() {
       setActionLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!selectedMatch) {
+      setOsrmRoute(null);
+      return;
+    }
+    const donorCoords = selectedMatch.donation?.location?.coordinates;
+    const ngoCoords = selectedMatch.demand?.location?.coordinates || selectedMatch.ngo?.location?.coordinates;
+
+    const hasValidCoords =
+      donorCoords?.lat &&
+      donorCoords?.lng &&
+      ngoCoords?.lat &&
+      ngoCoords?.lng &&
+      (donorCoords.lat !== 0 || donorCoords.lng !== 0) &&
+      (ngoCoords.lat !== 0 || ngoCoords.lng !== 0);
+
+    if (hasValidCoords) {
+      setLoadingRoute(true);
+      locationService
+        .getDrivingRoute(donorCoords, ngoCoords)
+        .then((route) => setOsrmRoute(route))
+        .catch(() => setOsrmRoute(null))
+        .finally(() => setLoadingRoute(false));
+    } else {
+      setOsrmRoute(null);
+    }
+  }, [selectedMatch]);
 
   return (
     <div>
@@ -700,12 +731,22 @@ export default function CoordinatorDesk() {
                   fontSize: '0.82rem',
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                    <span style={{ color: 'var(--color-muted-slate)' }}>Haversine Distance:</span>
-                    <strong>{selectedMatch.distanceKm} km</strong>
+                    <span style={{ color: 'var(--color-muted-slate)' }}>Road Transit Distance:</span>
+                    <strong>{osrmRoute ? `${osrmRoute.distanceKm} km` : `${selectedMatch.distanceKm} km`}</strong>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--color-muted-slate)' }}>Est. Transit Time:</span>
-                    <strong>~{Math.round(selectedMatch.distanceKm * 2.8)} mins</strong>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                    <span style={{ color: 'var(--color-muted-slate)' }}>Est. Driving Transit Time:</span>
+                    <strong>{osrmRoute ? `~${osrmRoute.durationMins} mins` : `~${Math.round(selectedMatch.distanceKm * 2.8)} mins`}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--color-forest-green)', marginTop: '0.25rem', paddingTop: '0.25rem', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                    <span>Routing Source:</span>
+                    <span style={{ fontWeight: 700 }}>
+                      {loadingRoute
+                        ? 'Calculating OSRM Route...'
+                        : osrmRoute?.routeSource === 'osrm'
+                        ? '● OSRM Live Road Network'
+                        : '● Real Haversine Vector'}
+                    </span>
                   </div>
                 </div>
 
