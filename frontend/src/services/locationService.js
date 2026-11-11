@@ -2,9 +2,9 @@
  * RescueBite AI — Location & Routing Service
  *
  * Integrates:
- * 1. Browser Native Geolocation API (navigator.geolocation) for exact live GPS coordinates.
- * 2. Automatic Network IP Geolocation fallback for when device GPS is restricted by OS or browser settings.
- * 3. OpenStreetMap Nominatim API for 100% free forward and reverse geocoding (no API key required).
+ * 1. Dual-Pass Browser Geolocation (Wi-Fi triangulation + GPS satellite) with 15s timeout.
+ * 2. OpenStreetMap Nominatim API for forward/reverse geocoding and live street search.
+ * 3. Internet Provider IP Geolocation as an emergency secondary fallback.
  * 4. OSRM (Open Source Routing Machine) API for real road driving distance and transit duration calculations.
  */
 
@@ -26,7 +26,8 @@ export function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
 export const locationService = {
   /**
    * Fetch approximate location via IP Geolocation (Zero permission required)
-   * Fallback for when device GPS is disabled in Windows or browser permissions are blocked.
+   * Note: IP Geolocation identifies the regional telecom internet gateway (ISP node),
+   * not the exact building or room.
    */
   async getIpLocation() {
     try {
@@ -47,13 +48,13 @@ export const locationService = {
             state: data.region || '',
             postalCode: data.postal || '',
             address: [data.city, data.region, data.country_name].filter(Boolean).join(', '),
-            accuracy: 2500, // ~2.5km locality accuracy
+            accuracy: 5000, // Regional telecom hub
             source: 'ip',
           };
         }
       }
     } catch (e) {
-      // Attempt secondary free provider
+      // Secondary fallback
     }
 
     try {
@@ -71,7 +72,7 @@ export const locationService = {
             state: data.region || '',
             postalCode: data.postal || '',
             address: [data.city, data.region, data.country].filter(Boolean).join(', '),
-            accuracy: 3000,
+            accuracy: 5000,
             source: 'ip',
           };
         }
@@ -84,15 +85,16 @@ export const locationService = {
   },
 
   /**
-   * Request real-time live GPS coordinates from the device / browser with automatic IP fallback
-   * @param {Object} options - Geolocation position options
-   * @returns {Promise<{ lat: number, lng: number, accuracy: number, source: 'gps' | 'ip' }>}
+   * Request real-time live location with dual-pass accuracy:
+   * Pass 1: Wi-Fi triangulation (enableHighAccuracy: false) - fastest & most reliable on laptops/PCs.
+   * Pass 2: Hardware GPS (enableHighAccuracy: true) - for mobile/GPS devices.
+   * Pass 3: Regional IP fallback with clear user indication.
    */
-  async getCurrentPosition(options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }) {
-    // 1. Attempt Native Browser GPS
+  async getCurrentPosition() {
     if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      // Pass 1: Standard Wi-Fi / Cell positioning (uses Google/Windows Wi-Fi BSSID database, ~15-50m accuracy)
       try {
-        const gpsResult = await new Promise((resolve, reject) => {
+        const wifiResult = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(
             (pos) => {
               resolve({
@@ -103,16 +105,45 @@ export const locationService = {
               });
             },
             (err) => reject(err),
-            options
+            {
+              enableHighAccuracy: false,
+              timeout: 10000,
+              maximumAge: 60000,
+            }
           );
         });
-        return gpsResult;
-      } catch (gpsErr) {
-        console.warn('[LocationService] Browser GPS attempt failed, activating IP network fallback:', gpsErr.message);
+        return wifiResult;
+      } catch (pass1Err) {
+        console.warn('[LocationService] Wi-Fi positioning attempt failed, trying high accuracy pass:', pass1Err.message);
+      }
+
+      // Pass 2: High accuracy GPS pass
+      try {
+        const highAccResult = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              resolve({
+                lat: Number(pos.coords.latitude.toFixed(6)),
+                lng: Number(pos.coords.longitude.toFixed(6)),
+                accuracy: Math.round(pos.coords.accuracy),
+                source: 'gps',
+              });
+            },
+            (err) => reject(err),
+            {
+              enableHighAccuracy: true,
+              timeout: 12000,
+              maximumAge: 30000,
+            }
+          );
+        });
+        return highAccResult;
+      } catch (pass2Err) {
+        console.warn('[LocationService] High accuracy GPS attempt failed:', pass2Err.message);
       }
     }
 
-    // 2. Seamless IP Geolocation Fallback
+    // Pass 3: Regional IP gateway fallback
     const ipLocation = await this.getIpLocation();
     if (ipLocation) {
       return {
@@ -127,7 +158,7 @@ export const locationService = {
       };
     }
 
-    throw new Error('Location access is restricted. Please check your browser or Windows location permissions, or type your address manually.');
+    throw new Error('Location could not be determined automatically. Please type your actual street or colony address in the input above.');
   },
 
   /**
@@ -182,6 +213,55 @@ export const locationService = {
         postalCode: '',
         displayName: `Lat ${lat}, Lng ${lng}`,
       };
+    }
+  },
+
+  /**
+   * Search addresses & localities using OpenStreetMap Nominatim
+   * @param {string} query - Street, colony, or city query
+   * @returns {Promise<Array<{ displayName: string, lat: number, lng: number, city: string, state: string }>>}
+   */
+  async searchAddresses(query) {
+    if (!query || query.trim().length < 3) return [];
+
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(
+        query.trim()
+      )}&limit=5&addressdetails=1`;
+
+      const response = await fetch(url, {
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': 'RescueBiteAI-CivicFoodRedistribution/1.0',
+        },
+      });
+
+      if (!response.ok) return [];
+
+      const results = await response.json();
+      if (!Array.isArray(results)) return [];
+
+      return results.map((item) => {
+        const addr = item.address || {};
+        const road = addr.road || addr.street || '';
+        const locality = addr.suburb || addr.neighbourhood || '';
+        const city = addr.city || addr.town || addr.village || '';
+        const state = addr.state || '';
+        const formatted = [road, locality, city, state].filter(Boolean).join(', ') || item.display_name;
+
+        return {
+          displayName: formatted,
+          fullDisplayName: item.display_name,
+          lat: Number(parseFloat(item.lat).toFixed(6)),
+          lng: Number(parseFloat(item.lon).toFixed(6)),
+          city,
+          state,
+          postalCode: addr.postcode || '',
+        };
+      });
+    } catch (err) {
+      console.warn('[LocationService] Street search failed:', err.message);
+      return [];
     }
   },
 
@@ -246,7 +326,6 @@ export const locationService = {
     }
 
     try {
-      // OSRM expects coordinates in {lon},{lat} format
       const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=false&steps=false`;
 
       const controller = new AbortController();
@@ -273,7 +352,6 @@ export const locationService = {
       }
       throw new Error('No driving route returned by OSRM');
     } catch (err) {
-      // Graceful fallback to Haversine distance with 25 km/h urban traffic assumption
       const distanceKm = calculateHaversineDistance(origin.lat, origin.lng, destination.lat, destination.lng);
       const durationMins = Math.max(3, Math.round((distanceKm / 25) * 60));
 
