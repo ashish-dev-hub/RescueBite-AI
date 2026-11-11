@@ -31,6 +31,8 @@ async function handleResponse(response) {
     if (!errorMsg) {
       if (response.status === 405) {
         errorMsg = 'Backend API is not connected. Please set VITE_API_BASE_URL in your Vercel project settings.';
+      } else if (response.status === 502) {
+        errorMsg = 'Backend server is not running or unreachable on port 5000. Please start your backend using "npm run dev:backend" and verify your MONGO_URI in backend/.env.';
       } else if (response.status === 404) {
         errorMsg = 'API endpoint not found. Please verify your backend URL.';
       } else {
