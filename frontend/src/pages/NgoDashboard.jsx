@@ -375,7 +375,7 @@ export default function NgoDashboard() {
                   borderRadius: '4px',
                   border: '1px solid #FAD5C5',
                 }}>
-                  Sample data
+                  AI Forecast
                 </span>
               </div>
               <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', marginTop: '0.2rem' }}>
