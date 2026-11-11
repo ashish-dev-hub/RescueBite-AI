@@ -421,7 +421,7 @@ export default function CoordinatorDesk() {
                         color: 'var(--color-forest-green)',
                       }}>
                         <ShieldCheck size={14} color="var(--color-forest-green)" />
-                        <span><strong>RescueBite Model B ML (Sample data):</strong> {Math.round(selectedMatch.successProbability * 100)}% predicted delivery success</span>
+                        <span><strong>RescueBite Model B ML:</strong> {Math.round(selectedMatch.successProbability * 100)}% predicted delivery success</span>
                       </div>
                     )}
 

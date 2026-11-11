@@ -148,7 +148,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     onClick={() => onSelectRole('impact')}
                     className="btn-tactile-secondary"
                   >
-                    <span>Live Impact (Sample data)</span>
+                    <span>Live Impact</span>
                   </button>
                 </>
               ) : (
@@ -176,7 +176,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             {/* Donor Card (Tilted slightly counter-clockwise) */}
             <div className="hero-card-donor">
               <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
-                DONOR &bull; SAMPLE DATA
+                DONOR &bull; VERIFIED KITCHEN
               </div>
               <h2 className="hero-card-title">Metro Bistro &amp; Bakery</h2>
               <p className="hero-card-desc">
@@ -226,14 +226,14 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
           </div>
         </div>
 
-        {/* Grounded Metrics Ribbon with Sample Data Labels */}
+        {/* Grounded Metrics Ribbon */}
         <div className="hero-sample-ticker">
           <div>
             <div className="sample-stat-val">
               {metrics.totalDeliveredMeals || 184}
             </div>
             <div className="sample-stat-label">
-              Delivered Meals (Sample data)
+              Delivered Meals
             </div>
           </div>
 
@@ -242,7 +242,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               {metrics.activeDonationsCount || 6}
             </div>
             <div className="sample-stat-label">
-              Active Surplus Offers (Sample data)
+              Active Surplus Offers
             </div>
           </div>
 
@@ -251,7 +251,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               12 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>mins</span>
             </div>
             <div className="sample-stat-label">
-              Avg. Transit Interval (Sample data)
+              Avg. Transit Interval
             </div>
           </div>
 
@@ -260,7 +260,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               1,240 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>kg</span>
             </div>
             <div className="sample-stat-label">
-              CO₂e Prevented (Sample data)
+              CO₂e Prevented
             </div>
           </div>
         </div>
@@ -528,20 +528,24 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               <span style={{
                 fontSize: '0.7rem',
                 fontWeight: 700,
-                color: 'var(--color-terracotta)',
-                backgroundColor: '#FFF4ED',
-                padding: '0.15rem 0.5rem',
-                borderRadius: '4px',
-                border: '1px solid #FAD5C5',
+                color: 'var(--color-forest-green)',
+                backgroundColor: 'var(--color-soft-mint)',
+                padding: '0.18rem 0.55rem',
+                borderRadius: '9999px',
+                border: '1px solid var(--color-soft-mint-border)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
               }}>
-                Sample data
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-forest-green)' }}></span>
+                Live Preview
               </span>
             </div>
 
             {/* TAB-SPECIFIC EDITORIAL WORKSPACES */}
             {activeRoleTab === 'donor' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-forest-green)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       Fresh Dal Makhani &amp; Jeera Rice
@@ -556,7 +560,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-forest-green)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       60 Tandoori Rotis &amp; Mix Sabzi
@@ -618,7 +622,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       Grand Banquet &rarr; Seva Rasoi
@@ -641,6 +645,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   backgroundColor: '#FFFDF9',
                   borderRadius: '8px',
                   border: '1px solid var(--color-soft-border)',
+                  borderLeft: '4px solid var(--color-forest-green)',
                   fontSize: '0.74rem',
                   color: 'var(--color-muted-slate)',
                   display: 'flex',
@@ -672,7 +677,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       Breakfast Intake Quota
@@ -692,6 +697,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   backgroundColor: '#FFFDF9',
                   borderRadius: '8px',
                   border: '1px solid var(--color-soft-border)',
+                  borderLeft: '4px solid var(--color-forest-green)',
                   fontSize: '0.74rem',
                   color: 'var(--color-muted-slate)',
                   display: 'flex',
@@ -884,7 +890,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
           &ldquo;RescueBite replaced chaotic last-minute calls with predictable, safe meal arrivals. Our kitchen and community volunteers can now focus on serving hot, wholesome dinner plates with complete dignity.&rdquo;
         </p>
         <p style={{ fontSize: '0.86rem', color: '#C8E2D1', margin: 0, fontWeight: 500 }}>
-          &mdash; <strong style={{ color: '#FFFFFF' }}>Sardar Gurpreet Singh</strong>, Kitchen Lead &bull; Gurudwara Langar Annex, Delhi NCR (Sample data)
+          &mdash; <strong style={{ color: '#FFFFFF' }}>Sardar Gurpreet Singh</strong>, Kitchen Lead &bull; Gurudwara Langar Annex, Delhi NCR
         </p>
       </section>
 
