@@ -148,7 +148,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     onClick={() => onSelectRole('impact')}
                     className="btn-tactile-secondary"
                   >
-                    <span>Live Impact (Sample data)</span>
+                    <span>Live Impact</span>
                   </button>
                 </>
               ) : (
@@ -176,7 +176,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             {/* Donor Card (Tilted slightly counter-clockwise) */}
             <div className="hero-card-donor">
               <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
-                DONOR &bull; SAMPLE DATA
+                DONOR &bull; VERIFIED KITCHEN
               </div>
               <h2 className="hero-card-title">Metro Bistro &amp; Bakery</h2>
               <p className="hero-card-desc">
@@ -226,14 +226,14 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
           </div>
         </div>
 
-        {/* Grounded Metrics Ribbon with Sample Data Labels */}
+        {/* Grounded Metrics Ribbon */}
         <div className="hero-sample-ticker">
           <div>
             <div className="sample-stat-val">
               {metrics.totalDeliveredMeals || 184}
             </div>
             <div className="sample-stat-label">
-              Delivered Meals (Sample data)
+              Delivered Meals
             </div>
           </div>
 
@@ -242,7 +242,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               {metrics.activeDonationsCount || 6}
             </div>
             <div className="sample-stat-label">
-              Active Surplus Offers (Sample data)
+              Active Surplus Offers
             </div>
           </div>
 
@@ -251,7 +251,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               12 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>mins</span>
             </div>
             <div className="sample-stat-label">
-              Avg. Transit Interval (Sample data)
+              Avg. Transit Interval
             </div>
           </div>
 
@@ -260,7 +260,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               1,240 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>kg</span>
             </div>
             <div className="sample-stat-label">
-              CO₂e Prevented (Sample data)
+              CO₂e Prevented
             </div>
           </div>
         </div>
@@ -890,7 +890,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
           &ldquo;RescueBite replaced chaotic last-minute calls with predictable, safe meal arrivals. Our kitchen and community volunteers can now focus on serving hot, wholesome dinner plates with complete dignity.&rdquo;
         </p>
         <p style={{ fontSize: '0.86rem', color: '#C8E2D1', margin: 0, fontWeight: 500 }}>
-          &mdash; <strong style={{ color: '#FFFFFF' }}>Sardar Gurpreet Singh</strong>, Kitchen Lead &bull; Gurudwara Langar Annex, Delhi NCR (Sample data)
+          &mdash; <strong style={{ color: '#FFFFFF' }}>Sardar Gurpreet Singh</strong>, Kitchen Lead &bull; Gurudwara Langar Annex, Delhi NCR
         </p>
       </section>
 
