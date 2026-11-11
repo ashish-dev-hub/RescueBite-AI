@@ -2070,24 +2070,14 @@ input::-ms-clear {
   .timeline-step-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .score-breakdown-legend {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 @media (max-width: 640px) {
   .timeline-step-grid {
     grid-template-columns: 1fr;
   }
-  .score-breakdown-legend {
-    grid-template-columns: 1fr;
-  }
-  .timeline-bhojan-container,
-  .score-visual-card {
+  .timeline-bhojan-container {
     padding: 1.25rem 1rem;
-  }
-  .seg-label {
-    display: none;
   }
 }
 
