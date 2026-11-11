@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import StatusBadge from '../components/StatusBadge';
 import ReasonCodeBadge from '../components/ReasonCodeBadge';
 import Modal from '../components/Modal';
+import LiveLocationPicker from '../components/LiveLocationPicker';
 import {
   Soup,
   Plus,
@@ -54,6 +55,7 @@ export default function NgoDashboard() {
   const [beneficiaryCount, setBeneficiaryCount] = useState('');
   const [receivingCapacity, setReceivingCapacity] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [coordinates, setCoordinates] = useState(user?.location?.coordinates || null);
   const [neededBy, setNeededBy] = useState(() => getFutureDateTime(4));
   const [urgency, setUrgency] = useState('standard');
   const [notes, setNotes] = useState('');
@@ -159,7 +161,7 @@ export default function NgoDashboard() {
           address: (deliveryAddress && deliveryAddress.trim()) || user?.location?.address || 'NGO Shelter Kitchen',
           city: user?.location?.city || '',
           zip: user?.location?.zip || '',
-          coordinates: user?.location?.coordinates || { lat: 0, lng: 0 },
+          coordinates: coordinates || user?.location?.coordinates || { lat: 0, lng: 0 },
         },
       });
 
@@ -173,6 +175,7 @@ export default function NgoDashboard() {
       setBeneficiaryCount('');
       setReceivingCapacity(user?.receivingCapacity ? String(user.receivingCapacity) : '');
       setDeliveryAddress(user?.location?.address || '');
+      setCoordinates(user?.location?.coordinates || null);
       setDietaryPrefs([]);
       setNeededBy(getFutureDateTime(4));
       setNotes('');
@@ -942,6 +945,13 @@ export default function NgoDashboard() {
               placeholder={user?.location?.address ? `Default: ${user.location.address}` : 'Enter destination shelter or drop-off address'}
               value={deliveryAddress}
               onChange={(e) => setDeliveryAddress(e.target.value)}
+            />
+            <LiveLocationPicker
+              currentCoordinates={coordinates}
+              onLocationDetected={({ address: detectedAddr, coordinates: detectedCoords }) => {
+                if (detectedAddr) setDeliveryAddress(detectedAddr);
+                if (detectedCoords) setCoordinates(detectedCoords);
+              }}
             />
           </div>
 
