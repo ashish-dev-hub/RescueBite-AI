@@ -3,6 +3,7 @@ import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import StatusBadge from '../components/StatusBadge';
 import Modal from '../components/Modal';
+import LiveLocationPicker from '../components/LiveLocationPicker';
 import {
   Plus,
   Package,
@@ -53,6 +54,7 @@ export default function DonorDashboard() {
   const [dietaryTags, setDietaryTags] = useState([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [address, setAddress] = useState(user?.location?.address || '');
+  const [coordinates, setCoordinates] = useState(user?.location?.coordinates || null);
 
   const [aiSupplyForecast, setAiSupplyForecast] = useState(null);
 
@@ -117,7 +119,7 @@ export default function DonorDashboard() {
         specialInstructions,
         location: {
           address: address || user?.location?.address || 'Donor Kitchen Address',
-          coordinates: user?.location?.coordinates || { lat: 40.72, lng: -73.99 },
+          coordinates: coordinates || user?.location?.coordinates || { lat: 0, lng: 0 },
         },
       });
 
@@ -752,6 +754,13 @@ export default function DonorDashboard() {
               placeholder={user?.location?.address ? `Default: ${user.location.address}` : "e.g. Loading dock, Gate 2, 45 MG Road"}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+            />
+            <LiveLocationPicker
+              currentCoordinates={coordinates}
+              onLocationDetected={({ address: detectedAddr, coordinates: detectedCoords }) => {
+                if (detectedAddr) setAddress(detectedAddr);
+                if (detectedCoords) setCoordinates(detectedCoords);
+              }}
             />
           </div>
 
