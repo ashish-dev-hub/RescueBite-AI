@@ -5,6 +5,7 @@ import StatusBadge from '../components/StatusBadge';
 import ReasonCodeBadge from '../components/ReasonCodeBadge';
 import Modal from '../components/Modal';
 import LiveLocationPicker from '../components/LiveLocationPicker';
+import locationService from '../services/locationService';
 import {
   Soup,
   Plus,
@@ -945,6 +946,14 @@ export default function NgoDashboard() {
               placeholder={user?.location?.address ? `Default: ${user.location.address}` : 'Enter destination shelter or drop-off address'}
               value={deliveryAddress}
               onChange={(e) => setDeliveryAddress(e.target.value)}
+              onBlur={async () => {
+                if (deliveryAddress && deliveryAddress.trim().length > 3) {
+                  const geo = await locationService.forwardGeocode(deliveryAddress);
+                  if (geo) {
+                    setCoordinates({ lat: geo.lat, lng: geo.lng });
+                  }
+                }
+              }}
             />
             <LiveLocationPicker
               currentCoordinates={coordinates}

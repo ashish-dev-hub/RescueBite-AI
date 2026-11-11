@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import StatusBadge from '../components/StatusBadge';
 import Modal from '../components/Modal';
 import LiveLocationPicker from '../components/LiveLocationPicker';
+import locationService from '../services/locationService';
 import {
   Plus,
   Package,
@@ -754,6 +755,14 @@ export default function DonorDashboard() {
               placeholder={user?.location?.address ? `Default: ${user.location.address}` : "e.g. Loading dock, Gate 2, 45 MG Road"}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+              onBlur={async () => {
+                if (address && address.trim().length > 3) {
+                  const geo = await locationService.forwardGeocode(address);
+                  if (geo) {
+                    setCoordinates({ lat: geo.lat, lng: geo.lng });
+                  }
+                }
+              }}
             />
             <LiveLocationPicker
               currentCoordinates={coordinates}
