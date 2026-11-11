@@ -1758,7 +1758,7 @@ input::-ms-clear {
   font-weight: 700;
 }
 
-/* Sample data ribbon below hero */
+/* Live metrics ribbon below hero */
 .hero-sample-ticker {
   display: flex;
   gap: 2.5rem;
