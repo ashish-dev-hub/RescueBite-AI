@@ -32,10 +32,7 @@ const connectDB = async () => {
   } catch (error) {
     cachedConnection = null;
     console.error(`[MongoDB Connection Error]: ${error.message}`);
-    // In serverless environments (like Vercel), do not terminate process
-    if (!process.env.VERCEL) {
-      process.exit(1);
-    }
+    console.error('[MongoDB Hint]: Set MONGO_URI in backend/.env with your MongoDB Atlas connection string.');
     throw error;
   }
 };

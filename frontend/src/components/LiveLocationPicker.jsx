@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { MapPin, Navigation, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Navigation, Loader2, CheckCircle2, AlertCircle, Globe } from 'lucide-react';
 import locationService from '../services/locationService';
 
 /**
  * LiveLocationPicker Component
- * Allows donors, shelters, and coordinators to fetch real GPS coordinates
+ * Allows donors, shelters, and coordinators to fetch real GPS / network coordinates
  * and automatically resolve them to a street address via OpenStreetMap Nominatim.
  */
 export default function LiveLocationPicker({
@@ -14,7 +14,7 @@ export default function LiveLocationPicker({
   disabled = false,
 }) {
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: string, coords?: { lat, lng } }
+  const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: string, coords?: { lat, lng }, source?: 'gps' | 'ip' }
 
   const handleDetectLocation = async (e) => {
     if (e) e.preventDefault();
@@ -24,27 +24,46 @@ export default function LiveLocationPicker({
     setStatus(null);
 
     try {
-      // 1. Fetch live GPS coordinates from the device / browser
-      const coords = await locationService.getCurrentPosition();
+      // 1. Fetch live coordinates (browser GPS or automatic IP network fallback)
+      const locResult = await locationService.getCurrentPosition();
 
       // 2. Reverse geocode coordinates to street address via OpenStreetMap
-      const geoResult = await locationService.reverseGeocode(coords.lat, coords.lng);
+      let resolvedAddress = locResult.address || '';
+      let resolvedCity = locResult.city || '';
+      let resolvedState = locResult.state || '';
+      let resolvedPostal = locResult.postalCode || '';
+
+      try {
+        const geoResult = await locationService.reverseGeocode(locResult.lat, locResult.lng);
+        if (geoResult.address && !geoResult.address.startsWith('Lat ')) {
+          resolvedAddress = geoResult.address;
+          if (geoResult.city) resolvedCity = geoResult.city;
+          if (geoResult.state) resolvedState = geoResult.state;
+          if (geoResult.postalCode) resolvedPostal = geoResult.postalCode;
+        }
+      } catch (geoErr) {
+        // Fallback to coordinates or pre-existing IP address
+        if (!resolvedAddress) {
+          resolvedAddress = `${locResult.lat}, ${locResult.lng}`;
+        }
+      }
 
       setStatus({
         type: 'success',
-        message: 'Live GPS detected via OpenStreetMap',
-        coords: { lat: coords.lat, lng: coords.lng },
-        accuracy: coords.accuracy,
+        source: locResult.source || 'gps',
+        coords: { lat: locResult.lat, lng: locResult.lng },
+        accuracy: locResult.accuracy,
+        city: resolvedCity,
+        state: resolvedState,
       });
 
       if (onLocationDetected) {
         onLocationDetected({
-          address: geoResult.address,
-          city: geoResult.city,
-          state: geoResult.state,
-          postalCode: geoResult.postalCode,
-          coordinates: { lat: coords.lat, lng: coords.lng },
-          displayName: geoResult.displayName,
+          address: resolvedAddress,
+          city: resolvedCity,
+          state: resolvedState,
+          postalCode: resolvedPostal,
+          coordinates: { lat: locResult.lat, lng: locResult.lng },
         });
       }
     } catch (err) {
@@ -58,7 +77,12 @@ export default function LiveLocationPicker({
   };
 
   const coords = status?.coords || currentCoordinates;
-  const hasValidCoords = coords && coords.lat && coords.lng && (coords.lat !== 0 || coords.lng !== 0);
+  const hasValidCoords = Boolean(
+    coords &&
+    typeof coords.lat === 'number' &&
+    typeof coords.lng === 'number' &&
+    (coords.lat !== 0 || coords.lng !== 0)
+  );
 
   return (
     <div style={{ marginTop: '0.45rem', marginBottom: '0.45rem' }}>
@@ -87,7 +111,7 @@ export default function LiveLocationPicker({
           {loading ? (
             <>
               <Loader2 size={13} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
-              <span>Detecting Live GPS...</span>
+              <span>Detecting Location...</span>
             </>
           ) : (
             <>
@@ -112,9 +136,17 @@ export default function LiveLocationPicker({
               padding: '0.2rem 0.55rem',
             }}
           >
-            <CheckCircle2 size={12} color="var(--color-forest-green, #1F6F43)" />
-            <span>GPS: {Number(coords.lat).toFixed(4)}°, {Number(coords.lng).toFixed(4)}°</span>
-            {status?.accuracy && (
+            {status?.source === 'ip' ? (
+              <Globe size={12} color="var(--color-forest-green, #1F6F43)" />
+            ) : (
+              <CheckCircle2 size={12} color="var(--color-forest-green, #1F6F43)" />
+            )}
+            <span>
+              {status?.source === 'ip' && status?.city
+                ? `${status.city}${status.state ? `, ${status.state}` : ''} (Network)`
+                : `GPS: ${Number(coords.lat).toFixed(4)}°, ${Number(coords.lng).toFixed(4)}°`}
+            </span>
+            {status?.accuracy && status?.source === 'gps' && (
               <span style={{ fontSize: '0.68rem', color: '#685B52' }}>(&plusmn;{status.accuracy}m)</span>
             )}
           </span>

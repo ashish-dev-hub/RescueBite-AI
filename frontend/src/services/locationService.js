@@ -3,8 +3,9 @@
  *
  * Integrates:
  * 1. Browser Native Geolocation API (navigator.geolocation) for exact live GPS coordinates.
- * 2. OpenStreetMap Nominatim API for 100% free forward and reverse geocoding (no API key required).
- * 3. OSRM (Open Source Routing Machine) API for real road driving distance and transit duration calculations.
+ * 2. Automatic Network IP Geolocation fallback for when device GPS is restricted by OS or browser settings.
+ * 3. OpenStreetMap Nominatim API for 100% free forward and reverse geocoding (no API key required).
+ * 4. OSRM (Open Source Routing Machine) API for real road driving distance and transit duration calculations.
  */
 
 // Fallback Haversine formula to compute straight-line distance in km
@@ -24,38 +25,109 @@ export function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
 
 export const locationService = {
   /**
-   * Request real-time live GPS coordinates from the device / browser
-   * @param {Object} options - Geolocation position options
-   * @returns {Promise<{ lat: number, lng: number, accuracy: number }>}
+   * Fetch approximate location via IP Geolocation (Zero permission required)
+   * Fallback for when device GPS is disabled in Windows or browser permissions are blocked.
    */
-  async getCurrentPosition(options = { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }) {
-    if (!navigator || !navigator.geolocation) {
-      throw new Error('Geolocation is not supported by your browser.');
+  async getIpLocation() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4500);
+      const res = await fetch('https://ipapi.co/json/', {
+        signal: controller.signal,
+        headers: { Accept: 'application/json' },
+      });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.latitude && data.longitude) {
+          return {
+            lat: Number(parseFloat(data.latitude).toFixed(6)),
+            lng: Number(parseFloat(data.longitude).toFixed(6)),
+            city: data.city || '',
+            state: data.region || '',
+            postalCode: data.postal || '',
+            address: [data.city, data.region, data.country_name].filter(Boolean).join(', '),
+            accuracy: 2500, // ~2.5km locality accuracy
+            source: 'ip',
+          };
+        }
+      }
+    } catch (e) {
+      // Attempt secondary free provider
     }
 
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          resolve({
-            lat: Number(pos.coords.latitude.toFixed(6)),
-            lng: Number(pos.coords.longitude.toFixed(6)),
-            accuracy: Math.round(pos.coords.accuracy),
-          });
-        },
-        (err) => {
-          let errorMsg = 'Could not retrieve your live location.';
-          if (err.code === 1) {
-            errorMsg = 'Location permission was denied. Please allow location access in your browser settings.';
-          } else if (err.code === 2) {
-            errorMsg = 'Location unavailable. Please verify GPS or network connectivity.';
-          } else if (err.code === 3) {
-            errorMsg = 'Location request timed out. Please try again.';
-          }
-          reject(new Error(errorMsg));
-        },
-        options
-      );
-    });
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4500);
+      const res = await fetch('https://ipwho.is/', { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.latitude && data.longitude) {
+          return {
+            lat: Number(parseFloat(data.latitude).toFixed(6)),
+            lng: Number(parseFloat(data.longitude).toFixed(6)),
+            city: data.city || '',
+            state: data.region || '',
+            postalCode: data.postal || '',
+            address: [data.city, data.region, data.country].filter(Boolean).join(', '),
+            accuracy: 3000,
+            source: 'ip',
+          };
+        }
+      }
+    } catch (e) {
+      // Ignored
+    }
+
+    return null;
+  },
+
+  /**
+   * Request real-time live GPS coordinates from the device / browser with automatic IP fallback
+   * @param {Object} options - Geolocation position options
+   * @returns {Promise<{ lat: number, lng: number, accuracy: number, source: 'gps' | 'ip' }>}
+   */
+  async getCurrentPosition(options = { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }) {
+    // 1. Attempt Native Browser GPS
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      try {
+        const gpsResult = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              resolve({
+                lat: Number(pos.coords.latitude.toFixed(6)),
+                lng: Number(pos.coords.longitude.toFixed(6)),
+                accuracy: Math.round(pos.coords.accuracy),
+                source: 'gps',
+              });
+            },
+            (err) => reject(err),
+            options
+          );
+        });
+        return gpsResult;
+      } catch (gpsErr) {
+        console.warn('[LocationService] Browser GPS attempt failed, activating IP network fallback:', gpsErr.message);
+      }
+    }
+
+    // 2. Seamless IP Geolocation Fallback
+    const ipLocation = await this.getIpLocation();
+    if (ipLocation) {
+      return {
+        lat: ipLocation.lat,
+        lng: ipLocation.lng,
+        accuracy: ipLocation.accuracy,
+        source: 'ip',
+        city: ipLocation.city,
+        state: ipLocation.state,
+        postalCode: ipLocation.postalCode,
+        address: ipLocation.address,
+      };
+    }
+
+    throw new Error('Location access is restricted. Please check your browser or Windows location permissions, or type your address manually.');
   },
 
   /**
@@ -73,7 +145,6 @@ export const locationService = {
       const response = await fetch(url, {
         headers: {
           Accept: 'application/json',
-          // Nominatim requires a user-agent identification
           'User-Agent': 'RescueBiteAI-CivicFoodRedistribution/1.0',
         },
       });
@@ -179,7 +250,7 @@ export const locationService = {
       const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=false&steps=false`;
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
 
       const response = await fetch(url, { signal: controller.signal });
       clearTimeout(timeoutId);
@@ -191,8 +262,8 @@ export const locationService = {
       const data = await response.json();
       if (data.code === 'Ok' && Array.isArray(data.routes) && data.routes.length > 0) {
         const route = data.routes[0];
-        const distanceKm = Number((route.distance / 1000).toFixed(1)); // meters to km
-        const durationMins = Math.max(1, Math.round(route.duration / 60)); // seconds to minutes
+        const distanceKm = Number((route.distance / 1000).toFixed(1));
+        const durationMins = Math.max(1, Math.round(route.duration / 60));
 
         return {
           distanceKm,
@@ -204,7 +275,7 @@ export const locationService = {
     } catch (err) {
       // Graceful fallback to Haversine distance with 25 km/h urban traffic assumption
       const distanceKm = calculateHaversineDistance(origin.lat, origin.lng, destination.lat, destination.lng);
-      const durationMins = Math.max(3, Math.round((distanceKm / 25) * 60)); // 25 km/h urban speed
+      const durationMins = Math.max(3, Math.round((distanceKm / 25) * 60));
 
       return {
         distanceKm,
