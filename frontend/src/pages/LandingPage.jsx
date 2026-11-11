@@ -541,7 +541,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             {/* TAB-SPECIFIC EDITORIAL WORKSPACES */}
             {activeRoleTab === 'donor' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-forest-green)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       Fresh Dal Makhani &amp; Jeera Rice
@@ -556,7 +556,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-forest-green)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       60 Tandoori Rotis &amp; Mix Sabzi
