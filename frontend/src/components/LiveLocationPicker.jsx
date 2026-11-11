@@ -14,7 +14,7 @@ export default function LiveLocationPicker({
   disabled = false,
 }) {
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: string, coords?: { lat, lng }, source?: 'gps' | 'ip' }
+  const [status, setStatus] = useState(null);
 
   const handleDetectLocation = async (e) => {
     if (e) e.preventDefault();
@@ -24,7 +24,7 @@ export default function LiveLocationPicker({
     setStatus(null);
 
     try {
-      // 1. Fetch live coordinates (browser GPS or automatic IP network fallback)
+      // 1. Fetch live coordinates (Dual-pass Wi-Fi / GPS with ISP network fallback)
       const locResult = await locationService.getCurrentPosition();
 
       // 2. Reverse geocode coordinates to street address via OpenStreetMap
@@ -42,7 +42,6 @@ export default function LiveLocationPicker({
           if (geoResult.postalCode) resolvedPostal = geoResult.postalCode;
         }
       } catch (geoErr) {
-        // Fallback to coordinates or pre-existing IP address
         if (!resolvedAddress) {
           resolvedAddress = `${locResult.lat}, ${locResult.lng}`;
         }
@@ -64,6 +63,7 @@ export default function LiveLocationPicker({
           state: resolvedState,
           postalCode: resolvedPostal,
           coordinates: { lat: locResult.lat, lng: locResult.lng },
+          source: locResult.source || 'gps',
         });
       }
     } catch (err) {
@@ -143,7 +143,7 @@ export default function LiveLocationPicker({
             )}
             <span>
               {status?.source === 'ip' && status?.city
-                ? `${status.city}${status.state ? `, ${status.state}` : ''} (Network)`
+                ? `${status.city}${status.state ? `, ${status.state}` : ''} (ISP Hub)`
                 : `GPS: ${Number(coords.lat).toFixed(4)}°, ${Number(coords.lng).toFixed(4)}°`}
             </span>
             {status?.accuracy && status?.source === 'gps' && (
@@ -152,6 +152,12 @@ export default function LiveLocationPicker({
           </span>
         )}
       </div>
+
+      {status?.source === 'ip' && (
+        <p style={{ margin: '0.35rem 0 0 0', fontSize: '0.73rem', color: '#685B52', lineHeight: 1.4 }}>
+          ℹ️ <em>Detected via your internet network gateway ({status.city}). If your actual kitchen or shelter is elsewhere, you can directly type your street/city name above.</em>
+        </p>
+      )}
 
       {status?.type === 'error' && (
         <div
