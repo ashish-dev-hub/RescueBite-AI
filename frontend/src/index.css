@@ -2025,52 +2025,7 @@ input::-ms-clear {
 
 
 
-/* 4-Column Metric Breakdown Legend */
-.score-breakdown-legend {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-}
 
-.legend-col {
-  background-color: #FFFDF9;
-  border: 1px solid #DFD3BC;
-  border-radius: 14px;
-  padding: 1rem 1.1rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  box-shadow: 0 2px 0 #E3D7C1;
-  box-sizing: border-box;
-}
-
-.legend-indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-top: 4px;
-  flex-shrink: 0;
-}
-
-.dot-demand { background-color: #1F6F43; }
-.dot-urgency { background-color: #C44824; }
-.dot-proximity { background-color: #F2A33A; }
-.dot-storage { background-color: #4A7A68; }
-
-.legend-col strong {
-  display: block;
-  font-size: 0.88rem;
-  color: #2C221E;
-  margin-bottom: 0.25rem;
-}
-
-.legend-col p {
-  font-size: 0.86rem;
-  color: #2C221E;
-  font-weight: 500;
-  margin: 0;
-  line-height: 1.5;
-}
 
 /* Role Segmented Navigation Buttons */
 .role-segmented-nav {
