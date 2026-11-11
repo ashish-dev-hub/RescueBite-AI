@@ -618,7 +618,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       Grand Banquet &rarr; Seva Rasoi
@@ -641,6 +641,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   backgroundColor: '#FFFDF9',
                   borderRadius: '8px',
                   border: '1px solid var(--color-soft-border)',
+                  borderLeft: '4px solid var(--color-forest-green)',
                   fontSize: '0.74rem',
                   color: 'var(--color-muted-slate)',
                   display: 'flex',
@@ -672,7 +673,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   </div>
                 </div>
 
-                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
                       Breakfast Intake Quota
@@ -692,6 +693,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   backgroundColor: '#FFFDF9',
                   borderRadius: '8px',
                   border: '1px solid var(--color-soft-border)',
+                  borderLeft: '4px solid var(--color-forest-green)',
                   fontSize: '0.74rem',
                   color: 'var(--color-muted-slate)',
                   display: 'flex',
