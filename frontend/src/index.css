@@ -2021,49 +2021,7 @@ input::-ms-clear {
   font-weight: 700;
 }
 
-/* Explainable Matching Breakdown Card */
-.score-visual-card {
-  background-color: #FFFDF9;
-  border: 1px solid #E5DBC5;
-  border-radius: 20px;
-  box-shadow: 5px 7px 0px var(--color-card-bevel, #E5DAC4);
-  padding: 2rem;
-  box-sizing: border-box;
-}
 
-.score-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.score-card-title {
-  font-family: var(--font-heading);
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #2C221E;
-  margin: 0 0 0.25rem 0;
-}
-
-.score-card-sub {
-  font-size: 0.92rem;
-  color: #2C221E;
-  font-weight: 500;
-  margin: 0;
-}
-
-.score-pill-overall {
-  background-color: #EAF5F0;
-  border: 1px solid #C4E3D4;
-  color: #1F6F43;
-  padding: 0.4rem 0.95rem;
-  border-radius: 9999px;
-  font-size: 0.84rem;
-  font-weight: 600;
-}
 
 /* Multi-Colored Segmented Bar */
 .score-bar-segmented {
