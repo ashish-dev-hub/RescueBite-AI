@@ -73,3 +73,4 @@ RescueBite AI uses an open-source, zero-cost, zero-API-key location stack design
 2. Log in as a Donor, click **"List Surplus Food"**, and tap **"Use Live GPS Location"**.
 3. Allow browser location permission when prompted.
 4. Watch the GPS coordinates badge appear and the pickup address automatically populate with your real street address!
+
