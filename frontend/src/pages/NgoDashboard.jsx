@@ -5,6 +5,7 @@ import StatusBadge from '../components/StatusBadge';
 import ReasonCodeBadge from '../components/ReasonCodeBadge';
 import Modal from '../components/Modal';
 import LiveLocationPicker from '../components/LiveLocationPicker';
+import LiveDeliveryModal from '../components/LiveDeliveryModal';
 import locationService from '../services/locationService';
 import {
   Soup,
@@ -50,6 +51,8 @@ export default function NgoDashboard() {
   const [actionLoading, setActionLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [trackingAllocation, setTrackingAllocation] = useState(null);
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
 
   // Demand form state
   const [requestedMeals, setRequestedMeals] = useState('');
@@ -585,7 +588,27 @@ export default function NgoDashboard() {
                 </div>
 
                 {/* NGO Action Buttons */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <button
+                    onClick={() => {
+                      setTrackingAllocation(alloc);
+                      setIsTrackingOpen(true);
+                    }}
+                    className="btn btn-secondary btn-sm"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      borderColor: '#065F46',
+                      color: '#065F46',
+                      fontWeight: 600,
+                    }}
+                    title="Track Courier & Route in Real-Time"
+                  >
+                    <Truck size={14} />
+                    <span>Track Live Delivery</span>
+                  </button>
+
                   {alloc.status === 'approved' && (
                     <>
                       <button
@@ -1200,6 +1223,19 @@ export default function NgoDashboard() {
           </div>
         )}
       </Modal>
+
+      {/* Real-Time Live Delivery Tracking Modal for NGO */}
+      {isTrackingOpen && trackingAllocation && (
+        <LiveDeliveryModal
+          allocation={trackingAllocation}
+          isOpen={isTrackingOpen}
+          currentUser={user}
+          onClose={() => {
+            setIsTrackingOpen(false);
+            setTrackingAllocation(null);
+          }}
+        />
+      )}
     </div>
   );
 }
