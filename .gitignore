@@ -31,3 +31,8 @@ Thumbs.db
 
 # Local ML summary documentation
 ML WORK .md
+
+# Local private bug-fixing diary (never push to GitHub)
+bug-fixing/
+BUG_FIXING_README.md
+*bug*fixing*
