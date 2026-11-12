@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
+const http = require('http');
 const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+const { initDeliverySocket } = require('./sockets/deliverySocket');
 
 // Route imports
 const authRoutes = require('./routes/authRoutes');
@@ -106,8 +108,13 @@ const PORT = process.env.PORT || 5000;
 
 let server;
 if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
-  server = app.listen(PORT, () => {
-    console.log(`[RescueBite API Server] running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  server = http.createServer(app);
+
+  // Initialize Socket.IO with the HTTP server
+  initDeliverySocket(server, configuredOrigins);
+
+  server.listen(PORT, () => {
+    console.log(`[RescueBite API Server] running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT} (with Socket.IO live tracking)`);
   });
 
   // Handle unhandled promise rejections
