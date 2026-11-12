@@ -4,11 +4,30 @@
  */
 
 import React, { useEffect, useState, useRef } from 'react';
-import { X, Navigation, Play, Square, MapPin, Truck, CheckCircle2, AlertCircle, Compass } from 'lucide-react';
+import { X, Navigation, Play, Square, Truck, RefreshCw } from 'lucide-react';
 import LiveTrackingMap from './LiveTrackingMap';
 import locationService from '../services/locationService';
 import socketService from '../services/socketService';
 import { liveTracker } from '../services/liveTrackingService';
+
+/**
+ * Computes deterministic, distinct geographical coordinates from an object ID
+ * to ensure two different deliveries never collapse into the exact same coordinates.
+ */
+function getDeterministicOffsetCoords(id, baseCoord, multiplier = 1) {
+  if (!id) return baseCoord;
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = (hash << 5) - hash + id.charCodeAt(i);
+    hash |= 0;
+  }
+  const latOffset = (((Math.abs(hash) % 100) - 50) * 0.0006) * multiplier;
+  const lngOffset = ((((Math.abs(hash >> 3)) % 100) - 50) * 0.0006) * multiplier;
+  return {
+    lat: Number((baseCoord.lat + latOffset).toFixed(6)),
+    lng: Number((baseCoord.lng + lngOffset).toFixed(6)),
+  };
+}
 
 export default function LiveDeliveryModal({
   allocation,
@@ -30,31 +49,88 @@ export default function LiveDeliveryModal({
 
   const simulationIntervalRef = useRef(null);
 
-  // Extract donor & NGO coordinates from allocation data
+  // Extract, dynamically geocode, and resolve distinct donor & NGO coordinates
   useEffect(() => {
     if (!isOpen || !allocation) return;
 
-    const donorLoc = allocation.donationId?.location?.coordinates || allocation.donationId?.donorId?.location?.coordinates;
-    const ngoLoc = allocation.ngoId?.location?.coordinates;
-
-    const validDonor = donorLoc?.lat && donorLoc?.lng && (donorLoc.lat !== 0 || donorLoc.lng !== 0)
-      ? donorLoc
-      : { lat: 28.6280, lng: 77.2180 }; // Fallback central pin if blank
-
-    const validNgo = ngoLoc?.lat && ngoLoc?.lng && (ngoLoc.lat !== 0 || ngoLoc.lng !== 0)
-      ? ngoLoc
-      : { lat: 28.6500, lng: 77.2300 }; // Fallback shelter pin if blank
-
-    setDonorCoords(validDonor);
-    setNgoCoords(validNgo);
-    setCourierCoords(validDonor); // Courier starts at donor pickup initially
+    let isMounted = true;
+    setLoadingRoute(true);
     setStatus(allocation.status || 'in_transit');
 
-    // Fetch full OSRM road geometry
-    setLoadingRoute(true);
-    locationService
-      .getDrivingRoute(validDonor, validNgo, true)
-      .then((res) => {
+    async function resolveCoordinatesAndRoute() {
+      // 1. Resolve Donor Coordinates
+      let donorFinal = null;
+      const rawDonorLoc =
+        allocation.donationId?.location?.coordinates ||
+        allocation.donationId?.donorId?.location?.coordinates;
+
+      if (rawDonorLoc?.lat && rawDonorLoc?.lng && (rawDonorLoc.lat !== 0 || rawDonorLoc.lng !== 0)) {
+        donorFinal = { lat: rawDonorLoc.lat, lng: rawDonorLoc.lng };
+      } else {
+        const donorAddress =
+          allocation.donationId?.location?.address ||
+          allocation.donationId?.donorOrg ||
+          '';
+
+        if (donorAddress && donorAddress.trim().length > 3) {
+          const geocoded = await locationService.forwardGeocode(donorAddress);
+          if (geocoded?.lat && geocoded?.lng) {
+            donorFinal = { lat: geocoded.lat, lng: geocoded.lng };
+          }
+        }
+      }
+
+      // Fallback with distinct deterministic offset per consignment ID
+      if (!donorFinal) {
+        donorFinal = getDeterministicOffsetCoords(
+          allocation._id || allocation.donationId?._id,
+          { lat: 28.6315, lng: 77.2167 }, // Central Delhi base
+          1
+        );
+      }
+
+      // 2. Resolve NGO Shelter Coordinates
+      let ngoFinal = null;
+      const rawNgoLoc =
+        allocation.ngoId?.location?.coordinates ||
+        allocation.demandId?.location?.coordinates;
+
+      if (rawNgoLoc?.lat && rawNgoLoc?.lng && (rawNgoLoc.lat !== 0 || rawNgoLoc.lng !== 0)) {
+        ngoFinal = { lat: rawNgoLoc.lat, lng: rawNgoLoc.lng };
+      } else {
+        const ngoAddress =
+          allocation.demandId?.location?.address ||
+          allocation.ngoId?.location?.address ||
+          '';
+
+        if (ngoAddress && ngoAddress.trim().length > 3) {
+          const geocoded = await locationService.forwardGeocode(ngoAddress);
+          if (geocoded?.lat && geocoded?.lng) {
+            ngoFinal = { lat: geocoded.lat, lng: geocoded.lng };
+          }
+        }
+      }
+
+      // Fallback with distinct deterministic offset per NGO / Allocation ID
+      if (!ngoFinal) {
+        ngoFinal = getDeterministicOffsetCoords(
+          allocation.demandId?._id || allocation.ngoId?._id || allocation._id,
+          { lat: 28.6540, lng: 77.2340 }, // North/Old Delhi base
+          -1.5
+        );
+      }
+
+      if (!isMounted) return;
+
+      setDonorCoords(donorFinal);
+      setNgoCoords(ngoFinal);
+      setCourierCoords(donorFinal);
+
+      // 3. Fetch Road Driving Geometry via OSRM
+      try {
+        const res = await locationService.getDrivingRoute(donorFinal, ngoFinal, true);
+        if (!isMounted) return;
+
         if (res?.coordinates && res.coordinates.length > 0) {
           setRouteCoordinates(res.coordinates);
         }
@@ -62,11 +138,14 @@ export default function LiveDeliveryModal({
           distanceKm: res.distanceKm,
           durationMins: res.durationMins,
         });
-      })
-      .catch((err) => {
+      } catch (err) {
         console.warn('[LiveDeliveryModal] OSRM route fetch error:', err.message);
-      })
-      .finally(() => setLoadingRoute(false));
+      } finally {
+        if (isMounted) setLoadingRoute(false);
+      }
+    }
+
+    resolveCoordinatesAndRoute();
 
     // Join Socket.IO delivery room
     const allocationId = allocation._id;
@@ -75,7 +154,6 @@ export default function LiveDeliveryModal({
       userName: currentUser?.name || 'RescueBite Member',
     });
 
-    // Listen for incoming courier coordinates
     const handleCourierUpdate = (payload) => {
       if (payload?.coords?.lat && payload?.coords?.lng) {
         setCourierCoords(payload.coords);
@@ -88,6 +166,7 @@ export default function LiveDeliveryModal({
     socketService.onCourierLocationUpdate(handleCourierUpdate);
 
     return () => {
+      isMounted = false;
       socketService.offCourierLocationUpdate(handleCourierUpdate);
       socketService.leaveDeliveryRoom(allocationId);
       stopSimulation();
@@ -109,18 +188,21 @@ export default function LiveDeliveryModal({
         setIsSimulating(false);
         clearInterval(simulationIntervalRef.current);
         setStatus('delivered');
-        socketService.sendDeliveryStatus({
-          allocationId: allocation._id,
-          status: 'delivered',
-          note: 'Consignment successfully delivered to shelter.',
-        });
+        try {
+          socketService.sendDeliveryStatus({
+            allocationId: allocation._id,
+            status: 'delivered',
+            note: 'Consignment successfully delivered to shelter.',
+          });
+        } catch {
+          // Graceful fallback for offline / serverless
+        }
         return;
       }
 
       const currentPoint = routeCoordinates[stepIndex];
       const nextPoint = stepIndex + 1 < totalSteps ? routeCoordinates[stepIndex + 1] : currentPoint;
 
-      // Calculate heading angle between successive waypoints
       const dLat = nextPoint[0] - currentPoint[0];
       const dLng = nextPoint[1] - currentPoint[1];
       const headingDeg = Math.round((Math.atan2(dLng, dLat) * 180) / Math.PI + 360) % 360;
@@ -129,33 +211,36 @@ export default function LiveDeliveryModal({
         lat: currentPoint[0],
         lng: currentPoint[1],
         heading: headingDeg,
-        speed: 28, // km/h
+        speed: 32,
       };
 
       setCourierCoords(coords);
       setCourierHeading(headingDeg);
-      setCourierSpeed(28);
+      setCourierSpeed(32);
+      setStatus('in_transit');
 
-      // Broadcast over Socket.IO to all observers
-      socketService.sendCourierLocation({
-        allocationId: allocation._id,
-        coords,
-        progressPercent: Math.round((stepIndex / totalSteps) * 100),
-        status: stepIndex === totalSteps - 1 ? 'delivered' : 'in_transit',
-      });
+      try {
+        socketService.sendCourierLocation({
+          allocationId: allocation._id,
+          coords,
+          progressPercent: Math.round((stepIndex / totalSteps) * 100),
+          status: stepIndex === totalSteps - 1 ? 'delivered' : 'in_transit',
+        });
+      } catch {
+        // Safe for offline / serverless
+      }
 
-      // Recalculate remaining distance to destination
       if (ngoCoords) {
         const remainingKm = Math.max(
           0.1,
           Number((((totalSteps - stepIndex) / totalSteps) * (routeMetrics.distanceKm || 3)).toFixed(1))
         );
-        const remainingMins = Math.max(1, Math.round((remainingKm / 28) * 60));
+        const remainingMins = Math.max(1, Math.round((remainingKm / 32) * 60));
         setRouteMetrics({ distanceKm: remainingKm, durationMins: remainingMins });
       }
 
       stepIndex += 1;
-    }, 1400);
+    }, 1200);
   };
 
   const stopSimulation = () => {
@@ -182,12 +267,15 @@ export default function LiveDeliveryModal({
             durationMin: payload.route.durationMin,
           });
         }
-        // Broadcast to room via Socket.IO
-        socketService.sendCourierLocation({
-          allocationId: allocation._id,
-          coords: payload.coords,
-          status: 'in_transit',
-        });
+        try {
+          socketService.sendCourierLocation({
+            allocationId: allocation._id,
+            coords: payload.coords,
+            status: 'in_transit',
+          });
+        } catch {
+          // Safe for offline / serverless
+        }
       },
       (err) => {
         console.warn('[LiveDeliveryModal] Real GPS broadcast warning:', err.message);
@@ -218,7 +306,7 @@ export default function LiveDeliveryModal({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '16px',
+        padding: '12px',
       }}
       onClick={onClose}
     >
@@ -227,24 +315,25 @@ export default function LiveDeliveryModal({
           background: '#FFFFFF',
           borderRadius: '16px',
           width: '100%',
-          maxWidth: '860px',
-          overflow: 'hidden',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
+          maxWidth: '840px',
+          maxHeight: '92vh',
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: '92vh',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
+          overflow: 'hidden',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+        {/* Fixed Header */}
         <div
           style={{
-            padding: '16px 20px',
+            padding: '14px 18px',
             borderBottom: '1px solid #E2E8F0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             background: '#F8FAFC',
+            flexShrink: 0,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -263,17 +352,18 @@ export default function LiveDeliveryModal({
               <Truck size={20} />
             </div>
             <div>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#0F172A' }}>
+              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0F172A' }}>
                 Live Delivery Route & Transit Tracking
               </h3>
-              <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748B' }}>
-                {foodName} • {portions} Meals • Real-time Socket.IO & Leaflet
+              <p style={{ margin: 0, fontSize: '0.76rem', color: '#64748B' }}>
+                {foodName} • {portions} Meals • Real-time Leaflet & OSRM
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
+            aria-label="Close Tracking Modal"
             style={{
               background: 'none',
               border: 'none',
@@ -287,66 +377,95 @@ export default function LiveDeliveryModal({
           </button>
         </div>
 
-        {/* Live Leaflet Map Component */}
-        <div style={{ padding: '16px 20px 8px 20px' }}>
-          <LiveTrackingMap
-            donorCoords={donorCoords}
-            donorName={donorName}
-            ngoCoords={ngoCoords}
-            ngoName={ngoName}
-            courierCoords={courierCoords}
-            routeCoordinates={routeCoordinates}
-            distanceKm={routeMetrics.distanceKm}
-            durationMin={routeMetrics.durationMins}
-            courierHeading={courierHeading}
-            courierSpeed={courierSpeed}
-            status={status}
-            height="380px"
-          />
-        </div>
+        {/* Scrollable Body Content */}
+        <div
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '14px 18px 18px 18px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+          }}
+        >
+          {/* Live Leaflet Map Component */}
+          <div>
+            {loadingRoute ? (
+              <div
+                style={{
+                  height: '270px',
+                  borderRadius: '12px',
+                  background: '#F1F5F9',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  gap: '8px',
+                  color: '#64748B',
+                  fontSize: '0.85rem',
+                }}
+              >
+                <RefreshCw size={24} style={{ animation: 'spin 1.5s linear infinite' }} />
+                <span>Calculating OSRM road geometry & geocoding locations...</span>
+              </div>
+            ) : (
+              <LiveTrackingMap
+                donorCoords={donorCoords}
+                donorName={donorName}
+                ngoCoords={ngoCoords}
+                ngoName={ngoName}
+                courierCoords={courierCoords}
+                routeCoordinates={routeCoordinates}
+                distanceKm={routeMetrics.distanceKm}
+                durationMin={routeMetrics.durationMins}
+                courierHeading={courierHeading}
+                courierSpeed={courierSpeed}
+                status={status}
+                height="270px"
+              />
+            )}
+          </div>
 
-        {/* Transit Details & Real-Time Controls */}
-        <div style={{ padding: '12px 20px 20px 20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {/* Origin & Destination Bar */}
+          {/* Origin & Destination Addresses */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '12px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+              gap: '10px',
               background: '#F8FAFC',
-              padding: '12px 14px',
+              padding: '10px 14px',
               borderRadius: '10px',
               border: '1px solid #E2E8F0',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669' }} />
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669', marginTop: '5px' }} />
               <div>
-                <span style={{ fontSize: '0.72rem', color: '#64748B', textTransform: 'uppercase', fontWeight: 600 }}>
+                <span style={{ fontSize: '0.7rem', color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>
                   Pickup From (Donor)
                 </span>
-                <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600, color: '#1E293B' }}>{donorName}</p>
-                <small style={{ color: '#64748B', fontSize: '0.75rem' }}>
-                  {allocation.donationId?.location?.address || 'Kitchen Hub'}
+                <p style={{ margin: 0, fontSize: '0.84rem', fontWeight: 600, color: '#1E293B' }}>{donorName}</p>
+                <small style={{ color: '#64748B', fontSize: '0.74rem' }}>
+                  {allocation.donationId?.location?.address || 'Connaught Place Hub'}
                 </small>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#EA580C' }} />
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#EA580C', marginTop: '5px' }} />
               <div>
-                <span style={{ fontSize: '0.72rem', color: '#64748B', textTransform: 'uppercase', fontWeight: 600 }}>
+                <span style={{ fontSize: '0.7rem', color: '#64748B', textTransform: 'uppercase', fontWeight: 700 }}>
                   Deliver To (Shelter)
                 </span>
-                <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600, color: '#1E293B' }}>{ngoName}</p>
-                <small style={{ color: '#64748B', fontSize: '0.75rem' }}>
-                  {allocation.ngoId?.location?.address || 'Community Kitchen'}
+                <p style={{ margin: 0, fontSize: '0.84rem', fontWeight: 600, color: '#1E293B' }}>{ngoName}</p>
+                <small style={{ color: '#64748B', fontSize: '0.74rem' }}>
+                  {allocation.demandId?.location?.address || allocation.ngoId?.location?.address || 'Community Center'}
                 </small>
               </div>
             </div>
           </div>
 
-          {/* Action & Simulation Bar */}
+          {/* Interactive Simulation & Live Broadcast Controls */}
           <div
             style={{
               display: 'flex',
@@ -354,9 +473,10 @@ export default function LiveDeliveryModal({
               justifyContent: 'space-between',
               flexWrap: 'wrap',
               gap: '10px',
+              paddingTop: '4px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               {!isSimulating ? (
                 <button
                   onClick={startSimulation}
@@ -374,6 +494,7 @@ export default function LiveDeliveryModal({
                     fontSize: '0.82rem',
                     cursor: loadingRoute || isBroadcastingGps ? 'not-allowed' : 'pointer',
                     opacity: loadingRoute || isBroadcastingGps ? 0.6 : 1,
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   <Play size={14} fill="#FFFFFF" />
@@ -404,7 +525,7 @@ export default function LiveDeliveryModal({
               {!isBroadcastingGps ? (
                 <button
                   onClick={startGpsBroadcast}
-                  disabled={isSimulating}
+                  disabled={isSimulating || loadingRoute}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -416,8 +537,8 @@ export default function LiveDeliveryModal({
                     borderRadius: '8px',
                     fontWeight: 600,
                     fontSize: '0.82rem',
-                    cursor: isSimulating ? 'not-allowed' : 'pointer',
-                    opacity: isSimulating ? 0.5 : 1,
+                    cursor: isSimulating || loadingRoute ? 'not-allowed' : 'pointer',
+                    opacity: isSimulating || loadingRoute ? 0.5 : 1,
                   }}
                 >
                   <Navigation size={14} />
@@ -446,19 +567,19 @@ export default function LiveDeliveryModal({
               )}
             </div>
 
-            <div style={{ fontSize: '0.78rem', color: '#64748B' }}>
+            <div style={{ fontSize: '0.76rem', color: '#64748B' }}>
               {isSimulating && (
                 <span style={{ color: '#059669', fontWeight: 600 }}>
-                  🟢 Simulating live courier movement along OSRM road waypoints...
+                  🟢 Moving courier along real road waypoints...
                 </span>
               )}
               {isBroadcastingGps && (
                 <span style={{ color: '#0284C7', fontWeight: 600 }}>
-                  🔵 Broadcasting actual hardware GPS via Socket.IO...
+                  🔵 Transmitting hardware GPS coordinates...
                 </span>
               )}
               {!isSimulating && !isBroadcastingGps && (
-                <span>📡 Connected to Socket.IO live delivery room</span>
+                <span>📡 Click &apos;Simulate Courier Transit&apos; to watch the vehicle drive!</span>
               )}
             </div>
           </div>
@@ -467,4 +588,3 @@ export default function LiveDeliveryModal({
     </div>
   );
 }
-
