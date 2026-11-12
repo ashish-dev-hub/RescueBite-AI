@@ -100,3 +100,4 @@ Inside [`LiveDeliveryModal.jsx`](file:///c:/Users/ashis/OneDrive/Desktop/RescueB
   Iterates through the genuine OSRM road waypoints, computing realistic heading angles and broadcasting coordinates over Socket.IO every 1.4 seconds.
 - **Broadcast Live Device GPS**:
   Uses the browser's `navigator.geolocation.watchPosition` to transmit real phone/laptop movements over Socket.IO to any observing Coordinator or NGO screen.
+

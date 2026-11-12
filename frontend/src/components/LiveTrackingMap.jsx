@@ -12,7 +12,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Navigation, Compass, MapPin, Store, Building2, RotateCw } from 'lucide-react';
+import { Navigation } from 'lucide-react';
 
 /**
  * Creates custom Leaflet HTML DivIcons with inline SVGs for zero broken-asset issues in Vite
@@ -40,9 +40,9 @@ const createCustomMarkerIcon = (type, heading = 0) => {
     return L.divIcon({
       className: 'rescuebite-donor-marker',
       html: `
-        <div style="position: relative; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
-          <div style="width: 34px; height: 34px; border-radius: 50%; background: #065F46; border: 2.5px solid #FFFFFF; box-shadow: 0 3px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A7F3D0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <div style="position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: #065F46; border: 2.5px solid #FFFFFF; box-shadow: 0 3px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A7F3D0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
               <path d="M7 2v20"></path>
               <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
@@ -50,8 +50,8 @@ const createCustomMarkerIcon = (type, heading = 0) => {
           </div>
         </div>
       `,
-      iconSize: [38, 38],
-      iconAnchor: [19, 19],
+      iconSize: [36, 36],
+      iconAnchor: [18, 18],
     });
   }
 
@@ -59,9 +59,9 @@ const createCustomMarkerIcon = (type, heading = 0) => {
   return L.divIcon({
     className: 'rescuebite-ngo-marker',
     html: `
-      <div style="position: relative; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 34px; height: 34px; border-radius: 50%; background: #9A3412; border: 2.5px solid #FFFFFF; box-shadow: 0 3px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FED7AA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div style="position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 32px; height: 32px; border-radius: 50%; background: #9A3412; border: 2.5px solid #FFFFFF; box-shadow: 0 3px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FED7AA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 21h18"></path>
             <path d="M19 21v-4"></path>
             <path d="M19 13v-2"></path>
@@ -70,9 +70,24 @@ const createCustomMarkerIcon = (type, heading = 0) => {
         </div>
       </div>
     `,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19],
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
   });
+};
+
+const getStatusBadgeConfig = (status) => {
+  switch (status) {
+    case 'delivered':
+      return { label: 'Delivered', color: '#10B981' };
+    case 'picked_up':
+    case 'in_transit':
+      return { label: 'Live Transit', color: '#10B981' };
+    case 'accepted':
+      return { label: 'Accepted — Ready for Dispatch', color: '#0284C7' };
+    case 'approved':
+    default:
+      return { label: 'Awaiting NGO Acceptance', color: '#F59E0B' };
+  }
 };
 
 export default function LiveTrackingMap({
@@ -87,7 +102,7 @@ export default function LiveTrackingMap({
   courierHeading = 0,
   courierSpeed = 0,
   status = 'in_transit',
-  height = '420px',
+  height = '280px',
   interactive = true,
 }) {
   const mapContainerRef = useRef(null);
@@ -100,7 +115,6 @@ export default function LiveTrackingMap({
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
-    // Fallback center: Donor or NGO or New Delhi coordinates
     const initialCenter = donorCoords?.lat
       ? [donorCoords.lat, donorCoords.lng]
       : ngoCoords?.lat
@@ -124,7 +138,6 @@ export default function LiveTrackingMap({
 
     mapInstanceRef.current = map;
 
-    // User drag pauses auto-lock
     map.on('dragstart', () => setIsFollowingCourier(false));
 
     return () => {
@@ -199,31 +212,30 @@ export default function LiveTrackingMap({
     if (!map) return;
 
     if (Array.isArray(routeCoordinates) && routeCoordinates.length > 1) {
-      // Remove old polylines if exist
       if (polylineRef.current.casing) map.removeLayer(polylineRef.current.casing);
       if (polylineRef.current.main) map.removeLayer(polylineRef.current.main);
 
-      // Casing for contrast
+      // Shadow / Casing line
       polylineRef.current.casing = L.polyline(routeCoordinates, {
         color: '#064E3B',
-        weight: 7,
+        weight: 6,
         opacity: 0.4,
         lineCap: 'round',
         lineJoin: 'round',
       }).addTo(map);
 
-      // Main driving route line
+      // Main emerald driving route line
       polylineRef.current.main = L.polyline(routeCoordinates, {
         color: '#10B981',
-        weight: 4.5,
+        weight: 4,
         opacity: 0.95,
         lineCap: 'round',
         lineJoin: 'round',
       }).addTo(map);
 
-      // Fit bounds initially to display complete corridor
+      // Fit bounds to entire route corridor
       const bounds = L.latLngBounds(routeCoordinates);
-      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+      map.fitBounds(bounds, { padding: [35, 35], maxZoom: 16 });
     }
   }, [routeCoordinates]);
 
@@ -239,12 +251,14 @@ export default function LiveTrackingMap({
         [donorCoords.lat, donorCoords.lng],
         [ngoCoords.lat, ngoCoords.lng],
       ]);
-      map.fitBounds(bounds, { padding: [50, 50] });
+      map.fitBounds(bounds, { padding: [35, 35] });
     }
   };
 
+  const statusConfig = getStatusBadgeConfig(status);
+
   return (
-    <div style={{ position: 'relative', width: '100%', height, borderRadius: '14px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+    <div style={{ position: 'relative', width: '100%', height, borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}>
       {/* Map Container */}
       <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />
 
@@ -252,21 +266,23 @@ export default function LiveTrackingMap({
       <div
         style={{
           position: 'absolute',
-          top: '12px',
-          left: '12px',
+          top: '10px',
+          left: '10px',
           zIndex: 1000,
-          background: 'rgba(255, 255, 255, 0.94)',
+          background: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(8px)',
-          borderRadius: '10px',
-          padding: '8px 14px',
-          boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+          borderRadius: '8px',
+          padding: '6px 12px',
+          boxShadow: '0 3px 12px rgba(0,0,0,0.15)',
           display: 'flex',
           alignItems: 'center',
-          gap: '12px',
-          fontSize: '0.82rem',
+          gap: '10px',
+          fontSize: '0.78rem',
           fontWeight: 600,
           color: '#1E293B',
-          border: '1px solid rgba(226, 232, 240, 0.8)',
+          border: '1px solid rgba(226, 232, 240, 0.9)',
+          flexWrap: 'wrap',
+          maxWidth: 'calc(100% - 20px)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -275,24 +291,22 @@ export default function LiveTrackingMap({
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              background: status === 'delivered' ? '#10B981' : '#F59E0B',
-              boxShadow: '0 0 8px currentColor',
+              background: statusConfig.color,
+              boxShadow: `0 0 8px ${statusConfig.color}`,
             }}
           />
-          <span style={{ textTransform: 'capitalize' }}>
-            {status === 'delivered' ? 'Delivered' : 'Live Transit'}
-          </span>
+          <span>{statusConfig.label}</span>
         </div>
 
         {distanceKm !== null && (
-          <div style={{ borderLeft: '1px solid #CBD5E1', paddingLeft: '10px' }}>
-            <span>🚗 {distanceKm} km remaining</span>
+          <div style={{ borderLeft: '1px solid #CBD5E1', paddingLeft: '8px' }}>
+            <span>🚗 {distanceKm} km</span>
           </div>
         )}
 
         {durationMin !== null && (
-          <div style={{ borderLeft: '1px solid #CBD5E1', paddingLeft: '10px' }}>
-            <span>⏱️ ETA: ~{durationMin} mins</span>
+          <div style={{ borderLeft: '1px solid #CBD5E1', paddingLeft: '8px' }}>
+            <span>⏱️ ~{durationMin} mins</span>
           </div>
         )}
       </div>
@@ -303,24 +317,24 @@ export default function LiveTrackingMap({
         title="Re-center on Courier"
         style={{
           position: 'absolute',
-          bottom: '20px',
-          right: '12px',
+          bottom: '14px',
+          right: '10px',
           zIndex: 1000,
           background: isFollowingCourier ? '#065F46' : '#FFFFFF',
           color: isFollowingCourier ? '#FFFFFF' : '#065F46',
           border: '1px solid #D1D5DB',
           borderRadius: '50%',
-          width: '38px',
-          height: '38px',
+          width: '34px',
+          height: '34px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 3px 10px rgba(0,0,0,0.18)',
+          boxShadow: '0 3px 8px rgba(0,0,0,0.18)',
           cursor: 'pointer',
           transition: 'all 0.2s ease',
         }}
       >
-        <Navigation size={18} />
+        <Navigation size={16} />
       </button>
 
       {/* Inline styles for pulse animation */}
