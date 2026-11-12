@@ -1,6 +1,7 @@
 const Allocation = require('../models/Allocation');
 const Donation = require('../models/Donation');
 const Demand = require('../models/Demand');
+const { getIO } = require('../sockets/deliverySocket');
 
 // Valid state machine transitions for Allocation lifecycle
 const VALID_TRANSITIONS = {
@@ -266,6 +267,17 @@ const respondAllocation = async (req, res, next) => {
 
     await allocation.save();
 
+    // Broadcast status change via Socket.IO
+    const io = getIO();
+    if (io) {
+      io.to(`delivery:${allocation._id}`).emit('delivery_status_changed', {
+        allocationId: allocation._id,
+        status: allocation.status,
+        note: action === 'accept' ? 'Allocation accepted by NGO' : (rejectionReason || 'Declined by NGO'),
+        timestamp: Date.now(),
+      });
+    }
+
     res.json({
       success: true,
       message: `Allocation successfully ${action}ed`,
@@ -322,6 +334,17 @@ const updateAllocationStatus = async (req, res, next) => {
     });
 
     await allocation.save();
+
+    // Broadcast status change via Socket.IO
+    const io = getIO();
+    if (io) {
+      io.to(`delivery:${allocation._id}`).emit('delivery_status_changed', {
+        allocationId: allocation._id,
+        status: allocation.status,
+        note: note || `Status transitioned to ${nextStatus}`,
+        timestamp: Date.now(),
+      });
+    }
 
     res.json({
       success: true,
