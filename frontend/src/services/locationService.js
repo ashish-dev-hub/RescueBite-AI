@@ -108,7 +108,7 @@ export const locationService = {
             {
               enableHighAccuracy: false,
               timeout: 10000,
-              maximumAge: 60000,
+              maximumAge: 0, // Force fresh live scan; never use stale browser cache
             }
           );
         });
@@ -133,7 +133,7 @@ export const locationService = {
             {
               enableHighAccuracy: true,
               timeout: 12000,
-              maximumAge: 30000,
+              maximumAge: 0, // Force fresh live scan; never use stale browser cache
             }
           );
         });
@@ -171,7 +171,7 @@ export const locationService = {
     try {
       const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(
         lat
-      )}&lon=${encodeURIComponent(lng)}&addressdetails=1`;
+      )}&lon=${encodeURIComponent(lng)}&addressdetails=1&_t=${Date.now()}`;
 
       const response = await fetch(url, {
         headers: {
