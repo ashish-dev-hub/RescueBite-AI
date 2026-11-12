@@ -310,9 +310,10 @@ export const locationService = {
    * Calculate real road driving distance and transit duration using OSRM (Open Source Routing Machine)
    * @param {{ lat: number, lng: number }} origin - Donor coordinates
    * @param {{ lat: number, lng: number }} destination - NGO/Shelter coordinates
-   * @returns {Promise<{ distanceKm: number, durationMins: number, routeSource: 'osrm' | 'haversine' }>}
+   * @param {boolean} [includeGeometry=false] - Whether to include detailed road coordinates for Leaflet polylines
+   * @returns {Promise<{ distanceKm: number, durationMins: number, routeSource: 'osrm' | 'haversine', coordinates?: Array<[number, number]> }>}
    */
-  async getDrivingRoute(origin, destination) {
+  async getDrivingRoute(origin, destination, includeGeometry = false) {
     if (
       !origin ||
       !destination ||
@@ -322,11 +323,17 @@ export const locationService = {
       !destination.lng ||
       (origin.lat === destination.lat && origin.lng === destination.lng)
     ) {
-      return { distanceKm: 0.5, durationMins: 4, routeSource: 'haversine' };
+      return {
+        distanceKm: 0.5,
+        durationMins: 4,
+        routeSource: 'haversine',
+        coordinates: origin?.lat && destination?.lat ? [[origin.lat, origin.lng], [destination.lat, destination.lng]] : [],
+      };
     }
 
     try {
-      const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview=false&steps=false`;
+      const geomParam = includeGeometry ? 'overview=full&geometries=geojson' : 'overview=false&steps=false';
+      const url = `https://router.project-osrm.org/route/v1/driving/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?${geomParam}`;
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 6000);
@@ -344,10 +351,17 @@ export const locationService = {
         const distanceKm = Number((route.distance / 1000).toFixed(1));
         const durationMins = Math.max(1, Math.round(route.duration / 60));
 
+        let coordinates = [];
+        if (includeGeometry && route.geometry?.coordinates) {
+          // OSRM GeoJSON is [lon, lat], convert to Leaflet [lat, lon]
+          coordinates = route.geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+        }
+
         return {
           distanceKm,
           durationMins,
           routeSource: 'osrm',
+          coordinates,
         };
       }
       throw new Error('No driving route returned by OSRM');
@@ -359,6 +373,7 @@ export const locationService = {
         distanceKm,
         durationMins,
         routeSource: 'haversine',
+        coordinates: [[origin.lat, origin.lng], [destination.lat, destination.lng]],
       };
     }
   },

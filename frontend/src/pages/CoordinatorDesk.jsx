@@ -3,6 +3,8 @@ import { api } from '../services/api';
 import locationService from '../services/locationService';
 import StatusBadge from '../components/StatusBadge';
 import ReasonCodeBadge from '../components/ReasonCodeBadge';
+import LiveTrackingMap from '../components/LiveTrackingMap';
+import LiveDeliveryModal from '../components/LiveDeliveryModal';
 import {
   ShieldCheck,
   RefreshCw,
@@ -29,6 +31,8 @@ export default function CoordinatorDesk() {
   const [actionLoading, setActionLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('desk'); // 'desk' | 'lifecycle'
   const [notification, setNotification] = useState(null);
+  const [trackingAllocation, setTrackingAllocation] = useState(null);
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
 
   const fetchDeskData = async () => {
     setLoading(true);
@@ -140,7 +144,7 @@ export default function CoordinatorDesk() {
     if (hasValidCoords) {
       setLoadingRoute(true);
       locationService
-        .getDrivingRoute(donorCoords, ngoCoords)
+        .getDrivingRoute(donorCoords, ngoCoords, true)
         .then((route) => setOsrmRoute(route))
         .catch(() => setOsrmRoute(null))
         .finally(() => setLoadingRoute(false));
@@ -750,9 +754,25 @@ export default function CoordinatorDesk() {
                   </div>
                 </div>
 
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', lineHeight: 1.4 }}>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-muted-slate)', lineHeight: 1.4, marginBottom: '0.75rem' }}>
                   Transport requires insulated thermal bags for hot items or coolers for refrigerated salads.
                 </p>
+
+                {osrmRoute?.coordinates && osrmRoute.coordinates.length > 0 && (
+                  <div style={{ marginTop: '0.5rem', borderRadius: '10px', overflow: 'hidden' }}>
+                    <LiveTrackingMap
+                      donorCoords={selectedMatch.donation?.location?.coordinates}
+                      donorName={selectedMatch.donation?.donorOrg || selectedMatch.donation?.donorName || 'Donor'}
+                      ngoCoords={selectedMatch.demand?.location?.coordinates || selectedMatch.ngo?.location?.coordinates}
+                      ngoName={selectedMatch.ngo?.organization || selectedMatch.ngo?.name || 'Shelter'}
+                      routeCoordinates={osrmRoute.coordinates}
+                      distanceKm={osrmRoute.distanceKm}
+                      durationMin={osrmRoute.durationMins}
+                      height="200px"
+                      interactive={true}
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -822,7 +842,20 @@ export default function CoordinatorDesk() {
                         {new Date(alloc.createdAt).toLocaleDateString()}
                       </td>
                       <td>
-                        <div style={{ display: 'flex', gap: '0.4rem' }}>
+                        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                          <button
+                            onClick={() => {
+                              setTrackingAllocation(alloc);
+                              setIsTrackingOpen(true);
+                            }}
+                            className="btn btn-secondary btn-sm"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', borderColor: '#065F46', color: '#065F46' }}
+                            title="Open Real-time Leaflet Map & Live Courier Tracking"
+                          >
+                            <Truck size={12} />
+                            <span>Track Map</span>
+                          </button>
+
                           {alloc.status === 'accepted' && (
                             <button
                               onClick={() => handleUpdateStatus(alloc._id, 'picked_up')}
@@ -1030,6 +1063,18 @@ export default function CoordinatorDesk() {
             </table>
           </div>
         </div>
+      )}
+
+      {/* Real-time Live Delivery Tracking Modal */}
+      {isTrackingOpen && trackingAllocation && (
+        <LiveDeliveryModal
+          allocation={trackingAllocation}
+          isOpen={isTrackingOpen}
+          onClose={() => {
+            setIsTrackingOpen(false);
+            setTrackingAllocation(null);
+          }}
+        />
       )}
     </div>
   );
