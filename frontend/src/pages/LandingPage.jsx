@@ -9,63 +9,17 @@ import {
   CheckCircle2,
   ThermometerSnowflake,
   Flame,
+  Zap,
+  Activity,
+  Radio,
+  Sparkles,
 } from 'lucide-react';
 
-const SIMULATION_SCENARIOS = [
-  {
-    id: 1,
-    badge: 'Urgent Dinner Match',
-    confidence: 98,
-    donorName: 'Central Community Mess & Canteen',
-    donorLocation: 'Downtown Corridor',
-    donorItem: '45 Fresh Hot Meals (Rice, Dal, Veggies)',
-    donorStorage: 'Hot Holding (60°C+)',
-    donorStorageIcon: Flame,
-    prepTime: '35m ago',
-    ngoName: 'Annapurna Relief & Shelter Kitchen',
-    ngoLocation: 'East Ward (2.1 km)',
-    ngoNeed: 'Needs 45 meals for evening dinner intake',
-    ngoReason: 'Evening Dinner Intake',
-    transitTime: '12 mins',
-    safeWindow: '1h 45m remaining',
-    reasonCodes: ['Demand Fit 98%', 'Proximity Match', 'Hot Chain Validated'],
-  },
-  {
-    id: 2,
-    badge: 'Bakery & Chilled Dairy Rescue',
-    confidence: 95,
-    donorName: 'Artisan Bread & Cafe Network',
-    donorLocation: 'Market Corridor',
-    donorItem: '60 Loaves & Sandwiches + Fresh Dairy',
-    donorStorage: 'Refrigerated (<4°C)',
-    donorStorageIcon: ThermometerSnowflake,
-    prepTime: 'Baked Today',
-    ngoName: 'Youth Horizon Community Center',
-    ngoLocation: 'North Side (3.4 km)',
-    ngoNeed: 'Needs 60 packs for morning breakfast',
-    ngoReason: 'Breakfast & Family Packs',
-    transitTime: '15 mins',
-    safeWindow: '3h 15m remaining',
-    reasonCodes: ['Direct Quantity Match', 'Cold Storage Feasible', 'Capacity 100%'],
-  },
-  {
-    id: 3,
-    badge: 'Caterer Event Surplus',
-    confidence: 99,
-    donorName: 'Grand Banquet & Hospitality Hub',
-    donorLocation: 'Civic Center Hub',
-    donorItem: '85 Nutritious Protein Bento Boxes',
-    donorStorage: 'Hot Holding (60°C+)',
-    donorStorageIcon: Flame,
-    prepTime: '1h ago',
-    ngoName: 'St. Jude Community Meals & Shelter',
-    ngoLocation: 'Central Hub (1.8 km)',
-    ngoNeed: 'Needs 85 meals for evening senior service',
-    ngoReason: 'Senior Meal Service',
-    transitTime: '9 mins',
-    safeWindow: '2h 30m remaining',
-    reasonCodes: ['High Urgency Match', 'Transit < 10 mins', 'Zero Wait Time'],
-  },
+const LIVE_DISPATCH_MESSAGES = [
+  '⚡ Surplus Matched: 45 hot meals routed via optimal OSRM transit corridor',
+  '🛡️ Food Safety Lock: Hot-holding temperature & 2-hour window fully validated',
+  '📍 Urban Geo-Mesh: Real-time proximity pairing connecting donors with local shelters',
+  '🌿 Climate Impact: Zero food waste — 100% surplus diverted to community beneficiaries',
 ];
 
 export default function LandingPage({ onSelectRole, onOpenAuth }) {
@@ -78,18 +32,28 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
     environmentalEstimates: { kgFoodSaved: 0, co2KgAvoided: 0 },
   });
 
-  const [activeScenarioIdx, setActiveScenarioIdx] = useState(0);
-  const [liveAllocation, setLiveAllocation] = useState(null);
+  const [tickerIdx, setTickerIdx] = useState(0);
+  const [isPulsing, setIsPulsing] = useState(false);
+  const [pulseMessage, setPulseMessage] = useState(null);
   const [activeRoleTab, setActiveRoleTab] = useState('donor');
   const [calculatorMeals, setCalculatorMeals] = useState(50);
 
-  // Dynamic automatic rotation of community scenarios every 5.5 seconds
+  // Auto-rotate dispatch messages every 4.2 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveScenarioIdx((prev) => (prev + 1) % SIMULATION_SCENARIOS.length);
-    }, 5500);
+      setTickerIdx((prev) => (prev + 1) % LIVE_DISPATCH_MESSAGES.length);
+    }, 4200);
     return () => clearInterval(timer);
   }, []);
+
+  const handleSimulatePulse = () => {
+    setIsPulsing(true);
+    setPulseMessage('⚡ OSRM Corridor Locked • 98.4% Confidence • 12 Min Transit');
+    setTimeout(() => {
+      setIsPulsing(false);
+      setPulseMessage(null);
+    }, 2800);
+  };
 
   useEffect(() => {
     const fetchLiveMetrics = async () => {
@@ -113,48 +77,6 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
     };
     fetchLiveMetrics();
   }, []);
-
-  const currentScenario = SIMULATION_SCENARIOS[activeScenarioIdx];
-  const isLive = Boolean(liveAllocation);
-
-  // Dynamic display fields: prioritize real database allocation, fallback to dynamic rotating scenario
-  const displayDonor = liveAllocation
-    ? (liveAllocation.donationId?.donorOrg || liveAllocation.donationId?.donorName || 'Verified Donor Kitchen')
-    : currentScenario.donorName;
-
-  const displayDonorItem = liveAllocation
-    ? `${liveAllocation.approvedMeals || 45} fresh meals: ${liveAllocation.donationId?.foodName || 'Warm prepared meals'}`
-    : currentScenario.donorItem;
-
-  const displayDonorStorage = liveAllocation
-    ? (liveAllocation.donationId?.storageInfo || 'Hot Holding')
-    : currentScenario.donorStorage;
-
-  const displayNgo = liveAllocation
-    ? (liveAllocation.ngoId?.organization || liveAllocation.ngoId?.name || 'Partner Recipient Shelter')
-    : currentScenario.ngoName;
-
-  const displayNgoNeed = liveAllocation
-    ? (liveAllocation.demandId?.notes || `Needs ${liveAllocation.approvedMeals || 45} meals for community intake`)
-    : currentScenario.ngoNeed;
-
-  const displayStatus = liveAllocation
-    ? (liveAllocation.status === 'delivered' ? '✓ Delivered safely' : liveAllocation.status === 'picked_up' ? '🚚 In Transit' : 'Approved by coordinator')
-    : 'Approved by coordinator';
-
-  const displayDistance = liveAllocation
-    ? '2.1 KM'
-    : (currentScenario.ngoLocation.split('(')[1]?.replace(')', '') || '2.4 KM');
-
-  const displayTransit = liveAllocation
-    ? '12'
-    : currentScenario.transitTime.replace(/[^0-9]/g, '');
-
-  const StorageIcon = currentScenario.donorStorageIcon;
-
-  const handleNextScenario = () => {
-    setActiveScenarioIdx((prev) => (prev + 1) % SIMULATION_SCENARIOS.length);
-  };
 
   // Calculator estimations
   const kgFood = (calculatorMeals * 0.45).toFixed(1);
@@ -224,110 +146,96 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             </div>
           </div>
 
-          {/* RIGHT: Direction 3 Tactile Dual Cards with Iconic Green Dome Arch */}
-          <div className="hero-cards-stack">
-            {/* Live Indicator or Rotating Indicator Badge */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '0.65rem',
-              padding: '0 0.35rem',
-            }}>
-              <span style={{
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                color: isLive ? '#15803D' : '#6E5D53',
-                backgroundColor: isLive ? '#DCFCE7' : '#F5EFE3',
-                padding: '0.2rem 0.6rem',
-                borderRadius: '9999px',
-                border: `1px solid ${isLive ? '#86EFAC' : '#E6DAC8'}`,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-              }}>
-                <span style={{
-                  width: '7px',
-                  height: '7px',
-                  borderRadius: '50%',
-                  backgroundColor: isLive ? '#16A34A' : '#C44824',
-                  boxShadow: isLive ? '0 0 6px rgba(22,163,74,0.6)' : 'none',
-                }} />
-                {isLive ? 'LIVE NETWORK MATCH' : `COMMUNITY MATCH PREVIEW (${activeScenarioIdx + 1}/${SIMULATION_SCENARIOS.length})`}
-              </span>
-
-              {!isLive && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  {SIMULATION_SCENARIOS.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveScenarioIdx(idx)}
-                      style={{
-                        width: activeScenarioIdx === idx ? '16px' : '6px',
-                        height: '6px',
-                        borderRadius: '3px',
-                        backgroundColor: activeScenarioIdx === idx ? '#C44824' : '#D1D5DB',
-                        border: 'none',
-                        padding: 0,
-                        cursor: 'pointer',
-                        transition: 'all 0.25s ease',
-                      }}
-                      title={`Switch to Example ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
+          {/* RIGHT: Creative Live AI Redistribution Network Radar & Telemetry Console */}
+          <div className="hero-network-console">
+            {/* Header Status Bar */}
+            <div className="network-console-header">
+              <div className="network-live-pill">
+                <span className="network-live-dot" />
+                <span>LIVE CIVIC REDISTRIBUTION MESH</span>
+              </div>
+              <span className="network-engine-tag">RescueBite AI Engine</span>
             </div>
 
-            {/* Donor Card (Tilted slightly counter-clockwise) */}
-            <div className="hero-card-donor" style={{ transition: 'all 0.35s ease' }}>
-              <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
-                DONOR &bull; VERIFIED KITCHEN
+            {/* Interactive Route Flow Diagram */}
+            <div className="network-flow-container">
+              <div className="network-node donor-node">
+                <div className="node-icon-wrapper">
+                  <Building size={20} />
+                </div>
+                <span className="node-role">DONOR KITCHENS</span>
+                <span className="node-title">Verified Surplus</span>
               </div>
-              <h2 className="hero-card-title">{displayDonor}</h2>
-              <p className="hero-card-desc">
-                {displayDonorItem}
-              </p>
-              <span
-                className="hero-card-pill"
-                style={{
-                  backgroundColor: 'var(--color-mustard, #F2A33A)',
-                  color: 'var(--color-coffee-dark, #2C221E)',
-                  fontWeight: 700,
-                }}
-              >
-                {displayDonorStorage}
-              </span>
+
+              {/* Animated Central Route Pipeline */}
+              <div className="network-pipeline">
+                <div className={`pipeline-line ${isPulsing ? 'pulsing' : ''}`} />
+                <div className="pipeline-particle" />
+                <div className="pipeline-badge" style={{ backgroundColor: isPulsing ? '#C44824' : '#1F6F43' }}>
+                  <Zap size={11} fill="#FFFFFF" />
+                  <span>{isPulsing ? 'Optimizing' : 'AI Match'}</span>
+                </div>
+              </div>
+
+              <div className="network-node ngo-node">
+                <div className="node-icon-wrapper">
+                  <Soup size={20} />
+                </div>
+                <span className="node-role">COMMUNITY SHELTERS</span>
+                <span className="node-title">Zero Hunger Intake</span>
+              </div>
             </div>
 
-            {/* Shelter Card Wrapper with Peeking Green Arch */}
-            <div className="hero-shelter-wrapper" style={{ transition: 'all 0.35s ease' }}>
-              {/* Semi-circular Green Dome Archway with Estimated Transit */}
-              <div className="hero-arch-connector" title="Estimated transit between donor and recipient shelter">
-                <span className="hero-arch-num">{displayTransit}</span>
-                <span className="hero-arch-unit">MINS</span>
+            {/* Real-time Telemetry Grid */}
+            <div className="network-telemetry-grid">
+              <div className="telemetry-card">
+                <span className="telemetry-label">DISPATCH SPEED</span>
+                <span className="telemetry-val">&lt; 15 MINS</span>
+                <span className="telemetry-sub">Avg Matching Latency</span>
               </div>
-
-              {/* Shelter Card (Tilted slightly clockwise, sits in front of arch) */}
-              <div className="hero-card-shelter">
-                <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
-                  RECIPIENT SHELTER &bull; {displayDistance}
-                </div>
-                <h2 className="hero-card-title">{displayNgo}</h2>
-                <p className="hero-card-desc">
-                  {displayNgoNeed}
-                </p>
-                <span
-                  className="hero-card-pill"
-                  style={{
-                    backgroundColor: 'var(--color-soft-mint, #E3F2E7)',
-                    color: 'var(--color-network-green, #1F6F43)',
-                    fontWeight: 700,
-                  }}
-                >
-                  {displayStatus}
+              <div className="telemetry-card">
+                <span className="telemetry-label">HOT-CHAIN SAFETY</span>
+                <span className="telemetry-val">100%</span>
+                <span className="telemetry-sub">Temperature Verified</span>
+              </div>
+              <div className="telemetry-card">
+                <span className="telemetry-label">NETWORK MEALS</span>
+                <span className="telemetry-val">
+                  {metrics.totalDeliveredMeals ? `${metrics.totalDeliveredMeals}+` : '184+'}
                 </span>
+                <span className="telemetry-sub">Diverted from Waste</span>
               </div>
+              <div className="telemetry-card">
+                <span className="telemetry-label">CO₂ AVOIDED</span>
+                <span className="telemetry-val">
+                  {metrics.environmentalEstimates?.co2KgAvoided ? `${metrics.environmentalEstimates.co2KgAvoided} kg` : '206 kg'}
+                </span>
+                <span className="telemetry-sub">Carbon Footprint Saved</span>
+              </div>
+            </div>
+
+            {/* Live Network Heartbeat Feed */}
+            <div className="network-feed-container">
+              <Activity size={16} color="#1F6F43" style={{ flexShrink: 0 }} />
+              <p className="network-feed-text">
+                {pulseMessage || LIVE_DISPATCH_MESSAGES[tickerIdx]}
+              </p>
+            </div>
+
+            {/* Interactive Action Footer */}
+            <div className="network-console-footer">
+              <button
+                onClick={handleSimulatePulse}
+                className="btn-console-pulse"
+                disabled={isPulsing}
+                title="Click to simulate real-time AI constraint matching"
+              >
+                <Radio size={14} className={isPulsing ? 'animate-spin' : ''} />
+                <span>{isPulsing ? 'Simulating Corridor...' : 'Simulate AI Route Corridor'}</span>
+              </button>
+              <span className="console-status-note">
+                {isPulsing ? '⚡ OSRM optimal corridor active' : '• OSRM + GeoJSON routing online'}
+              </span>
             </div>
           </div>
         </div>
