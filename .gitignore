@@ -34,8 +34,11 @@ ML WORK .md
 
 # Local private bug-fixing diary & deployment docs (never push to GitHub)
 bug-fixing/
+docs/
 BUG_FIXING_README.md
 *bug*fixing*
+*AGENTIC*
+*agentic*
 VERCEL_BACKEND_DEPLOYMENT.md
 *.pdf
 *.docx
