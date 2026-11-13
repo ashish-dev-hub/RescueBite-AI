@@ -9,17 +9,63 @@ import {
   CheckCircle2,
   ThermometerSnowflake,
   Flame,
-  Zap,
-  Activity,
-  Radio,
-  Sparkles,
 } from 'lucide-react';
 
-const LIVE_DISPATCH_MESSAGES = [
-  '⚡ Surplus Matched: 45 hot meals routed via optimal OSRM transit corridor',
-  '🛡️ Food Safety Lock: Hot-holding temperature & 2-hour window fully validated',
-  '📍 Urban Geo-Mesh: Real-time proximity pairing connecting donors with local shelters',
-  '🌿 Climate Impact: Zero food waste — 100% surplus diverted to community beneficiaries',
+const SIMULATION_SCENARIOS = [
+  {
+    id: 1,
+    badge: 'Urgent Dinner Match',
+    confidence: 98,
+    donorName: 'Metro Bistro & Bakery',
+    donorLocation: 'Downtown Core',
+    donorItem: '45 Fresh Hot Meals (Rice, Dal, Veggies)',
+    donorStorage: 'Hot Holding (>60°C)',
+    donorStorageIcon: Flame,
+    prepTime: '35m ago',
+    ngoName: 'Hope Shelter Community Kitchen',
+    ngoLocation: 'East Ward (2.4 km)',
+    ngoNeed: '50 Meals Needed',
+    ngoReason: 'Evening Dinner Intake',
+    transitTime: '12 mins',
+    safeWindow: '1h 45m remaining',
+    reasonCodes: ['Demand Fit 98%', 'Proximity Match', 'Hot Chain Validated'],
+  },
+  {
+    id: 2,
+    badge: 'Bakery & Chilled Dairy Rescue',
+    confidence: 95,
+    donorName: 'Artisan Bread & Cafe',
+    donorLocation: 'Market District',
+    donorItem: '60 Loaves & Pastries + Fresh Dairy',
+    donorStorage: 'Refrigerated (<4°C)',
+    donorStorageIcon: ThermometerSnowflake,
+    prepTime: 'Baked Today',
+    ngoName: 'Youth Horizon Day Center',
+    ngoLocation: 'North Side (3.8 km)',
+    ngoNeed: '60 Meals Needed',
+    ngoReason: 'Breakfast & Family Packs',
+    transitTime: '16 mins',
+    safeWindow: '3h 15m remaining',
+    reasonCodes: ['Direct Quantity Match', 'Cold Storage Feasible', 'Capacity 100%'],
+  },
+  {
+    id: 3,
+    badge: 'Caterer Event Surplus',
+    confidence: 99,
+    donorName: 'Grand Plaza Hotel & Banquets',
+    donorLocation: 'Civic Center',
+    donorItem: '85 Protein Bento Boxes',
+    donorStorage: 'Chilled (<4°C)',
+    donorStorageIcon: ThermometerSnowflake,
+    prepTime: '1h ago',
+    ngoName: 'St. Jude Community Meals',
+    ngoLocation: 'Central Hub (1.8 km)',
+    ngoNeed: '90 Meals Needed',
+    ngoReason: 'Senior Meal Service',
+    transitTime: '9 mins',
+    safeWindow: '2h 30m remaining',
+    reasonCodes: ['High Urgency Match', 'Transit < 10 mins', 'Zero Wait Time'],
+  },
 ];
 
 export default function LandingPage({ onSelectRole, onOpenAuth }) {
@@ -32,28 +78,9 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
     environmentalEstimates: { kgFoodSaved: 0, co2KgAvoided: 0 },
   });
 
-  const [tickerIdx, setTickerIdx] = useState(0);
-  const [isPulsing, setIsPulsing] = useState(false);
-  const [pulseMessage, setPulseMessage] = useState(null);
+  const [activeScenarioIdx, setActiveScenarioIdx] = useState(0);
   const [activeRoleTab, setActiveRoleTab] = useState('donor');
   const [calculatorMeals, setCalculatorMeals] = useState(50);
-
-  // Auto-rotate dispatch messages every 4.2 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTickerIdx((prev) => (prev + 1) % LIVE_DISPATCH_MESSAGES.length);
-    }, 4200);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleSimulatePulse = () => {
-    setIsPulsing(true);
-    setPulseMessage('⚡ OSRM Corridor Locked • 98.4% Confidence • 12 Min Transit');
-    setTimeout(() => {
-      setIsPulsing(false);
-      setPulseMessage(null);
-    }, 2800);
-  };
 
   useEffect(() => {
     const fetchLiveMetrics = async () => {
@@ -62,21 +89,19 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         if (data.metrics) {
           setMetrics(data.metrics);
         }
-        // If real active allocations exist in the database, pull the latest valid match
-        if (data.recentActivity && data.recentActivity.length > 0) {
-          const realAlloc = data.recentActivity.find(
-            (a) => a.donationId && a.ngoId && a.status !== 'cancelled'
-          );
-          if (realAlloc) {
-            setLiveAllocation(realAlloc);
-          }
-        }
       } catch (err) {
         // Fallback to baseline
       }
     };
     fetchLiveMetrics();
   }, []);
+
+  const currentScenario = SIMULATION_SCENARIOS[activeScenarioIdx];
+  const StorageIcon = currentScenario.donorStorageIcon;
+
+  const handleNextScenario = () => {
+    setActiveScenarioIdx((prev) => (prev + 1) % SIMULATION_SCENARIOS.length);
+  };
 
   // Calculator estimations
   const kgFood = (calculatorMeals * 0.45).toFixed(1);
@@ -146,96 +171,57 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
             </div>
           </div>
 
-          {/* RIGHT: Creative Live AI Redistribution Network Radar & Telemetry Console */}
-          <div className="hero-network-console">
-            {/* Header Status Bar */}
-            <div className="network-console-header">
-              <div className="network-live-pill">
-                <span className="network-live-dot" />
-                <span>LIVE CIVIC REDISTRIBUTION MESH</span>
+          {/* RIGHT: Direction 3 Tactile Dual Cards with Iconic Green Dome Arch */}
+          <div className="hero-cards-stack">
+            {/* Donor Card (Tilted slightly counter-clockwise) */}
+            <div className="hero-card-donor">
+              <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
+                DONOR &bull; VERIFIED KITCHEN
               </div>
-              <span className="network-engine-tag">RescueBite AI Engine</span>
-            </div>
-
-            {/* Interactive Route Flow Diagram */}
-            <div className="network-flow-container">
-              <div className="network-node donor-node">
-                <div className="node-icon-wrapper">
-                  <Building size={20} />
-                </div>
-                <span className="node-role">DONOR KITCHENS</span>
-                <span className="node-title">Verified Surplus</span>
-              </div>
-
-              {/* Animated Central Route Pipeline */}
-              <div className="network-pipeline">
-                <div className={`pipeline-line ${isPulsing ? 'pulsing' : ''}`} />
-                <div className="pipeline-particle" />
-                <div className="pipeline-badge" style={{ backgroundColor: isPulsing ? '#C44824' : '#1F6F43' }}>
-                  <Zap size={11} fill="#FFFFFF" />
-                  <span>{isPulsing ? 'Optimizing' : 'AI Match'}</span>
-                </div>
-              </div>
-
-              <div className="network-node ngo-node">
-                <div className="node-icon-wrapper">
-                  <Soup size={20} />
-                </div>
-                <span className="node-role">COMMUNITY SHELTERS</span>
-                <span className="node-title">Zero Hunger Intake</span>
-              </div>
-            </div>
-
-            {/* Real-time Telemetry Grid */}
-            <div className="network-telemetry-grid">
-              <div className="telemetry-card">
-                <span className="telemetry-label">DISPATCH SPEED</span>
-                <span className="telemetry-val">&lt; 15 MINS</span>
-                <span className="telemetry-sub">Avg Matching Latency</span>
-              </div>
-              <div className="telemetry-card">
-                <span className="telemetry-label">HOT-CHAIN SAFETY</span>
-                <span className="telemetry-val">100%</span>
-                <span className="telemetry-sub">Temperature Verified</span>
-              </div>
-              <div className="telemetry-card">
-                <span className="telemetry-label">NETWORK MEALS</span>
-                <span className="telemetry-val">
-                  {metrics.totalDeliveredMeals ? `${metrics.totalDeliveredMeals}+` : '184+'}
-                </span>
-                <span className="telemetry-sub">Diverted from Waste</span>
-              </div>
-              <div className="telemetry-card">
-                <span className="telemetry-label">CO₂ AVOIDED</span>
-                <span className="telemetry-val">
-                  {metrics.environmentalEstimates?.co2KgAvoided ? `${metrics.environmentalEstimates.co2KgAvoided} kg` : '206 kg'}
-                </span>
-                <span className="telemetry-sub">Carbon Footprint Saved</span>
-              </div>
-            </div>
-
-            {/* Live Network Heartbeat Feed */}
-            <div className="network-feed-container">
-              <Activity size={16} color="#1F6F43" style={{ flexShrink: 0 }} />
-              <p className="network-feed-text">
-                {pulseMessage || LIVE_DISPATCH_MESSAGES[tickerIdx]}
+              <h2 className="hero-card-title">Metro Bistro &amp; Bakery</h2>
+              <p className="hero-card-desc">
+                45 fresh hot meals: rice, dal, veggies
               </p>
+              <span
+                className="hero-card-pill"
+                style={{
+                  backgroundColor: 'var(--color-mustard, #F2A33A)',
+                  color: 'var(--color-coffee-dark, #2C221E)',
+                  fontWeight: 700,
+                }}
+              >
+                Hot holding
+              </span>
             </div>
 
-            {/* Interactive Action Footer */}
-            <div className="network-console-footer">
-              <button
-                onClick={handleSimulatePulse}
-                className="btn-console-pulse"
-                disabled={isPulsing}
-                title="Click to simulate real-time AI constraint matching"
-              >
-                <Radio size={14} className={isPulsing ? 'animate-spin' : ''} />
-                <span>{isPulsing ? 'Simulating Corridor...' : 'Simulate AI Route Corridor'}</span>
-              </button>
-              <span className="console-status-note">
-                {isPulsing ? '⚡ OSRM optimal corridor active' : '• OSRM + GeoJSON routing online'}
-              </span>
+            {/* Shelter Card Wrapper with Peeking Green Arch */}
+            <div className="hero-shelter-wrapper">
+              {/* Semi-circular Green Dome Archway with 12 */}
+              <div className="hero-arch-connector" title="Average 12-minute transit between donor and recipient shelter">
+                <span className="hero-arch-num">12</span>
+                <span className="hero-arch-unit">MINS</span>
+              </div>
+
+              {/* Shelter Card (Tilted slightly clockwise, sits in front of arch) */}
+              <div className="hero-card-shelter">
+                <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
+                  RECIPIENT SHELTER &bull; 2.4 KM
+                </div>
+                <h2 className="hero-card-title">Hope Shelter Community Kitchen</h2>
+                <p className="hero-card-desc">
+                  Needs 50 meals for evening dinner intake
+                </p>
+                <span
+                  className="hero-card-pill"
+                  style={{
+                    backgroundColor: 'var(--color-soft-mint, #E3F2E7)',
+                    color: 'var(--color-network-green, #1F6F43)',
+                    fontWeight: 700,
+                  }}
+                >
+                  Approved by coordinator
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -311,7 +297,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               </div>
               <h3 className="t-node-title">Constraint Scoring</h3>
               <p className="t-node-body">
-                Engine selects Annapurna Relief Kitchen with <strong>94/100 score</strong> based on urgency, volume, and 2.1 km transit.
+                Engine selects Hope Shelter with <strong>94/100 score</strong> based on urgency, volume, and 2.1 km transit.
               </p>
             </div>
 
@@ -534,7 +520,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   {activeRoleTab === 'ngo' && 'Verified Shelter Needs'}
                 </span>
                 <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
-                  {activeRoleTab === 'donor' && 'Ward 4 • Central Kitchen Corridor'}
+                  {activeRoleTab === 'donor' && 'Ward 4 • Metro Bistro Hub'}
                   {activeRoleTab === 'coordinator' && 'Central Delhi Command Desk'}
                   {activeRoleTab === 'ngo' && 'East District Community Hub'}
                 </span>
@@ -606,11 +592,11 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     </span>
                   </div>
                   <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', margin: '0 0 0.35rem 0', fontWeight: 600 }}>
-                    Annapurna Shelter Kitchen (2.1 km via Ring Road)
+                    Hope Shelter Community Kitchen (2.4 km via Ring Road)
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
                     <span>Assigned Courier: Electric Van #04</span>
-                    <span>Estimated transit: 14 mins</span>
+                    <span>Estimated transit: 18 mins</span>
                   </div>
                 </div>
               </div>
@@ -621,14 +607,14 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                 <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
-                      Central Kitchen &rarr; Annapurna Shelter
+                      Metro Bistro &rarr; Hope Shelter
                     </strong>
                     <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-terracotta)' }}>
                       96% Rank #1
                     </span>
                   </div>
                   <p style={{ fontSize: '0.76rem', color: 'var(--color-muted-slate)', margin: '0.25rem 0' }}>
-                    45 Hot Meals • 2.1 km distance • 1h 45m safe window
+                    45 Hot Meals • 2.4 km distance • 1h 45m safe window
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-forest-green)', fontWeight: 600 }}>
                     <span>Demand 35 • Urgency 25 • Route 20 • Storage 16</span>
@@ -683,7 +669,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     </span>
                   </div>
                   <p style={{ fontSize: '0.76rem', color: 'var(--color-coffee-dark)', margin: '0.25rem 0', fontWeight: 600 }}>
-                    Allocated: 45 Meals from Central Kitchen (Arriving ~14 mins)
+                    Allocated: 45 Meals from Metro Bistro (Arriving ~18 mins)
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
                     <span>Dietary: Vegetarian / Hot Dal &amp; Rice</span>
