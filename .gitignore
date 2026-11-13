@@ -31,3 +31,11 @@ Thumbs.db
 
 # Local ML summary documentation
 ML WORK .md
+
+# Local private bug-fixing diary & deployment docs (never push to GitHub)
+bug-fixing/
+BUG_FIXING_README.md
+*bug*fixing*
+VERCEL_BACKEND_DEPLOYMENT.md
+*.pdf
+*.docx
