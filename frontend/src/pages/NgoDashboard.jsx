@@ -347,84 +347,21 @@ export default function NgoDashboard() {
         </div>
       )}
 
-      {/* Model A AI Demand Forecast Banner */}
-      {aiForecast && (
-        <div className="fresh-card" style={{
-          padding: '1.15rem 1.35rem',
-          backgroundColor: '#FFFDF9',
-          border: '1px solid var(--color-soft-border)',
-          borderLeft: '4px solid var(--color-terracotta)',
-          marginBottom: '1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1rem',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--color-warm-bg)',
-              color: 'var(--color-terracotta)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}>
-              <Users size={20} />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-                <strong style={{ fontSize: '0.95rem', color: 'var(--color-coffee-dark)', fontFamily: 'var(--font-heading)' }}>
-                  RescueBite Demand Forecast
-                </strong>
-                <span style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  color: 'var(--color-terracotta)',
-                  backgroundColor: '#FFF4ED',
-                  padding: '0.1rem 0.45rem',
-                  borderRadius: '4px',
-                  border: '1px solid #FAD5C5',
-                }}>
-                  AI Forecast
-                </span>
-              </div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', marginTop: '0.2rem' }}>
-                Forecast Date: <strong>{aiForecast.forecast_date}</strong> • Predicted Demand: <strong style={{ color: 'var(--color-terracotta)', fontSize: '0.95rem' }}>{Math.round(aiForecast.predicted_meals)} meals</strong> (80% Bound: {Math.round(aiForecast.confidence_lower)} – {Math.round(aiForecast.confidence_upper)} meals)
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => {
-              const predicted = Math.round(aiForecast.predicted_meals);
-              setRequestedMeals(String(predicted));
-              setBeneficiaryCount(String(predicted));
-              if (user?.receivingCapacity) {
-                setReceivingCapacity(String(user.receivingCapacity));
-              }
-              if (user?.location?.address) {
-                setDeliveryAddress(user.location.address);
-              }
-              if (!neededBy) {
-                setNeededBy(getFutureDateTime(4));
-              }
-              setIsModalOpen(true);
-            }}
-            className="btn btn-primary btn-sm"
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            <Plus size={14} />
-            <span>Prefill Meal Request</span>
-          </button>
-        </div>
-      )}
-
       {/* Highlights */}
       <div className="dashboard-stats-grid">
-        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #C44824' }}>
+        <div
+          className="fresh-card"
+          onClick={() => {
+            document.getElementById('my-demands-section')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          style={{
+            padding: '1.15rem',
+            borderLeft: '4px solid #C44824',
+            cursor: 'pointer',
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+          }}
+          title="Click to view and manage your active meal demands"
+        >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
               Unfulfilled Meal Deficit
@@ -446,6 +383,9 @@ export default function NgoDashboard() {
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#C44824', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
             {totalNeededMeals} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>meals needed</span>
           </p>
+          <span style={{ fontSize: '0.72rem', color: '#C44824', fontWeight: 600, display: 'inline-block', marginTop: '0.35rem' }}>
+            ↓ Click to view requests
+          </span>
         </div>
 
         <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #1F6F43' }}>
@@ -470,9 +410,32 @@ export default function NgoDashboard() {
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1C1613', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
             {user?.receivingCapacity ?? 0} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>meals capacity</span>
           </p>
+          <span style={{ fontSize: '0.72rem', color: '#6E5D53', fontWeight: 500, display: 'inline-block', marginTop: '0.35rem' }}>
+            Your kitchen storage limit
+          </span>
         </div>
 
-        <div className="fresh-card" style={{ padding: '1.15rem', borderLeft: '4px solid #1F6F43' }}>
+        <div
+          className="fresh-card"
+          onClick={() => {
+            const section = document.getElementById('assigned-offers-section');
+            if (section) {
+              section.scrollIntoView({ behavior: 'smooth' });
+              section.style.transition = 'outline 0.3s ease';
+              section.style.outline = '2px solid #1F6F43';
+              setTimeout(() => {
+                section.style.outline = 'none';
+              }, 1500);
+            }
+          }}
+          style={{
+            padding: '1.15rem',
+            borderLeft: '4px solid #1F6F43',
+            cursor: 'pointer',
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+          }}
+          title="Click to jump to assigned incoming food offers"
+        >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#2C221E', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
               Incoming Food Offers
@@ -494,11 +457,14 @@ export default function NgoDashboard() {
           <p style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F6F43', margin: '0.2rem 0 0 0', lineHeight: 1.1 }}>
             {pendingIncomingAllocations.length} <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#382C25' }}>incoming allocations</span>
           </p>
+          <span style={{ fontSize: '0.72rem', color: '#1F6F43', fontWeight: 600, display: 'inline-block', marginTop: '0.35rem' }}>
+            ↓ Click to view active offers
+          </span>
         </div>
       </div>
 
       {/* Incoming / Assigned Allocations for this NGO */}
-      <div className="fresh-card" style={{ marginBottom: '1.5rem', padding: '1.25rem' }}>
+      <div id="assigned-offers-section" className="fresh-card" style={{ marginBottom: '1.5rem', padding: '1.25rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <div>
             <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1C1613' }}>
@@ -646,7 +612,7 @@ export default function NgoDashboard() {
 
                 {/* NGO Action Buttons */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  {isExpired && isPendingOrApproved ? (
+                  {['cancelled', 'rejected'].includes(alloc.status) || isExpired ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <button
                         disabled
@@ -660,7 +626,7 @@ export default function NgoDashboard() {
                           borderColor: '#D1D5DB',
                           color: '#6B7280',
                         }}
-                        title="Delivery inactive: consignment expired before acceptance"
+                        title="Delivery inactive: consignment was cancelled or expired"
                       >
                         <Truck size={14} />
                         <span>Delivery Inactive</span>
@@ -670,19 +636,19 @@ export default function NgoDashboard() {
                         disabled
                         className="btn btn-sm"
                         style={{
-                          backgroundColor: '#F3F4F6',
-                          color: '#9CA3AF',
-                          borderColor: '#E5E7EB',
+                          backgroundColor: '#FEE2E2',
+                          color: '#991B1B',
+                          borderColor: '#FECACA',
                           cursor: 'not-allowed',
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '0.4rem',
                           fontWeight: 600,
                         }}
-                        title="Expired offer cannot be accepted"
+                        title="Cancelled or expired consignment cannot be accepted"
                       >
                         <XCircle size={14} />
-                        <span>Offer Expired</span>
+                        <span>{alloc.status === 'rejected' ? 'Offer Declined' : 'Offer Expired & Cancelled'}</span>
                       </button>
                     </div>
                   ) : (
@@ -773,7 +739,7 @@ export default function NgoDashboard() {
       </div>
 
       {/* NGO Demands Table */}
-      <div className="fresh-card" style={{ padding: '1.25rem' }}>
+      <div id="my-demands-section" className="fresh-card" style={{ padding: '1.25rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1C1613' }}>
             Your Active Meal Demands
