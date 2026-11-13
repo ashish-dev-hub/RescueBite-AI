@@ -318,8 +318,8 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                       </strong>
 
                       <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Organization</span>
-                      <strong style={{ color: '#1C1613', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}>
-                        {user?.organization || (user?.role === 'donor' ? 'Metro Bistro & Bakery' : user?.role === 'ngo' ? 'Hope Community Meals' : 'Central Dispatch Desk')}
+                      <strong style={{ color: '#1C1613', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={user?.organization || user?.name || (user?.role === 'donor' ? 'Partner Food Donor' : user?.role === 'ngo' ? 'Partner NGO' : 'Central Dispatch Desk')}>
+                        {user?.organization || user?.name || (user?.role === 'donor' ? 'Partner Food Donor' : user?.role === 'ngo' ? 'Partner NGO' : 'Central Dispatch Desk')}
                       </strong>
 
                       <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Operating Zone</span>

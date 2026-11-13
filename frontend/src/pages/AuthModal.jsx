@@ -145,13 +145,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
       } else if (mode === 'register' && registerRole === 'ngo') {
         demoSub = 'demo-ngo-sub-002';
         demoEmail = 'shelter.google@rescuebite.org';
-        demoName = 'Hope Community Shelter';
-        demoOrg = 'Hope Shelter NGO';
+        demoName = 'Annapurna Relief Shelter';
+        demoOrg = 'Annapurna Community NGO';
       } else {
         demoSub = 'demo-donor-sub-001';
         demoEmail = 'donor.google@rescuebite.org';
-        demoName = 'Metro Food Partner';
-        demoOrg = 'Metro Kitchens';
+        demoName = 'Central Kitchen Partner';
+        demoOrg = 'Central Food Kitchens';
       }
 
       const demoCredential = `demo-google:${demoSub}:${demoEmail}:${demoName}`;
@@ -999,7 +999,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'l
               className="form-input"
               placeholder={
                 registerRole === 'donor'
-                  ? 'e.g. Metro Bistro & Bakery'
+                  ? 'e.g. Grand Banquet, Taj Kitchens, or Central Mess'
                   : registerRole === 'ngo'
                   ? 'e.g. Sunrise Community Kitchen'
                   : 'e.g. RescueBite Central Operations'

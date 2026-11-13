@@ -16,15 +16,15 @@ const SIMULATION_SCENARIOS = [
     id: 1,
     badge: 'Urgent Dinner Match',
     confidence: 98,
-    donorName: 'Metro Bistro & Bakery',
-    donorLocation: 'Downtown Core',
+    donorName: 'Central Community Mess & Canteen',
+    donorLocation: 'Downtown Corridor',
     donorItem: '45 Fresh Hot Meals (Rice, Dal, Veggies)',
-    donorStorage: 'Hot Holding (>60°C)',
+    donorStorage: 'Hot Holding (60°C+)',
     donorStorageIcon: Flame,
     prepTime: '35m ago',
-    ngoName: 'Hope Shelter Community Kitchen',
-    ngoLocation: 'East Ward (2.4 km)',
-    ngoNeed: '50 Meals Needed',
+    ngoName: 'Annapurna Relief & Shelter Kitchen',
+    ngoLocation: 'East Ward (2.1 km)',
+    ngoNeed: 'Needs 45 meals for evening dinner intake',
     ngoReason: 'Evening Dinner Intake',
     transitTime: '12 mins',
     safeWindow: '1h 45m remaining',
@@ -34,17 +34,17 @@ const SIMULATION_SCENARIOS = [
     id: 2,
     badge: 'Bakery & Chilled Dairy Rescue',
     confidence: 95,
-    donorName: 'Artisan Bread & Cafe',
-    donorLocation: 'Market District',
-    donorItem: '60 Loaves & Pastries + Fresh Dairy',
+    donorName: 'Artisan Bread & Cafe Network',
+    donorLocation: 'Market Corridor',
+    donorItem: '60 Loaves & Sandwiches + Fresh Dairy',
     donorStorage: 'Refrigerated (<4°C)',
     donorStorageIcon: ThermometerSnowflake,
     prepTime: 'Baked Today',
-    ngoName: 'Youth Horizon Day Center',
-    ngoLocation: 'North Side (3.8 km)',
-    ngoNeed: '60 Meals Needed',
+    ngoName: 'Youth Horizon Community Center',
+    ngoLocation: 'North Side (3.4 km)',
+    ngoNeed: 'Needs 60 packs for morning breakfast',
     ngoReason: 'Breakfast & Family Packs',
-    transitTime: '16 mins',
+    transitTime: '15 mins',
     safeWindow: '3h 15m remaining',
     reasonCodes: ['Direct Quantity Match', 'Cold Storage Feasible', 'Capacity 100%'],
   },
@@ -52,15 +52,15 @@ const SIMULATION_SCENARIOS = [
     id: 3,
     badge: 'Caterer Event Surplus',
     confidence: 99,
-    donorName: 'Grand Plaza Hotel & Banquets',
-    donorLocation: 'Civic Center',
-    donorItem: '85 Protein Bento Boxes',
-    donorStorage: 'Chilled (<4°C)',
-    donorStorageIcon: ThermometerSnowflake,
+    donorName: 'Grand Banquet & Hospitality Hub',
+    donorLocation: 'Civic Center Hub',
+    donorItem: '85 Nutritious Protein Bento Boxes',
+    donorStorage: 'Hot Holding (60°C+)',
+    donorStorageIcon: Flame,
     prepTime: '1h ago',
-    ngoName: 'St. Jude Community Meals',
+    ngoName: 'St. Jude Community Meals & Shelter',
     ngoLocation: 'Central Hub (1.8 km)',
-    ngoNeed: '90 Meals Needed',
+    ngoNeed: 'Needs 85 meals for evening senior service',
     ngoReason: 'Senior Meal Service',
     transitTime: '9 mins',
     safeWindow: '2h 30m remaining',
@@ -79,8 +79,17 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
   });
 
   const [activeScenarioIdx, setActiveScenarioIdx] = useState(0);
+  const [liveAllocation, setLiveAllocation] = useState(null);
   const [activeRoleTab, setActiveRoleTab] = useState('donor');
   const [calculatorMeals, setCalculatorMeals] = useState(50);
+
+  // Dynamic automatic rotation of community scenarios every 5.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveScenarioIdx((prev) => (prev + 1) % SIMULATION_SCENARIOS.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const fetchLiveMetrics = async () => {
@@ -88,6 +97,15 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
         const data = await api.getAnalyticsOverview();
         if (data.metrics) {
           setMetrics(data.metrics);
+        }
+        // If real active allocations exist in the database, pull the latest valid match
+        if (data.recentActivity && data.recentActivity.length > 0) {
+          const realAlloc = data.recentActivity.find(
+            (a) => a.donationId && a.ngoId && a.status !== 'cancelled'
+          );
+          if (realAlloc) {
+            setLiveAllocation(realAlloc);
+          }
         }
       } catch (err) {
         // Fallback to baseline
@@ -97,6 +115,41 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
   }, []);
 
   const currentScenario = SIMULATION_SCENARIOS[activeScenarioIdx];
+  const isLive = Boolean(liveAllocation);
+
+  // Dynamic display fields: prioritize real database allocation, fallback to dynamic rotating scenario
+  const displayDonor = liveAllocation
+    ? (liveAllocation.donationId?.donorOrg || liveAllocation.donationId?.donorName || 'Verified Donor Kitchen')
+    : currentScenario.donorName;
+
+  const displayDonorItem = liveAllocation
+    ? `${liveAllocation.approvedMeals || 45} fresh meals: ${liveAllocation.donationId?.foodName || 'Warm prepared meals'}`
+    : currentScenario.donorItem;
+
+  const displayDonorStorage = liveAllocation
+    ? (liveAllocation.donationId?.storageInfo || 'Hot Holding')
+    : currentScenario.donorStorage;
+
+  const displayNgo = liveAllocation
+    ? (liveAllocation.ngoId?.organization || liveAllocation.ngoId?.name || 'Partner Recipient Shelter')
+    : currentScenario.ngoName;
+
+  const displayNgoNeed = liveAllocation
+    ? (liveAllocation.demandId?.notes || `Needs ${liveAllocation.approvedMeals || 45} meals for community intake`)
+    : currentScenario.ngoNeed;
+
+  const displayStatus = liveAllocation
+    ? (liveAllocation.status === 'delivered' ? '✓ Delivered safely' : liveAllocation.status === 'picked_up' ? '🚚 In Transit' : 'Approved by coordinator')
+    : 'Approved by coordinator';
+
+  const displayDistance = liveAllocation
+    ? '2.1 KM'
+    : (currentScenario.ngoLocation.split('(')[1]?.replace(')', '') || '2.4 KM');
+
+  const displayTransit = liveAllocation
+    ? '12'
+    : currentScenario.transitTime.replace(/[^0-9]/g, '');
+
   const StorageIcon = currentScenario.donorStorageIcon;
 
   const handleNextScenario = () => {
@@ -173,14 +226,67 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
 
           {/* RIGHT: Direction 3 Tactile Dual Cards with Iconic Green Dome Arch */}
           <div className="hero-cards-stack">
+            {/* Live Indicator or Rotating Indicator Badge */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '0.65rem',
+              padding: '0 0.35rem',
+            }}>
+              <span style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                color: isLive ? '#15803D' : '#6E5D53',
+                backgroundColor: isLive ? '#DCFCE7' : '#F5EFE3',
+                padding: '0.2rem 0.6rem',
+                borderRadius: '9999px',
+                border: `1px solid ${isLive ? '#86EFAC' : '#E6DAC8'}`,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+              }}>
+                <span style={{
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: isLive ? '#16A34A' : '#C44824',
+                  boxShadow: isLive ? '0 0 6px rgba(22,163,74,0.6)' : 'none',
+                }} />
+                {isLive ? 'LIVE NETWORK MATCH' : `COMMUNITY MATCH PREVIEW (${activeScenarioIdx + 1}/${SIMULATION_SCENARIOS.length})`}
+              </span>
+
+              {!isLive && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  {SIMULATION_SCENARIOS.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveScenarioIdx(idx)}
+                      style={{
+                        width: activeScenarioIdx === idx ? '16px' : '6px',
+                        height: '6px',
+                        borderRadius: '3px',
+                        backgroundColor: activeScenarioIdx === idx ? '#C44824' : '#D1D5DB',
+                        border: 'none',
+                        padding: 0,
+                        cursor: 'pointer',
+                        transition: 'all 0.25s ease',
+                      }}
+                      title={`Switch to Example ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Donor Card (Tilted slightly counter-clockwise) */}
-            <div className="hero-card-donor">
+            <div className="hero-card-donor" style={{ transition: 'all 0.35s ease' }}>
               <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
                 DONOR &bull; VERIFIED KITCHEN
               </div>
-              <h2 className="hero-card-title">Metro Bistro &amp; Bakery</h2>
+              <h2 className="hero-card-title">{displayDonor}</h2>
               <p className="hero-card-desc">
-                45 fresh hot meals: rice, dal, veggies
+                {displayDonorItem}
               </p>
               <span
                 className="hero-card-pill"
@@ -190,26 +296,26 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   fontWeight: 700,
                 }}
               >
-                Hot holding
+                {displayDonorStorage}
               </span>
             </div>
 
             {/* Shelter Card Wrapper with Peeking Green Arch */}
-            <div className="hero-shelter-wrapper">
-              {/* Semi-circular Green Dome Archway with 12 */}
-              <div className="hero-arch-connector" title="Average 12-minute transit between donor and recipient shelter">
-                <span className="hero-arch-num">12</span>
+            <div className="hero-shelter-wrapper" style={{ transition: 'all 0.35s ease' }}>
+              {/* Semi-circular Green Dome Archway with Estimated Transit */}
+              <div className="hero-arch-connector" title="Estimated transit between donor and recipient shelter">
+                <span className="hero-arch-num">{displayTransit}</span>
                 <span className="hero-arch-unit">MINS</span>
               </div>
 
               {/* Shelter Card (Tilted slightly clockwise, sits in front of arch) */}
               <div className="hero-card-shelter">
                 <div className="hero-card-label" style={{ color: '#1F6F43', letterSpacing: '0.08em' }}>
-                  RECIPIENT SHELTER &bull; 2.4 KM
+                  RECIPIENT SHELTER &bull; {displayDistance}
                 </div>
-                <h2 className="hero-card-title">Hope Shelter Community Kitchen</h2>
+                <h2 className="hero-card-title">{displayNgo}</h2>
                 <p className="hero-card-desc">
-                  Needs 50 meals for evening dinner intake
+                  {displayNgoNeed}
                 </p>
                 <span
                   className="hero-card-pill"
@@ -219,7 +325,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     fontWeight: 700,
                   }}
                 >
-                  Approved by coordinator
+                  {displayStatus}
                 </span>
               </div>
             </div>
@@ -297,7 +403,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
               </div>
               <h3 className="t-node-title">Constraint Scoring</h3>
               <p className="t-node-body">
-                Engine selects Hope Shelter with <strong>94/100 score</strong> based on urgency, volume, and 2.1 km transit.
+                Engine selects Annapurna Relief Kitchen with <strong>94/100 score</strong> based on urgency, volume, and 2.1 km transit.
               </p>
             </div>
 
@@ -520,7 +626,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                   {activeRoleTab === 'ngo' && 'Verified Shelter Needs'}
                 </span>
                 <span style={{ fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
-                  {activeRoleTab === 'donor' && 'Ward 4 • Metro Bistro Hub'}
+                  {activeRoleTab === 'donor' && 'Ward 4 • Central Kitchen Corridor'}
                   {activeRoleTab === 'coordinator' && 'Central Delhi Command Desk'}
                   {activeRoleTab === 'ngo' && 'East District Community Hub'}
                 </span>
@@ -592,11 +698,11 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     </span>
                   </div>
                   <p style={{ fontSize: '0.82rem', color: 'var(--color-coffee-dark)', margin: '0 0 0.35rem 0', fontWeight: 600 }}>
-                    Hope Shelter Community Kitchen (2.4 km via Ring Road)
+                    Annapurna Shelter Kitchen (2.1 km via Ring Road)
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
                     <span>Assigned Courier: Electric Van #04</span>
-                    <span>Estimated transit: 18 mins</span>
+                    <span>Estimated transit: 14 mins</span>
                   </div>
                 </div>
               </div>
@@ -607,14 +713,14 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                 <div style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFDF9', borderRadius: '10px', border: '1px solid var(--color-soft-border)', borderLeft: '4px solid var(--color-terracotta)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <strong style={{ fontSize: '0.88rem', color: 'var(--color-coffee-dark)' }}>
-                      Metro Bistro &rarr; Hope Shelter
+                      Central Kitchen &rarr; Annapurna Shelter
                     </strong>
                     <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-terracotta)' }}>
                       96% Rank #1
                     </span>
                   </div>
                   <p style={{ fontSize: '0.76rem', color: 'var(--color-muted-slate)', margin: '0.25rem 0' }}>
-                    45 Hot Meals • 2.4 km distance • 1h 45m safe window
+                    45 Hot Meals • 2.1 km distance • 1h 45m safe window
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-forest-green)', fontWeight: 600 }}>
                     <span>Demand 35 • Urgency 25 • Route 20 • Storage 16</span>
@@ -669,7 +775,7 @@ export default function LandingPage({ onSelectRole, onOpenAuth }) {
                     </span>
                   </div>
                   <p style={{ fontSize: '0.76rem', color: 'var(--color-coffee-dark)', margin: '0.25rem 0', fontWeight: 600 }}>
-                    Allocated: 45 Meals from Metro Bistro (Arriving ~18 mins)
+                    Allocated: 45 Meals from Central Kitchen (Arriving ~14 mins)
                   </p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--color-muted-slate)' }}>
                     <span>Dietary: Vegetarian / Hot Dal &amp; Rice</span>

@@ -64,10 +64,13 @@ const getOverviewAnalytics = async (req, res, next) => {
       status: { $in: ['approved', 'accepted', 'picked_up'] },
     });
 
-    // 7. Recent activity feed
-    const recentAllocations = await Allocation.find()
-      .populate('donationId', 'foodName donorName category')
-      .populate('ngoId', 'name organization')
+    // 7. Recent activity feed (populated for landing page live match showcase)
+    const recentAllocations = await Allocation.find({
+      status: { $in: ['accepted', 'picked_up', 'delivered', 'approved'] },
+    })
+      .populate('donationId', 'foodName donorName donorOrg category storageInfo location')
+      .populate('ngoId', 'name organization location')
+      .populate('demandId', 'requestedMeals notes urgency')
       .sort({ updatedAt: -1 })
       .limit(6);
 
