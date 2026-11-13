@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState, useRef } from 'react';
-import { X, Navigation, Play, Square, Truck, RefreshCw } from 'lucide-react';
+import { X, Navigation, Play, Square, Truck, RefreshCw, AlertTriangle } from 'lucide-react';
 import LiveTrackingMap from './LiveTrackingMap';
 import locationService from '../services/locationService';
 import socketService from '../services/socketService';
@@ -294,6 +294,11 @@ export default function LiveDeliveryModal({
   const ngoName = allocation.ngoId?.organization || allocation.ngoId?.name || 'Partner Shelter';
   const foodName = allocation.donationId?.foodName || 'Surplus Food Consignment';
   const portions = allocation.approvedMeals || allocation.recommendedMeals || 40;
+  const isExpiredAllocation = Boolean(
+    allocation.donationId?.pickupDeadline &&
+    new Date(allocation.donationId.pickupDeadline) <= new Date() &&
+    ['approved', 'proposed', 'cancelled'].includes(allocation.status)
+  );
 
   return (
     <div
@@ -388,6 +393,35 @@ export default function LiveDeliveryModal({
             gap: '12px',
           }}
         >
+          {/* Expired Consignment Warning */}
+          {isExpiredAllocation && (
+            <div
+              style={{
+                padding: '10px 14px',
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                borderRadius: '10px',
+                color: '#991B1B',
+                fontSize: '0.82rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+            >
+              <AlertTriangle size={18} color="#DC2626" style={{ flexShrink: 0 }} />
+              <span>
+                <strong>Food Safety Alert:</strong> The pickup deadline for this food donation expired on{' '}
+                {new Date(allocation.donationId.pickupDeadline).toLocaleString([], {
+                  month: 'short',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+                . Real courier dispatch and delivery are inactive to prevent perishable food hazards.
+              </span>
+            </div>
+          )}
+
           {/* Live Leaflet Map Component */}
           <div>
             {loadingRoute ? (
@@ -480,7 +514,7 @@ export default function LiveDeliveryModal({
               {!isSimulating ? (
                 <button
                   onClick={startSimulation}
-                  disabled={loadingRoute || isBroadcastingGps}
+                  disabled={loadingRoute || isBroadcastingGps || isExpiredAllocation}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -492,10 +526,11 @@ export default function LiveDeliveryModal({
                     borderRadius: '8px',
                     fontWeight: 600,
                     fontSize: '0.82rem',
-                    cursor: loadingRoute || isBroadcastingGps ? 'not-allowed' : 'pointer',
-                    opacity: loadingRoute || isBroadcastingGps ? 0.6 : 1,
+                    cursor: loadingRoute || isBroadcastingGps || isExpiredAllocation ? 'not-allowed' : 'pointer',
+                    opacity: loadingRoute || isBroadcastingGps || isExpiredAllocation ? 0.6 : 1,
                     transition: 'all 0.15s ease',
                   }}
+                  title={isExpiredAllocation ? 'Simulation disabled for expired food consignment' : 'Simulate courier movement along route'}
                 >
                   <Play size={14} fill="#FFFFFF" />
                   Simulate Courier Transit
@@ -525,7 +560,7 @@ export default function LiveDeliveryModal({
               {!isBroadcastingGps ? (
                 <button
                   onClick={startGpsBroadcast}
-                  disabled={isSimulating || loadingRoute}
+                  disabled={isSimulating || loadingRoute || isExpiredAllocation}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -537,9 +572,10 @@ export default function LiveDeliveryModal({
                     borderRadius: '8px',
                     fontWeight: 600,
                     fontSize: '0.82rem',
-                    cursor: isSimulating || loadingRoute ? 'not-allowed' : 'pointer',
-                    opacity: isSimulating || loadingRoute ? 0.5 : 1,
+                    cursor: isSimulating || loadingRoute || isExpiredAllocation ? 'not-allowed' : 'pointer',
+                    opacity: isSimulating || loadingRoute || isExpiredAllocation ? 0.5 : 1,
                   }}
+                  title={isExpiredAllocation ? 'Live GPS broadcast disabled for expired food consignment' : 'Broadcast your real device GPS coordinates'}
                 >
                   <Navigation size={14} />
                   Broadcast Live Device GPS

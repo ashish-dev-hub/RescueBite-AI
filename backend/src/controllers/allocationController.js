@@ -139,6 +139,40 @@ const getAllocations = async (req, res, next) => {
       .populate('createdBy', 'name email')
       .sort({ createdAt: -1 });
 
+    // Architectural Food Safety Sweep:
+    // If an allocation is in 'proposed' or 'approved' state, but its donation pickup deadline
+    // has passed, auto-cancel the allocation and update the donation status so NGOs cannot
+    // claim or dispatch stale/expired perishable food.
+    const now = new Date();
+    const expiredUpdates = [];
+
+    for (const alloc of allocations) {
+      if (
+        ['proposed', 'approved'].includes(alloc.status) &&
+        alloc.donationId &&
+        alloc.donationId.pickupDeadline &&
+        new Date(alloc.donationId.pickupDeadline) <= now
+      ) {
+        alloc.status = 'cancelled';
+        alloc.timeline.push({
+          status: 'cancelled',
+          actorRole: 'system',
+          timestamp: now,
+          note: 'Auto-cancelled: Consignment pickup deadline expired before NGO acceptance (Food Safety Expiry)',
+        });
+        expiredUpdates.push(alloc.save());
+
+        if (['reserved', 'allocated'].includes(alloc.donationId.status)) {
+          alloc.donationId.status = 'cancelled';
+          expiredUpdates.push(alloc.donationId.save());
+        }
+      }
+    }
+
+    if (expiredUpdates.length > 0) {
+      await Promise.all(expiredUpdates);
+    }
+
     res.json({
       success: true,
       count: allocations.length,
@@ -165,6 +199,24 @@ const getAllocationById = async (req, res, next) => {
         success: false,
         message: 'Allocation record not found',
       });
+    }
+
+    // Auto-cancel if expired food safety check
+    const now = new Date();
+    if (
+      ['proposed', 'approved'].includes(allocation.status) &&
+      allocation.donationId &&
+      allocation.donationId.pickupDeadline &&
+      new Date(allocation.donationId.pickupDeadline) <= now
+    ) {
+      allocation.status = 'cancelled';
+      allocation.timeline.push({
+        status: 'cancelled',
+        actorRole: 'system',
+        timestamp: now,
+        note: 'Auto-cancelled: Consignment pickup deadline expired before NGO acceptance (Food Safety Expiry)',
+      });
+      await allocation.save();
     }
 
     // Role permission check
@@ -217,14 +269,39 @@ const respondAllocation = async (req, res, next) => {
       });
     }
 
+    const donation = await Donation.findById(allocation.donationId);
+    if (!donation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Associated donation listing not found',
+      });
+    }
+
+    // Strict Food Safety Enforcement: Check pickup deadline
+    const now = new Date();
+    if (donation.pickupDeadline && new Date(donation.pickupDeadline) <= now) {
+      if (['proposed', 'approved'].includes(allocation.status)) {
+        allocation.status = 'cancelled';
+        allocation.timeline.push({
+          status: 'cancelled',
+          actorRole: 'system',
+          timestamp: now,
+          note: 'Auto-cancelled: Attempted response after food safety pickup deadline expired',
+        });
+        await allocation.save();
+      }
+      return res.status(400).json({
+        success: false,
+        message: 'Food Safety Alert: The pickup deadline for this food donation has expired. This consignment cannot be accepted or dispatched.',
+      });
+    }
+
     if (allocation.status !== 'approved') {
       return res.status(400).json({
         success: false,
         message: `Cannot respond to an allocation with status '${allocation.status}'. Only 'approved' allocations can be accepted or rejected.`,
       });
     }
-
-    const donation = await Donation.findById(allocation.donationId);
 
     if (action === 'accept') {
       allocation.status = 'accepted';

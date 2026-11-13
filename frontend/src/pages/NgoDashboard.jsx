@@ -260,7 +260,14 @@ export default function NgoDashboard() {
   // Metrics
   const openDemands = demands.filter((d) => ['open', 'partially_fulfilled'].includes(d.status));
   const totalNeededMeals = openDemands.reduce((sum, d) => sum + (d.requestedMeals - (d.fulfilledMeals || 0)), 0);
-  const pendingIncomingAllocations = allocations.filter((a) => ['approved', 'accepted', 'picked_up'].includes(a.status));
+  const pendingIncomingAllocations = allocations.filter((a) => {
+    if (!['approved', 'accepted', 'picked_up'].includes(a.status)) return false;
+    // Food safety filter: exclude expired approved offers whose pickup deadline has passed
+    if (a.status === 'approved' && a.donationId?.pickupDeadline) {
+      if (new Date(a.donationId.pickupDeadline) <= new Date()) return false;
+    }
+    return true;
+  });
 
   return (
     <div>
@@ -516,24 +523,51 @@ export default function NgoDashboard() {
               </p>
             </div>
           ) : (
-            allocations.map((alloc) => (
+            allocations.map((alloc) => {
+              const isExpired = Boolean(
+                alloc.donationId?.pickupDeadline &&
+                new Date(alloc.donationId.pickupDeadline) <= new Date()
+              );
+              const isPendingOrApproved = ['proposed', 'approved'].includes(alloc.status);
+
+              return (
               <div
                 key={alloc._id}
                 style={{
-                  border: '1px solid var(--color-soft-border)',
+                  border: `1px solid ${isExpired && isPendingOrApproved ? '#FECACA' : 'var(--color-soft-border)'}`,
                   borderRadius: 'var(--radius-md)',
                   padding: '1.15rem',
-                  backgroundColor: alloc.status === 'approved' ? '#FFFFFF' : 'var(--color-pale-neutral)',
-                  boxShadow: alloc.status === 'approved' ? 'var(--shadow-card)' : 'none',
+                  backgroundColor: isExpired && isPendingOrApproved ? '#FFFDFD' : (alloc.status === 'approved' ? '#FFFFFF' : 'var(--color-pale-neutral)'),
+                  boxShadow: alloc.status === 'approved' && !isExpired ? 'var(--shadow-card)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.75rem' }}>
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <h4 style={{ fontSize: '1.05rem', color: 'var(--color-deep-forest)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <h4 style={{ fontSize: '1.05rem', color: isExpired && isPendingOrApproved ? '#991B1B' : 'var(--color-deep-forest)' }}>
                         {alloc.donationId?.foodName || 'Surplus Meal Listing'}
                       </h4>
-                      <StatusBadge status={alloc.status} />
+                      {isExpired && isPendingOrApproved ? (
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            padding: '0.15rem 0.55rem',
+                            borderRadius: '4px',
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            backgroundColor: '#FEF2F2',
+                            color: '#991B1B',
+                            border: '1px solid #FECACA',
+                          }}
+                        >
+                          <AlertTriangle size={12} />
+                          Expired (Food Safety)
+                        </span>
+                      ) : (
+                        <StatusBadge status={alloc.status} />
+                      )}
                     </div>
                     <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)', marginTop: '0.2rem' }}>
                       From Donor: <strong>{alloc.donationId?.donorOrg || alloc.donationId?.donorName}</strong> ({alloc.donationId?.location?.address || 'Local'})
@@ -541,7 +575,7 @@ export default function NgoDashboard() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-network-green)' }}>
+                    <span style={{ fontSize: '1.35rem', fontWeight: 800, color: isExpired && isPendingOrApproved ? '#9CA3AF' : 'var(--color-network-green)' }}>
                       {alloc.approvedMeals}
                     </span>
                     <span style={{ fontSize: '0.85rem', color: 'var(--color-muted-slate)', marginLeft: '0.25rem' }}>
@@ -565,12 +599,12 @@ export default function NgoDashboard() {
                   alignItems: 'center',
                   gap: '1.5rem',
                   fontSize: '0.8rem',
-                  color: 'var(--color-dark-slate)',
-                  backgroundColor: '#FFFFFF',
+                  color: isExpired && isPendingOrApproved ? '#991B1B' : 'var(--color-dark-slate)',
+                  backgroundColor: isExpired && isPendingOrApproved ? '#FEF2F2' : '#FFFFFF',
                   padding: '0.5rem 0.85rem',
                   borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--color-soft-border)',
-                  marginBottom: '1rem',
+                  border: `1px solid ${isExpired && isPendingOrApproved ? '#FECACA' : 'var(--color-soft-border)'}`,
+                  marginBottom: isExpired && isPendingOrApproved ? '0.65rem' : '1rem',
                   flexWrap: 'wrap',
                 }}>
                   <div>
@@ -578,95 +612,162 @@ export default function NgoDashboard() {
                     <strong>{alloc.donationId?.storageInfo || 'Refrigerated'}</strong>
                   </div>
                   <div>
-                    <span style={{ color: 'var(--color-muted-slate)' }}>Pickup By: </span>
-                    <strong>
+                    <span style={{ color: isExpired && isPendingOrApproved ? '#991B1B' : 'var(--color-muted-slate)' }}>Pickup By: </span>
+                    <strong style={{ color: isExpired && isPendingOrApproved ? '#DC2626' : 'inherit' }}>
                       {alloc.donationId?.pickupDeadline
                         ? new Date(alloc.donationId.pickupDeadline).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' })
                         : 'Today'}
+                      {isExpired && isPendingOrApproved && ' (EXPIRED)'}
                     </strong>
                   </div>
                 </div>
 
+                {/* Food Safety Notice Banner for Expired Consignments */}
+                {isExpired && isPendingOrApproved && (
+                  <div style={{
+                    padding: '0.65rem 0.85rem',
+                    backgroundColor: '#FEF2F2',
+                    border: '1px solid #FECACA',
+                    borderRadius: 'var(--radius-sm)',
+                    color: '#991B1B',
+                    fontSize: '0.8rem',
+                    fontWeight: 500,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '1rem',
+                  }}>
+                    <AlertTriangle size={15} color="#DC2626" style={{ flexShrink: 0 }} />
+                    <span>
+                      <strong>Food Safety Expiry:</strong> Consignment pickup deadline passed on {alloc.donationId?.pickupDeadline ? new Date(alloc.donationId.pickupDeadline).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'earlier'}. To prevent foodborne risks, expired surplus cannot be accepted or dispatched.
+                    </span>
+                  </div>
+                )}
+
                 {/* NGO Action Buttons */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  <button
-                    onClick={() => {
-                      setTrackingAllocation(alloc);
-                      setIsTrackingOpen(true);
-                    }}
-                    className="btn btn-secondary btn-sm"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                      borderColor: '#065F46',
-                      color: '#065F46',
-                      fontWeight: 600,
-                    }}
-                    title="Track Courier & Route in Real-Time"
-                  >
-                    <Truck size={14} />
-                    <span>Track Live Delivery</span>
-                  </button>
-
-                  {alloc.status === 'approved' && (
-                    <>
+                  {isExpired && isPendingOrApproved ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <button
-                        onClick={() => setRejectingAllocId(alloc._id)}
-                        disabled={actionLoading}
-                        className="btn btn-outline btn-sm"
-                        style={{ color: '#B91C1C', borderColor: '#FECACA' }}
+                        disabled
+                        className="btn btn-secondary btn-sm"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          opacity: 0.55,
+                          cursor: 'not-allowed',
+                          borderColor: '#D1D5DB',
+                          color: '#6B7280',
+                        }}
+                        title="Delivery inactive: consignment expired before acceptance"
+                      >
+                        <Truck size={14} />
+                        <span>Delivery Inactive</span>
+                      </button>
+
+                      <button
+                        disabled
+                        className="btn btn-sm"
+                        style={{
+                          backgroundColor: '#F3F4F6',
+                          color: '#9CA3AF',
+                          borderColor: '#E5E7EB',
+                          cursor: 'not-allowed',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          fontWeight: 600,
+                        }}
+                        title="Expired offer cannot be accepted"
                       >
                         <XCircle size={14} />
-                        <span>Decline Offer</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleRespondAllocation(alloc._id, 'accept')}
-                        disabled={actionLoading}
-                        className="btn btn-primary btn-sm"
-                      >
-                        <CheckCircle2 size={14} />
-                        <span>Accept Food Allocation</span>
-                      </button>
-                    </>
-                  )}
-
-                  {alloc.status === 'accepted' && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)' }}>
-                        ✓ Accepted — awaiting pickup or in transit
-                      </span>
-                      <button
-                        onClick={() => handleConfirmDelivery(alloc._id)}
-                        disabled={actionLoading}
-                        className="btn btn-primary btn-sm"
-                      >
-                        <PackageCheck size={14} />
-                        <span>Confirm Food Received & Served</span>
+                        <span>Offer Expired</span>
                       </button>
                     </div>
-                  )}
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setTrackingAllocation(alloc);
+                          setIsTrackingOpen(true);
+                        }}
+                        className="btn btn-secondary btn-sm"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          borderColor: '#065F46',
+                          color: '#065F46',
+                          fontWeight: 600,
+                        }}
+                        title="Track Courier & Route in Real-Time"
+                      >
+                        <Truck size={14} />
+                        <span>Track Live Delivery</span>
+                      </button>
 
-                  {alloc.status === 'picked_up' && (
-                    <button
-                      onClick={() => handleConfirmDelivery(alloc._id)}
-                      disabled={actionLoading}
-                      className="btn btn-primary btn-sm"
-                    >
-                      <PackageCheck size={14} />
-                      <span>Confirm Safe Delivery</span>
-                    </button>
-                  )}
+                      {alloc.status === 'approved' && (
+                        <>
+                          <button
+                            onClick={() => setRejectingAllocId(alloc._id)}
+                            disabled={actionLoading}
+                            className="btn btn-outline btn-sm"
+                            style={{ color: '#B91C1C', borderColor: '#FECACA' }}
+                          >
+                            <XCircle size={14} />
+                            <span>Decline Offer</span>
+                          </button>
 
-                  {alloc.status === 'delivered' && (
-                    <span style={{ fontSize: '0.82rem', color: '#15803D', fontWeight: 600 }}>
-                      ✓ Delivery Confirmed & Logged to Impact
-                    </span>
+                          <button
+                            onClick={() => handleRespondAllocation(alloc._id, 'accept')}
+                            disabled={actionLoading}
+                            className="btn btn-primary btn-sm"
+                          >
+                            <CheckCircle2 size={14} />
+                            <span>Accept Food Allocation</span>
+                          </button>
+                        </>
+                      )}
+
+                      {alloc.status === 'accepted' && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--color-muted-slate)' }}>
+                            ✓ Accepted — awaiting pickup or in transit
+                          </span>
+                          <button
+                            onClick={() => handleConfirmDelivery(alloc._id)}
+                            disabled={actionLoading}
+                            className="btn btn-primary btn-sm"
+                          >
+                            <PackageCheck size={14} />
+                            <span>Confirm Food Received & Served</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {alloc.status === 'picked_up' && (
+                        <button
+                          onClick={() => handleConfirmDelivery(alloc._id)}
+                          disabled={actionLoading}
+                          className="btn btn-primary btn-sm"
+                        >
+                          <PackageCheck size={14} />
+                          <span>Confirm Safe Delivery</span>
+                        </button>
+                      )}
+
+                      {alloc.status === 'delivered' && (
+                        <span style={{ fontSize: '0.82rem', color: '#15803D', fontWeight: 600 }}>
+                          ✓ Delivery Confirmed & Logged to Impact
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>

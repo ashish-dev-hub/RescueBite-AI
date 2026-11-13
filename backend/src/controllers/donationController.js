@@ -98,6 +98,18 @@ const getDonations = async (req, res, next) => {
       query.category = category;
     }
 
+    // Auto-cancel past-deadline available/reserved listings for food safety
+    const now = new Date();
+    await Donation.updateMany(
+      {
+        status: { $in: ['available', 'reserved'] },
+        pickupDeadline: { $lte: now },
+      },
+      {
+        $set: { status: 'cancelled' },
+      }
+    );
+
     const donations = await Donation.find(query).sort({ createdAt: -1 });
 
     res.json({

@@ -885,8 +885,24 @@ export default function CoordinatorDesk() {
                           )}
 
                           {['approved', 'rejected', 'cancelled'].includes(alloc.status) && (
-                            <span style={{ fontSize: '0.78rem', color: 'var(--color-muted-slate)' }}>
-                              Awaiting NGO Action
+                            <span
+                              style={{
+                                fontSize: '0.78rem',
+                                fontWeight: alloc.status === 'cancelled' || (alloc.donationId?.pickupDeadline && new Date(alloc.donationId.pickupDeadline) <= new Date()) ? 600 : 400,
+                                color: alloc.status === 'cancelled' || (alloc.donationId?.pickupDeadline && new Date(alloc.donationId.pickupDeadline) <= new Date())
+                                  ? '#DC2626'
+                                  : alloc.status === 'rejected'
+                                  ? '#B91C1C'
+                                  : 'var(--color-muted-slate)',
+                              }}
+                            >
+                              {alloc.status === 'cancelled'
+                                ? '❌ Cancelled / Expired'
+                                : alloc.status === 'rejected'
+                                ? '❌ Declined by NGO'
+                                : alloc.donationId?.pickupDeadline && new Date(alloc.donationId.pickupDeadline) <= new Date()
+                                ? '⚠️ Expired before NGO Action'
+                                : 'Awaiting NGO Action'}
                             </span>
                           )}
                         </div>
