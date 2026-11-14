@@ -174,7 +174,7 @@ input, select, textarea {
 
 .navbar-brand-text {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
   font-weight: 800;
   letter-spacing: -0.025em;
   color: var(--color-terracotta);
@@ -381,6 +381,50 @@ input, select, textarea {
     height: 1px;
     background-color: var(--color-soft-border);
     margin: 0.25rem 0;
+  }
+}
+
+.navbar-profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 345px;
+  max-width: calc(100vw - 1.5rem);
+  background-color: #FFFDF9;
+  border-radius: 16px;
+  border: 1px solid #E5DBC5;
+  box-shadow: 5px 8px 0px #E5DBC5;
+  z-index: 1000;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.profile-detail-grid {
+  background-color: #FAF4EB;
+  border-radius: 12px;
+  border: 1px solid #E5DBC5;
+  padding: 0.85rem 0.95rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: #1C1613;
+  display: grid;
+  grid-template-columns: 105px 1fr;
+  row-gap: 0.55rem;
+  column-gap: 0.75rem;
+  align-items: baseline;
+}
+
+@media (max-width: 420px) {
+  .navbar-profile-dropdown {
+    width: calc(100vw - 1rem);
+    right: -0.5rem;
+    padding: 1rem 0.85rem;
+  }
+  .profile-detail-grid {
+    grid-template-columns: 85px 1fr;
+    gap: 0.45rem;
+    font-size: 0.76rem;
+    padding: 0.75rem 0.65rem;
   }
 }
 

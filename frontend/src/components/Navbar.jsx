@@ -226,20 +226,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
 
                 {/* Enriched Profile Dropdown Card with Extensive Details */}
                 {profileDropdownOpen && (
-                  <div style={{
-                    position: 'absolute',
-                    top: 'calc(100% + 8px)',
-                    right: 0,
-                    width: '345px',
-                    maxWidth: 'calc(100vw - 2rem)',
-                    backgroundColor: '#FFFDF9',
-                    borderRadius: '16px',
-                    border: '1px solid #E5DBC5',
-                    boxShadow: '5px 8px 0px #E5DBC5',
-                    zIndex: 1000,
-                    padding: '1.25rem',
-                    boxSizing: 'border-box',
-                  }}>
+                  <div className="navbar-profile-dropdown">
                     {/* User Header */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
                       <div style={{
@@ -298,20 +285,7 @@ export default function Navbar({ activeTab, setActiveTab, onNavigate, onOpenAuth
                     </div>
 
                     {/* Rich Account & Partner Details Section */}
-                    <div style={{
-                      backgroundColor: '#FAF4EB',
-                      borderRadius: '12px',
-                      border: '1px solid #E5DBC5',
-                      padding: '0.85rem 0.95rem',
-                      marginBottom: '1rem',
-                      fontSize: '0.8rem',
-                      color: '#1C1613',
-                      display: 'grid',
-                      gridTemplateColumns: '105px 1fr',
-                      rowGap: '0.55rem',
-                      columnGap: '0.75rem',
-                      alignItems: 'baseline',
-                    }}>
+                    <div className="profile-detail-grid">
                       <span style={{ color: '#382C25', fontWeight: 700, whiteSpace: 'nowrap' }}>Role Type</span>
                       <strong style={{ color: '#1F6F43', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {user?.role === 'coordinator' ? 'Operations Coordinator' : user?.role === 'donor' ? 'Surplus Food Donor' : 'Recipient NGO'}
