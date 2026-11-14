@@ -801,6 +801,14 @@ input::-ms-clear {
   padding: 0.2rem;
   border-radius: var(--radius-btn);
   border: 1px solid var(--color-soft-border);
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.desk-tabs-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .desk-tab-btn {
@@ -812,6 +820,7 @@ input::-ms-clear {
   background-color: transparent;
   transition: all 0.15s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .desk-tab-btn.active {
@@ -820,19 +829,32 @@ input::-ms-clear {
   box-shadow: var(--shadow-subtle);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .desk-controls {
     width: 100%;
-    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
   .desk-tabs-bar {
-    flex: 1;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    padding: 0.25rem;
   }
   .desk-tab-btn {
-    flex: 1;
+    flex-shrink: 0;
     text-align: center;
-    padding: 0.45rem 0.4rem;
-    font-size: 0.76rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8rem;
+    min-height: 40px;
+  }
+  .desk-refresh-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 40px;
   }
 }
 

@@ -521,12 +521,7 @@ export default function CoordinatorDesk() {
                       </div>
 
                       {/* Legend with subscores */}
-                      <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
-                        gap: '0.5rem',
-                        textAlign: 'center',
-                      }}>
+                      <div className="desk-score-breakdown">
                         <div style={{ padding: '0.45rem 0.25rem', backgroundColor: 'var(--color-warm-bg)', borderRadius: '6px' }}>
                           <p style={{ fontSize: '0.7rem', color: 'var(--color-muted-slate)', margin: 0 }}>Demand (35%)</p>
                           <p style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-forest-green)', margin: '0.1rem 0 0 0' }}>
@@ -830,7 +825,7 @@ export default function CoordinatorDesk() {
                           {alloc.ngoId?.organization}
                         </p>
                       </td>
-                      <td>
+                      <td data-label="Quantity">
                         <strong style={{ color: 'var(--color-network-green)' }}>
                           {alloc.approvedMeals} meals
                         </strong>
@@ -838,10 +833,10 @@ export default function CoordinatorDesk() {
                       <td data-label="Status">
                         <StatusBadge status={alloc.status} />
                       </td>
-                      <td style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
+                      <td data-label="Approved At" style={{ fontSize: '0.82rem', color: 'var(--color-muted-slate)' }}>
                         {new Date(alloc.createdAt).toLocaleDateString()}
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
                           <button
                             onClick={() => {
