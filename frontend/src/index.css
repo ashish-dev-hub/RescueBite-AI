@@ -1120,6 +1120,26 @@ input::-ms-clear {
   margin-bottom: 2rem;
 }
 
+.methodology-box {
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-card, 16px);
+  background-color: #FFFDF9;
+  border: 1.5px solid #E5DBC5;
+  box-shadow: 0 2px 6px rgba(44, 34, 30, 0.04);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+@media (max-width: 520px) {
+  .methodology-box {
+    padding: 1rem 0.85rem;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+}
+
 /* Modal Responsive Classes */
 .modal-header {
   display: flex;

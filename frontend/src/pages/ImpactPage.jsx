@@ -114,7 +114,7 @@ export default function ImpactPage() {
               <CheckCircle2 size={18} />
             </div>
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#1F6F43', lineHeight: 1, margin: '0.25rem 0' }}>
+          <p style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 800, color: '#1F6F43', lineHeight: 1, margin: '0.25rem 0' }}>
             {metrics.totalDeliveredMeals}
           </p>
           <p style={{ fontSize: '0.82rem', color: '#382C25', marginTop: '0.5rem', lineHeight: 1.45, fontWeight: 500 }}>
@@ -142,7 +142,7 @@ export default function ImpactPage() {
               <TrendingUp size={18} />
             </div>
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#C44824', lineHeight: 1, margin: '0.25rem 0' }}>
+          <p style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 800, color: '#C44824', lineHeight: 1, margin: '0.25rem 0' }}>
             {metrics.totalApprovedMeals > 0 ? `${metrics.fulfilmentRate}%` : '0%'}
           </p>
           <p style={{ fontSize: '0.82rem', color: '#382C25', marginTop: '0.5rem', lineHeight: 1.45, fontWeight: 500 }}>
@@ -170,7 +170,7 @@ export default function ImpactPage() {
               <Clock size={18} />
             </div>
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#D97706', lineHeight: 1, margin: '0.25rem 0' }}>
+          <p style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 800, color: '#D97706', lineHeight: 1, margin: '0.25rem 0' }}>
             {metrics.totalDeliveredMeals > 0 ? `${metrics.onTimeDeliveryRate}%` : '0%'}
           </p>
           <p style={{ fontSize: '0.82rem', color: '#382C25', marginTop: '0.5rem', lineHeight: 1.45, fontWeight: 500 }}>
@@ -198,7 +198,7 @@ export default function ImpactPage() {
               <Leaf size={18} />
             </div>
           </div>
-          <p style={{ fontSize: '2.2rem', fontWeight: 800, color: '#1F6F43', lineHeight: 1, margin: '0.25rem 0' }}>
+          <p style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 800, color: '#1F6F43', lineHeight: 1, margin: '0.25rem 0' }}>
             {metrics.environmentalEstimates?.kgFoodSaved ?? 0} <span style={{ fontSize: '1rem', fontWeight: 600 }}>kg</span>
           </p>
           <p style={{ fontSize: '0.82rem', color: '#382C25', marginTop: '0.5rem', lineHeight: 1.45, fontWeight: 500 }}>
@@ -208,17 +208,7 @@ export default function ImpactPage() {
       </div>
 
       {/* Methodology & Uncertainty Transparency Box */}
-      <div style={{
-        padding: '1.25rem 1.5rem',
-        borderRadius: 'var(--radius-lg, 16px)',
-        backgroundColor: '#FFFDF9',
-        border: '1.5px solid #E5DBC5',
-        boxShadow: '0 2px 6px rgba(44, 34, 30, 0.04)',
-        marginBottom: '2rem',
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '1rem',
-      }}>
+      <div className="methodology-box">
         <div style={{
           width: '36px',
           height: '36px',
@@ -281,7 +271,7 @@ export default function ImpactPage() {
               ) : (
                 recentActivity.map((act) => (
                   <tr key={act._id}>
-                    <td>
+                    <td data-label="Surplus Food">
                       <strong style={{ color: '#1C1613', fontSize: '0.92rem' }}>
                         {act.donationId?.foodName || 'Rescue Food'}
                       </strong>
@@ -289,7 +279,7 @@ export default function ImpactPage() {
                         Donor: {act.donationId?.donorName || 'Local Partner'}
                       </p>
                     </td>
-                    <td>
+                    <td data-label="Recipient">
                       <strong style={{ color: '#1C1613', fontSize: '0.92rem' }}>
                         {act.ngoId?.name || 'Community Kitchen'}
                       </strong>
@@ -297,15 +287,15 @@ export default function ImpactPage() {
                         {act.ngoId?.organization}
                       </p>
                     </td>
-                    <td>
+                    <td data-label="Delivered">
                       <strong style={{ color: '#1F6F43', fontSize: '0.98rem', fontWeight: 800 }}>
                         {act.approvedMeals} meals
                       </strong>
                     </td>
-                    <td>
+                    <td data-label="Status">
                       <StatusBadge status={act.status} />
                     </td>
-                    <td style={{ fontSize: '0.84rem', color: '#382C25', fontWeight: 600 }}>
+                    <td data-label="Timestamp" style={{ fontSize: '0.84rem', color: '#382C25', fontWeight: 600 }}>
                       {new Date(act.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' })}
                     </td>
                   </tr>
