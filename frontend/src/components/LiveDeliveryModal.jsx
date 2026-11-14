@@ -46,6 +46,15 @@ export default function LiveDeliveryModal({
   const [isBroadcastingGps, setIsBroadcastingGps] = useState(false);
   const [status, setStatus] = useState('in_transit');
   const [loadingRoute, setLoadingRoute] = useState(true);
+  const [isMobileScreen, setIsMobileScreen] = useState(() => typeof window !== 'undefined' && window.innerWidth < 480);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobileScreen(window.innerWidth < 480);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const mapHeight = isMobileScreen ? '220px' : '270px';
 
   const simulationIntervalRef = useRef(null);
 
@@ -427,7 +436,7 @@ export default function LiveDeliveryModal({
             {loadingRoute ? (
               <div
                 style={{
-                  height: '270px',
+                  height: mapHeight,
                   borderRadius: '12px',
                   background: '#F1F5F9',
                   display: 'flex',
@@ -455,7 +464,7 @@ export default function LiveDeliveryModal({
                 courierHeading={courierHeading}
                 courierSpeed={courierSpeed}
                 status={status}
-                height="270px"
+                height={mapHeight}
               />
             )}
           </div>
@@ -501,6 +510,7 @@ export default function LiveDeliveryModal({
 
           {/* Interactive Simulation & Live Broadcast Controls */}
           <div
+            className="live-delivery-controls"
             style={{
               display: 'flex',
               alignItems: 'center',

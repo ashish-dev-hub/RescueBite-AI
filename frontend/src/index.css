@@ -1004,6 +1004,31 @@ input::-ms-clear {
   }
 }
 
+.live-delivery-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+@media (max-width: 520px) {
+  .live-delivery-controls {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .live-delivery-controls > div {
+    width: 100%;
+    flex-direction: column;
+  }
+  .live-delivery-controls button {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 42px !important;
+  }
+}
+
 @keyframes modalFadeIn {
   from {
     opacity: 0;
