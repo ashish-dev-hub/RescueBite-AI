@@ -507,7 +507,7 @@ export default function DonorDashboard() {
 
                   return (
                     <tr key={item._id}>
-                      <td>
+                      <td data-label="Food Item">
                         <strong style={{ fontSize: '0.94rem', color: '#1C1613' }}>{item.foodName}</strong>
                         {item.specialInstructions && (
                           <p style={{ fontSize: '0.78rem', color: '#382C25', marginTop: '0.15rem', fontWeight: 500 }}>
@@ -515,8 +515,8 @@ export default function DonorDashboard() {
                           </p>
                         )}
                       </td>
-                      <td style={{ fontSize: '0.86rem', color: '#2C221E', fontWeight: 600 }}>{item.category}</td>
-                      <td>
+                      <td data-label="Category" style={{ fontSize: '0.86rem', color: '#2C221E', fontWeight: 600 }}>{item.category}</td>
+                      <td data-label="Quantity">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                           <span style={{
                             fontSize: '0.95rem',
@@ -530,7 +530,7 @@ export default function DonorDashboard() {
                           </span>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Storage">
                         <span style={{
                           fontSize: '0.8rem',
                           fontWeight: 600,
@@ -698,13 +698,18 @@ export default function DonorDashboard() {
                       }
                     }}
                     style={{
-                      fontSize: '0.72rem',
-                      padding: '0.2rem 0.5rem',
-                      borderRadius: '4px',
+                      fontSize: '0.74rem',
+                      padding: '0.35rem 0.5rem',
+                      borderRadius: '6px',
                       border: '1px solid var(--color-soft-border)',
-                      backgroundColor: 'var(--color-warm-bg)', color: 'var(--color-coffee-dark)',
+                      backgroundColor: 'var(--color-warm-bg)',
+                      color: 'var(--color-coffee-dark)',
                       cursor: 'pointer',
-                      fontWeight: 500,
+                      fontWeight: 600,
+                      flex: '1 1 calc(50% - 0.35rem)',
+                      minWidth: '95px',
+                      textAlign: 'center',
+                      minHeight: '34px',
                     }}
                   >
                     {preset.label}
