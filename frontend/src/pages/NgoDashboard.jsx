@@ -611,7 +611,7 @@ export default function NgoDashboard() {
                 )}
 
                 {/* NGO Action Buttons */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <div className="ngo-card-actions">
                   {['cancelled', 'rejected'].includes(alloc.status) || isExpired ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <button
@@ -977,14 +977,18 @@ export default function NgoDashboard() {
                     }
                   }}
                   style={{
-                    fontSize: '0.72rem',
-                    padding: '0.25rem 0.55rem',
-                    borderRadius: '4px',
+                    fontSize: '0.74rem',
+                    padding: '0.35rem 0.5rem',
+                    borderRadius: '6px',
                     border: '1px solid var(--color-soft-border)',
                     backgroundColor: '#F3F4F6',
                     color: '#374151',
                     cursor: 'pointer',
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    flex: '1 1 calc(50% - 0.35rem)',
+                    minWidth: '95px',
+                    textAlign: 'center',
+                    minHeight: '34px',
                   }}
                 >
                   {preset.label}
