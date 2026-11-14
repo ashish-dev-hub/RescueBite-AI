@@ -1920,6 +1920,34 @@ input::-ms-clear {
     margin-bottom: 1.25rem;
     max-width: 100%;
   }
+}
+
+@media (max-width: 480px) {
+  .hero-bhojan-section {
+    padding: 1.5rem 0.65rem 1.75rem 0.65rem !important;
+  }
+  .hero-bhojan-headline {
+    font-size: clamp(1.75rem, 7.5vw, 2.2rem) !important;
+    line-height: 1.12 !important;
+  }
+  .hero-bhojan-sub {
+    font-size: 0.92rem !important;
+    line-height: 1.5 !important;
+  }
+  .hero-card-donor,
+  .hero-card-shelter {
+    padding: 1rem 0.95rem !important;
+    border-radius: 16px !important;
+  }
+  .hero-card-title {
+    font-size: 1.15rem !important;
+  }
+  .hero-card-desc {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 960px) {
   .hero-bhojan-ctas {
     display: flex;
     flex-direction: column;
